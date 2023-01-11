@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <excludeFromCompile>
+      <directory url="file://$PROJECT_DIR$/Background/src/main/resources/archetype-resources" includeSubdirectories="true" />
+    </excludeFromCompile>
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="Background" />
+        <module name="CustomComponents" />
+        <module name="Gui" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="BackGround" target="19" />
+      <module name="BackGroundNew" target="19" />
+      <module name="GUi" target="19" />
+      <module name="LearningManager" target="19" />
+      <module name="Lernmanager" target="19" />
+      <module name="Test" target="19" />
+      <module name="untitled" target="19" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
