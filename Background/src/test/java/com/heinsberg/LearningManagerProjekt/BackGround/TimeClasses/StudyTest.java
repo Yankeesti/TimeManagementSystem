@@ -1,5 +1,6 @@
-package com.heinsberg.LearningManagerProjekt.BackGround;
+package com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses;
 
+import com.heinsberg.LearningManagerProjekt.BackGround.Study;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
 import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
 import org.junit.jupiter.api.Assertions;
@@ -10,13 +11,15 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class StudyTest {
+public class StudyTest {
 
     Study underTest;
 
+
     @Test
-    void startLearningPhase() {
+   public void testStartLearningPhase() {
         //given
+        underTest = new Study("Test Study");
         //when
         int outcome = underTest.startLearningPhase(new Subject("Test Subject", 2, 5));
         //then
@@ -24,15 +27,16 @@ class StudyTest {
     }
 
     @Test
-    void finishLearningPhase() {
+    public void testFinishLearningPhase() {
     }
 
     /**
      * Tests the addSemester MEthod
      */
     @Test
-    void addSemesterTest() {
+    public void testAddSemesterTest() {
         //given
+        underTest = new Study("Test Study");
         //when
         //first Semester added
         Semester newSemester = new Semester(3, new Date(122, 9, 19), new Date(123, 2, 3));
@@ -66,8 +70,9 @@ class StudyTest {
      * Tests the addSubject Method
      */
     @Test
-    void addSubjectTest() {
+    public void testAddSubjectTest() {
         //given
+        underTest = new Study("Test Study");
         underTest.addSemester(new Semester(3, new Date(122, 9, 19), new Date(123, 2, 3)));
         underTest.addSemester(new Semester(1, new Date(121, 9, 19), new Date(122, 2, 3)));
 

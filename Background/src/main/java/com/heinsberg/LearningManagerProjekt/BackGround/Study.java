@@ -106,7 +106,7 @@ public class Study {
      */
     private boolean upDateSemester(){
         Date aktDate = TimePeriod.getAktDate();
-        if(currentSemester.compareTo(aktDate) != 0){
+        if(currentSemester == null || currentSemester.compareTo(aktDate) != 0){
             for(int i = 0; i<semesters.size();i++){
                 if(semesters.get(i).compareTo(aktDate) == 0){
                     currentSemester = semesters.get(i);
