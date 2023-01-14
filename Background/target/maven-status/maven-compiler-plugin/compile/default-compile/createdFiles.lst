@@ -1,6 +1,9 @@
+com/heinsberg/LearningManagerProjekt/BackGround/TimeClasses/TimePeriod.class
+com/heinsberg/LearningManagerProjekt/BackGround/TimeClasses/Week.class
+com/heinsberg/LearningManagerProjekt/BackGround/TimeClasses/LearningPhase.class
 module-info.class
-com/heinsberg/LearningManagerProjekt/BackGround/study/Study.class
-com/heinsberg/LearningManagerProjekt/BackGround/util/LearningPhase.class
 com/heinsberg/LearningManagerProjekt/BackGround/subject/Subject.class
-com/heinsberg/LearningManagerProjekt/BackGround/semester/Semester.class
-com/heinsberg/LearningManagerProjekt/BackGround/Interface.class
+com/heinsberg/LearningManagerProjekt/BackGround/Study.class
+com/heinsberg/LearningManagerProjekt/BackGround/dataHandler/txtHandler/saver.class
+com/heinsberg/LearningManagerProjekt/BackGround/TimeClasses/Semester.class
+com/heinsberg/LearningManagerProjekt/BackGround/dataHandler/txtHandler/loader.class
