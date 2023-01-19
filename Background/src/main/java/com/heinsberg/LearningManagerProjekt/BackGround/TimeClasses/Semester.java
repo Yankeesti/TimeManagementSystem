@@ -3,9 +3,10 @@ package com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses;
 import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 
-public class Semester extends TimePeriod{
+public class Semester extends TimePeriod {
     int semester;
     ArrayList<Subject> subjects;
     Week weeks[];
@@ -67,11 +68,12 @@ public class Semester extends TimePeriod{
 
     private void upDateWeek(){
         Date aktDate = getAktDate();
-        if(compareTo(aktDate) != 0)
+        if(compareTo(aktDate) != 0)//Check if current Date is in this Semester
             currentWeekIndex = -1;
         for(int i = currentWeekIndex;i<weeks.length;i++){
             if(weeks[i].compareTo(aktDate) == 0){
                 currentWeekIndex = i;
+                break;
             }
         }
      }

@@ -43,6 +43,7 @@ public class Study {
     }
 
     /**
+     * ends the current learningPhase
      * @return if there isn't a current Learning Phase -1 and if there is a current Learning Phase, the Time learned in Seconds.
      *
      */
@@ -67,6 +68,7 @@ public class Study {
      * @return true if Semester was edit Succesfully, false if parts of this Semester are already included in a other Semester or semesterValue is already taken
      */
     public boolean addSemester(Semester semesterToAdd){
+
         //check if ther is already a Semester with the Same Dates in it
         for(int i = 0; i < semesters.size();i++){
             if(semesters.get(i).getSemester() == semesterToAdd.getSemester())
@@ -77,6 +79,7 @@ public class Study {
             }
         }
         semesters.add(semesterToAdd);
+        semesters.sort((Semester s1,Semester s2) -> s1.getSemester() - s2.getSemester());
         return true;
     }
 
@@ -97,6 +100,45 @@ public class Study {
     }
     return false;
     }
+
+    //Get Mehtodes
+
+    /**
+     * sorts and returns the Semesters
+     * @return - sorted Array of all semesters
+     */
+    public Semester[] getSemesters(){
+        Semester[] outPut = semesters.toArray(new Semester[semesters.size()]);
+        return outPut;
+
+    }
+
+
+    /**
+     *
+     * @param semsterNumber semester Number
+     * @return the Semester with semesterNumber when ther is no Semester with semester number null
+     */
+    public Semester getSemester(int semsterNumber){
+        for(int i = 0; i<semesters.size();i++){
+            Semester temp = semesters.get(i);
+            if(temp.getSemester() == semsterNumber)
+                //when Semester is found return it
+                return temp;
+            if(temp.getSemester()> semsterNumber)
+                //when temp semester number is higher then semesterNumber ther can't be a Semester with semesterNumber because
+                //semesters is sorted --> return null;
+                return null;
+        }
+        //no Semester found
+        return null;
+    }
+
+    /**
+     *
+     * @return - Name of the Study
+     */
+    public String getName(){return studyName;};
 
     //private Methodes
 

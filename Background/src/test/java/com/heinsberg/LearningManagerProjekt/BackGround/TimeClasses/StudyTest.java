@@ -28,6 +28,28 @@ public class StudyTest {
 
     @Test
     public void testFinishLearningPhase() {
+        //given
+        underTest = new Study("Test Study");
+        //when
+        long outcome = underTest.finishLearningPhase();
+        //then
+        Assertions.assertTrue(outcome == -1);
+
+        //when
+        Date aktDate = TimePeriod.getAktDate();
+        aktDate.setDate(aktDate.getDate()+7);
+        Semester newSemester = new Semester(3,new Date(123,0,1),aktDate);
+        Subject test = new Subject("Test",3,5);
+
+        underTest.addSemester(newSemester);
+        underTest.addSubject(test);
+        underTest.startLearningPhase(test);
+        outcome = underTest.finishLearningPhase();
+        //then
+        Assertions.assertTrue(outcome>=0);
+
+
+
     }
 
     /**
@@ -99,9 +121,21 @@ public class StudyTest {
 
     }
 
-    //Life cycle
-    @BeforeEach
-    public void setup() {
+    @Test
+    public void testGetSemesters(){
+        //given
         underTest = new Study("Test Study");
+        //Added unsorted
+        underTest.addSemester(new Semester(4, new Date(123, 3, 20), new Date(123, 7, 14)));
+        underTest.addSemester(new Semester(5, new Date(123, 9, 25), new Date(124, 2, 9)));
+        underTest.addSemester(new Semester(3, new Date(122, 9, 19), new Date(123, 2, 3)));
+        //when
+        Semester[] outcome = underTest.getSemesters();
+        //then
+        Assertions.assertTrue(outcome[0].getSemester() == 3);
+        Assertions.assertTrue(outcome[1].getSemester() == 4);
+        Assertions.assertTrue(outcome[2].getSemester() == 5);
     }
+
+    //Life cycle
 }

@@ -24,6 +24,8 @@ public class Week extends TimePeriod {
         endDate.setDate(this.getDate() + 7);
         setEndTime(endDate.getTime());
 
+        //setUp
+        learningPhases = new ArrayList<LearningPhase>();
         this.numberInSemester = numberInSemester;
     }
 

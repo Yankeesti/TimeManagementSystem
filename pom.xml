@@ -9,8 +9,6 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>CustomComponents</module>
-        <module>Gui</module>
         <module>Background</module>
     </modules>
 
@@ -40,6 +38,7 @@
     <build>
         <plugins>
             <plugin>
+                <!-- lets the clean Plugin run in the Initialize Phase (runs before every Lifecycle)-->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.1.0</version>

@@ -106,7 +106,7 @@ public abstract class TimePeriod extends Date {
         LocalDateTime now = LocalDateTime.now();
 
         outPut.setYear(now.getYear()-1900);
-        outPut.setMonth(now.getMonthValue());
+        outPut.setMonth(now.getMonthValue()-1);
         outPut.setHours(now.getHour());
         outPut.setMinutes(now.getMinute());
         outPut.setSeconds(now.getSecond());
