@@ -4,6 +4,7 @@ import com.heinsberg.LearningManager.Gui.App;
 import com.heinsberg.LearningManager.Gui.StudyManager;
 import com.heinsberg.LearningManager.Gui.controller.BaseController;
 import com.heinsberg.LearningManager.Gui.controller.LoadWindowController;
+import com.heinsberg.LearningManager.Gui.controller.MainWindowController;
 import com.heinsberg.LearningManagerProjekt.BackGround.Study;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,7 +33,12 @@ public class ViewFactory {
 
     public void showMainWindow(){
         System.out.println("show Main Window Called");
-        BaseController controller = new
+        BaseController controller = new MainWindowController(studyManager,this,"MainWindow");
+        initializeStage(controller);
+    }
+
+    public void closeStage(Stage stageToClose) {
+        stageToClose.close();
     }
 
     private void initializeStage(BaseController controller) {

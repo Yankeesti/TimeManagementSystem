@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class LoadWindowController extends BaseController {
 
@@ -30,6 +31,8 @@ public class LoadWindowController extends BaseController {
             errorLabel.setText("Please type in a Name for the Study");
         }else{
             studyManager.createStudy(studyNameField.getText());
+            viewFactory.showMainWindow();
+            closeStage();
         }
 
     }
@@ -38,6 +41,10 @@ public class LoadWindowController extends BaseController {
         if(!textCleared){
         studyNameField.clear();
         textCleared = true;}
+    }
+
+    private void closeStage(){
+        viewFactory.closeStage((Stage)studyNameField.getScene().getWindow());
     }
 
 }
