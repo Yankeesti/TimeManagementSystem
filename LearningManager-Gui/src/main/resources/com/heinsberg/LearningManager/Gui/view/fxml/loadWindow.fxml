@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="236.0" prefWidth="402.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button layoutX="250.0" layoutY="134.0" mnemonicParsing="false" onAction="#createStudyAction" text="Create new Study" />
+      <TextField fx:id="studyNameField" layoutX="55.0" layoutY="134.0" onMouseClicked="#clickedInStudyNameFieldAction" text="Study Name" />
+      <Label layoutX="163.0" layoutY="20.0" text="Loader">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <Label fx:id="errorLabel" layoutX="186.0" layoutY="190.0" />
+   </children>
+</AnchorPane>

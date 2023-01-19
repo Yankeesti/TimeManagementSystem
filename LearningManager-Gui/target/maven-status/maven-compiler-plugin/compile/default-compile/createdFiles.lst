@@ -1,4 +1,6 @@
-com/heinsberg/LearningManager/Gui/SecondaryController.class
-com/heinsberg/LearningManager/Gui/PrimaryController.class
 com/heinsberg/LearningManager/Gui/App.class
 module-info.class
+com/heinsberg/LearningManager/Gui/controller/LoadWindowController.class
+com/heinsberg/LearningManager/Gui/view/ViewFactory.class
+com/heinsberg/LearningManager/Gui/StudyManager.class
+com/heinsberg/LearningManager/Gui/controller/BaseController.class
