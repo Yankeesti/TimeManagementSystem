@@ -1,10 +1,13 @@
 /Users/timheinsberg/Desktop/Programmieren/WorkSpace/LearningManager/LearningManager-Gui/src/main/java/com/heinsberg/LearningManager/Gui/controller/LoadWindowController.java
+/Users/timheinsberg/Desktop/Programmieren/WorkSpace/LearningManager/LearningManager-Gui/src/main/java/com/heinsberg/LearningManager/Gui/controller/componentController/SemesterInformationController.java
 /Users/timheinsberg/Desktop/Programmieren/WorkSpace/LearningManager/LearningManager-Gui/src/main/java/com/heinsberg/LearningManager/Gui/view/ViewFactory.java
+/Users/timheinsberg/Desktop/Programmieren/WorkSpace/LearningManager/LearningManager-Gui/src/main/java/com/heinsberg/LearningManager/Gui/controller/componentController/BaseInformationComponentController.java
 /Users/timheinsberg/Desktop/Programmieren/WorkSpace/LearningManager/LearningManager-Gui/src/main/java/com/heinsberg/LearningManager/Gui/treeItems/SubjectTreeItem.java
 /Users/timheinsberg/Desktop/Programmieren/WorkSpace/LearningManager/LearningManager-Gui/src/main/java/module-info.java
 /Users/timheinsberg/Desktop/Programmieren/WorkSpace/LearningManager/LearningManager-Gui/src/main/java/com/heinsberg/LearningManager/Gui/controller/services/FileManagerSevice.java
 /Users/timheinsberg/Desktop/Programmieren/WorkSpace/LearningManager/LearningManager-Gui/src/main/java/com/heinsberg/LearningManager/Gui/controller/LoadFileResult.java
 /Users/timheinsberg/Desktop/Programmieren/WorkSpace/LearningManager/LearningManager-Gui/src/main/java/com/heinsberg/LearningManager/Gui/controller/componentController/StudyInformationController.java
+/Users/timheinsberg/Desktop/Programmieren/WorkSpace/LearningManager/LearningManager-Gui/src/main/java/com/heinsberg/LearningManager/Gui/controller/componentController/SubjectInformationController.java
 /Users/timheinsberg/Desktop/Programmieren/WorkSpace/LearningManager/LearningManager-Gui/src/main/java/com/heinsberg/LearningManager/Gui/App.java
 /Users/timheinsberg/Desktop/Programmieren/WorkSpace/LearningManager/LearningManager-Gui/src/main/java/com/heinsberg/LearningManager/Gui/treeItems/SemesterTreeItem.java
 /Users/timheinsberg/Desktop/Programmieren/WorkSpace/LearningManager/LearningManager-Gui/src/main/java/com/heinsberg/LearningManager/Gui/treeItems/StudyTreeItem.java
