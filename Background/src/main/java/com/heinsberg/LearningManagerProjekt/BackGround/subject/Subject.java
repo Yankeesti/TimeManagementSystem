@@ -5,6 +5,11 @@ import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase
 
 import java.util.ArrayList;
 
+/**
+ * Represents a subject in a study program.
+ *
+ * @author Heinsberg
+ */
 public class Subject {
     private double finalGrade;
     private int ectsPoints;
@@ -14,6 +19,14 @@ public class Subject {
     private int semester;
     private Week currenWeek;
 
+    /**
+     * Creates a new Subject with given name, semester and ects points.
+     *
+     * @param subjectName - The name of the subject.
+     * @param semester    - The semester in which the subject is taken.
+     * @param ectsPoints  - The number of ECTS points for this subject.
+     */
+
     public Subject(String subjectName, int semester, int ectsPoints) {
         learningPhases = new ArrayList<LearningPhase>();
         this.subjectName = subjectName;
@@ -22,43 +35,31 @@ public class Subject {
     }
 
 
+    /**
+     * Adds a LearningPhase to this subject.
+     *
+     * @param learningPhase - The LearningPhase to be added to this subject.
+     */
     public void addLearningPhase(LearningPhase learningPhase) {
         learningPhases.add(learningPhase);
     }
 
     //Getter and Setter
-    public void setFinalGrade(double finalGrade) {
-        this.finalGrade = finalGrade;
-    }
 
-    public void setWeekGoal(int weekGoal) {
-        this.weekGoal = weekGoal;
-    }
-
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
-    }
-
-    public void setSemester(int semester) {
-        this.semester = semester;
-    }
-
-    public double getFinalGrade() {
-        return finalGrade;
-    }
-
-    public int getEctsPoints() {
-        return ectsPoints;
-    }
-
-    public int getWeekGoal() {
-        return weekGoal;
-    }
-
+    /**
+     * Returns the name of this subject.
+     *
+     * @return The name of this subject.
+     */
     public String getSubjectName() {
         return subjectName;
     }
 
+    /**
+     * Returns the semester in which this subject is taken.
+     *
+     * @return The semester in which this subject is taken.
+     */
     public int getSemester() {
         return semester;
     }

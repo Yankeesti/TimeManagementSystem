@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>Background</module>
+        <module>LearningManager-Gui</module>
     </modules>
 
 
@@ -34,6 +35,8 @@
             <scope>test</scope>
         </dependency>
 
+
+
     </dependencies>
     <build>
         <plugins>
@@ -57,6 +60,18 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
                 <version>4.0.0-M4</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <executable>/Library/Java/JavaVirtualMachines/jdk-19.jdk/Contents/Home/bin/java</executable>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

@@ -11,11 +11,14 @@ public class Week extends TimePeriod {
 
 
     /**
-     * Creates a new week
+     * Creates a new week with the given start date and number in the semester.
+     * The startDate is automatically set to the Monday of the Week and
+     * The end date is automatically set to the following Sunday.
      *
-     * @param startDate
-     * @param numberInSemester
+     * @param startDate        the start date of the week
+     * @param numberInSemester the number of this week in the semester
      */
+
     public Week(Date startDate, int numberInSemester) {
         super(getMonday(startDate));
         //set end to Sunday
@@ -30,8 +33,10 @@ public class Week extends TimePeriod {
     }
 
     /**
-     * @param subject - Subject for which is learned
-     * @return started LearningPhase
+     * Starts a new learning phase for the given subject and adds it to the list of learning phases for this week.
+     *
+     * @param subject the subject being learned
+     * @return the started learning phase
      */
     public LearningPhase startLearningPhase(Subject subject) {
         LearningPhase aktLearningPhase = new LearningPhase(subject);
@@ -40,15 +45,21 @@ public class Week extends TimePeriod {
     }
 
     /**
-     * returns how much was learned for a Subject in this Week
-     * @param subject
-     * @return - Time learned in seconds
+     * Returns the amount of time learned for the given subject during this week.
+     *
+     * @param subject the subject for which the time learned is calculated
+     * @return the time learned in seconds
      */
     public long learnedFor(Subject subject) {
         return 0;
     }
 
     //Getters and Setter
+
+    /**
+     Returns an array of all the learning phases that took place during this week.
+     @return an array of learning phases
+     */
     public LearningPhase[] getLearningPhases() {
         LearningPhase[] outPut = new LearningPhase[learningPhases.size()];
         for (int i = 0; i < outPut.length; i++) {
