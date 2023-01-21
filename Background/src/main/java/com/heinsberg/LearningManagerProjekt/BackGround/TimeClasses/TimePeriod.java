@@ -51,10 +51,11 @@ public abstract class TimePeriod extends Date {
      * Compares two TimePeriods for ordering
      *
      * @param anotherTimePeriod - TimePeriod to compare
-     * @return the value 0 if the argument TimePeriod is in the Time Period; -1 if the Time PeriodArgument start is in this time Period but the ending is after this Time Period; -2 if the Time Period Argument is after this Time Period; 1 if the Time Period ends is in this time Period but the start is before this Time Period; 2 if the Time Period Argument is before this Time Period
+     * @return the value 0 if the argument TimePeriod is in the Time Period also if anotherTimePeriod is not ended yet but the start is in this TimePeriod; -1 if the Time PeriodArgument start is in this time Period but the ending is after this Time Period; -2 if the Time Period Argument is after this Time Period; 1 if the Time Period ends is in this time Period but the start is before this Time Period; 2 if the Time Period Argument is before this Time Period
      */
     public int compareTo(TimePeriod anotherTimePeriod) {
-        if (super.compareTo(anotherTimePeriod) <= 0 && endDate.compareTo(anotherTimePeriod.getEndDate()) >= 0)
+        if ((super.compareTo(anotherTimePeriod) <= 0 && anotherTimePeriod.getEndDate()== null)||
+            (super.compareTo(anotherTimePeriod) <= 0 && endDate.compareTo(anotherTimePeriod.getEndDate()) >= 0))
             return 0;
 
         if (super.compareTo(anotherTimePeriod) <= 0 && endDate.compareTo(anotherTimePeriod) >= 0)

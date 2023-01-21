@@ -63,4 +63,9 @@ public class Subject {
     public int getSemester() {
         return semester;
     }
+
+    public LearningPhase startLearningPhase() {
+        LearningPhase learningPhase = new LearningPhase(this);
+        return learningPhase;
+    }
 }

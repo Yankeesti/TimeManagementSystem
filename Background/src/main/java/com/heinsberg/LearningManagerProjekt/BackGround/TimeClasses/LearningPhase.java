@@ -17,7 +17,7 @@ public class LearningPhase extends TimePeriod {
      *
      * @param subject The subject being studied during this learning phase.
      */
-    LearningPhase(Subject subject) {
+    public LearningPhase(Subject subject) {
         super(getAktDate());
         this.subject = subject;
     }

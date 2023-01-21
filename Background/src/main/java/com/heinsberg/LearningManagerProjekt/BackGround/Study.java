@@ -35,16 +35,18 @@ public class Study {
      * and stores it in currentLearningPhase
      *
      * @param subject - Subject to start Learning
-     * @return 0 if a Learning Phase has started 1 when there is allready a started learningPhase and -1 when there is no Semester that includes the current date
+     * @return 0 if a Learning Phase has started 1 when there is allready a started learningPhase -1 when there is no Semester that includes the current date and -2 if the current Semester doesn't include subject
      */
     public int startLearningPhase(Subject subject) {
         if (currentLearningPhase != null)
             return 1;
         if (!upDateSemester())
             return -1;
+        if(!currentSemester.includesSubject(subject))
+            return -2;
 
-        currentLearningPhase = currentSemester.startLearningPhase(subject);
-        subject.addLearningPhase(currentLearningPhase);
+        currentLearningPhase = subject.startLearningPhase();
+        currentSemester.addLearningPhase(currentLearningPhase);
         return 0;
     }
 

@@ -34,18 +34,6 @@ public class Semester extends TimePeriod {
 
     //Control Methods
 
-    /**
-     * Starts a new learning phase for the given subject
-     * Note: The study should control that this semester is the current semester
-     *
-     * @param subject - The subject for which to start a learning phase
-     * @return The started learning phase
-     */
-    public LearningPhase startLearningPhase(Subject subject) {
-        upDateWeek();
-        return weeks[currentWeekIndex].startLearningPhase(subject);
-    }
-
     //Getter and Setter
 
     /**
@@ -108,5 +96,15 @@ public class Semester extends TimePeriod {
      */
     public Subject[] getSubjects() {
         return subjects.toArray((new Subject[subjects.size()]));
+    }
+    public boolean includesSubject(Subject subject){
+        return subjects.contains(subject);
+    }
+
+    public void addLearningPhase(LearningPhase currentLearningPhase) {
+        upDateWeek();
+        if(weeks[currentWeekIndex].compareTo(currentLearningPhase) == 0){//start of learning Phase is in Week
+            weeks[currentWeekIndex].addLearningPhase(currentLearningPhase);
+        }
     }
 }
