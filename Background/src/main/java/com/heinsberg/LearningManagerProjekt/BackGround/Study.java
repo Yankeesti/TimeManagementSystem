@@ -9,6 +9,10 @@ import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * The Study class represents a study program, containing information about the semesters, subjects, and learning phases of the program.
+ * It includes methods for controlling and editing the study program, such as starting and ending learning phases, adding new semesters and subjects, and retrieving information about the current state of the program.
+ */
 public class Study {
     private String studyName;
 
@@ -25,16 +29,18 @@ public class Study {
     }
 
     //Methodes to Control learningPhase
+
     /**
      * starts a Learning Phase for the Subject subject
      * and stores it in currentLearningPhase
+     *
      * @param subject - Subject to start Learning
      * @return 0 if a Learning Phase has started 1 when there is allready a started learningPhase and -1 when there is no Semester that includes the current date
      */
-    public int startLearningPhase(Subject subject){
-        if(currentLearningPhase != null)
+    public int startLearningPhase(Subject subject) {
+        if (currentLearningPhase != null)
             return 1;
-        if(!upDateSemester())
+        if (!upDateSemester())
             return -1;
 
         currentLearningPhase = currentSemester.startLearningPhase(subject);
@@ -44,70 +50,68 @@ public class Study {
 
     /**
      * ends the current learningPhase
-     * @return if there isn't a current Learning Phase -1 and if there is a current Learning Phase, the Time learned in Seconds.
      *
+     * @return if there isn't a current Learning Phase -1 and if there is a current Learning Phase, the Time learned in Seconds.
      */
-    public long finishLearningPhase(){
-        if(currentLearningPhase == null)
-        return-1;
+    public long finishLearningPhase() {
+        if (currentLearningPhase == null)
+            return -1;
         long timeLearned = currentLearningPhase.endLearningPhase();
         currentLearningPhase = null;
         return timeLearned;
     }
 
-    /**
-     * starts a Break in the current learningPhase
-     * @return true if action worked and false if not
-     */
-
     //Methods to Edit Study
 
     /**
      * adds a new Semester to the Study
-     * @param semesterToAdd
-     * @return true if Semester was edit Succesfully, false if parts of this Semester are already included in a other Semester or semesterValue is already taken
+     *
+     * @param semesterToAdd - Semester to be added
+     * @return true if Semester was added successfully, false if parts of this Semester are already included in another Semester or semesterValue is already taken
      */
-    public boolean addSemester(Semester semesterToAdd){
+    public boolean addSemester(Semester semesterToAdd) {
 
         //check if ther is already a Semester with the Same Dates in it
-        for(int i = 0; i < semesters.size();i++){
-            if(semesters.get(i).getSemester() == semesterToAdd.getSemester())
+        for (int i = 0; i < semesters.size(); i++) {
+            if (semesters.get(i).getSemester() == semesterToAdd.getSemester())
                 return false;
             int compared = semesters.get(i).compareTo(semesterToAdd);
-            if(compared != 2 && compared != -2){//semester is in a Semester that already exists
+            if (compared != 2 && compared != -2) {//semester is in a Semester that already exists
                 return false;
             }
         }
         semesters.add(semesterToAdd);
-        semesters.sort((Semester s1,Semester s2) -> s1.getSemester() - s2.getSemester());
+        semesters.sort((Semester s1, Semester s2) -> s1.getSemester() - s2.getSemester());
         return true;
     }
 
     /**
      * Adds a Subject to the Study
+     *
      * @param subjectToAdd - subject to be added
-     * @return true if Subject was added false if not
+     * @return true if Subject was added, false if not
      */
-    public boolean addSubject(Subject subjectToAdd){
-    if(!subjectAllreadyExistend(subjectToAdd)){
-        Semester subjectSemester = findSemester(subjectToAdd.getSemester());
-        if(subjectSemester != null){
-            subjectSemester.addSubject(subjectToAdd);
-            subjects.add(subjectToAdd);
-            return true;
+    public boolean addSubject(Subject subjectToAdd) {
+        if (!subjectAllreadyExistend(subjectToAdd)) {
+            Semester subjectSemester = findSemester(subjectToAdd.getSemester());
+            if (subjectSemester != null) {
+                subjectSemester.addSubject(subjectToAdd);
+                subjects.add(subjectToAdd);
+                return true;
+            }
+            return false;
         }
         return false;
-    }
-    return false;
     }
 
     //Get Mehtodes
 
     /**
-     * sorts and returns the Semesters
-     * @return - sorted Array of all semesters
+     * Returns an array of all semesters in this study, sorted by their semester number.
+     *
+     * @return an array of all semesters in this study.
      */
-    public Semester[] getSemesters(){
+    public Semester[] getSemesters() {
         Semester[] outPut = semesters.toArray(new Semester[semesters.size()]);
         return outPut;
 
@@ -115,17 +119,18 @@ public class Study {
 
 
     /**
+     * Retrieves the Semester with the specified semester number.
      *
-     * @param semsterNumber semester Number
-     * @return the Semester with semesterNumber when ther is no Semester with semester number null
+     * @param semesternumber the semester number of the Semester to retrieve
+     * @return the Semester with the specified semester number, or null if no such Semester exists.
      */
-    public Semester getSemester(int semsterNumber){
-        for(int i = 0; i<semesters.size();i++){
+    public Semester getSemester(int semsterNumber) {
+        for (int i = 0; i < semesters.size(); i++) {
             Semester temp = semesters.get(i);
-            if(temp.getSemester() == semsterNumber)
+            if (temp.getSemester() == semsterNumber)
                 //when Semester is found return it
                 return temp;
-            if(temp.getSemester()> semsterNumber)
+            if (temp.getSemester() > semsterNumber)
                 //when temp semester number is higher then semesterNumber ther can't be a Semester with semesterNumber because
                 //semesters is sorted --> return null;
                 return null;
@@ -135,22 +140,28 @@ public class Study {
     }
 
     /**
+     * Returns the name of the study.
      *
-     * @return - Name of the Study
+     * @return the name of the study.
      */
-    public String getName(){return studyName;};
+    public String getName() {
+        return studyName;
+    }
+
+    ;
 
     //private Methodes
 
     /**
-     * upDates the Semester
-     * @return true if there is a Semester wich containes the current Week and false if not
+     * updates the current semester to the semester that includes the current date
+     *
+     * @return true if current semester is updated, false if no semester includes the current date
      */
-    private boolean upDateSemester(){
+    private boolean upDateSemester() {
         Date aktDate = TimePeriod.getAktDate();
-        if(currentSemester == null || currentSemester.compareTo(aktDate) != 0){
-            for(int i = 0; i<semesters.size();i++){
-                if(semesters.get(i).compareTo(aktDate) == 0){
+        if (currentSemester == null || currentSemester.compareTo(aktDate) != 0) {
+            for (int i = 0; i < semesters.size(); i++) {
+                if (semesters.get(i).compareTo(aktDate) == 0) {
                     currentSemester = semesters.get(i);
                     return true;
                 }
@@ -161,13 +172,14 @@ public class Study {
     }
 
     /**
-     * chekcs if subject is already existend
-     * @param subject - Subjct to Check
-     * @return true if there is already a subject with the name of subject and the semester of subject and false if not
+     * Checks if a given subject already exists within the study
+     *
+     * @param subject - Subject to check for existence
+     * @return true if the subject already exists within the study, false otherwise
      */
-    private boolean subjectAllreadyExistend(Subject subject){
-        for(int i = 0 ; i<subjects.size();i++){
-            if(subjects.get(i).getSubjectName() == subject.getSubjectName() && subjects.get(i).getSemester() == subject.getSemester()){
+    private boolean subjectAllreadyExistend(Subject subject) {
+        for (int i = 0; i < subjects.size(); i++) {
+            if (subjects.get(i).getSubjectName() == subject.getSubjectName() && subjects.get(i).getSemester() == subject.getSemester()) {
                 //subject is already existends
                 return true;
             }
@@ -176,14 +188,16 @@ public class Study {
     }
 
     /**
-     * finds the semester with semesterNumber
-     * @param semesterNumber
-     * @return Semester with semester number if it's ther and null if not
+     * Retrieves the Semester with the specified semester number from the list of semesters in this Study.
+     *
+     * @param semesterNumber - the number of the semester to be retrieved
+     * @return the Semester object if found, null otherwise.
      */
-    private Semester findSemester(int semesterNumber){
-        for(int i = 0; i<semesters.size();i++){
-            if(semesters.get(i).getSemester() == semesterNumber){//Semester found
-                return semesters.get(i);}
+    private Semester findSemester(int semesterNumber) {
+        for (int i = 0; i < semesters.size(); i++) {
+            if (semesters.get(i).getSemester() == semesterNumber) {//Semester found
+                return semesters.get(i);
+            }
         }
         return null;
     }

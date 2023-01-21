@@ -18,7 +18,7 @@ import java.io.IOException;
  * Controls the Windows
  */
 public class ViewFactory {
-    private String fxmlFolder ="fxml";
+    private String fxmlFolder ="fxmlWindows";
     private StudyManager studyManager;
     public ViewFactory(StudyManager studyManager) {
         this.studyManager = studyManager;
@@ -33,7 +33,7 @@ public class ViewFactory {
 
     public void showMainWindow(){
         System.out.println("show Main Window Called");
-        BaseController controller = new MainWindowController(studyManager,this,"MainWindow");
+        MainWindowController controller = new MainWindowController(studyManager,this,"MainWindow");
         initializeStage(controller);
     }
 

@@ -11,70 +11,102 @@ public class Semester extends TimePeriod {
     ArrayList<Subject> subjects;
     Week weeks[];
     private int currentWeekIndex;//current Week index when this Semester does not include the akt Date = -1
-    public Semester(int semester, Date semesterStart, Date semesterEnd){
-        super(semesterStart,semesterEnd);
+
+    /**
+     * Creates a new semester with a given start and end date, and a semester number
+     *
+     * @param semester      - The number of the semester (e.g. 5th semester)
+     * @param semesterStart - The start date of the semester
+     * @param semesterEnd   - The end date of the semester
+     */
+    public Semester(int semester, Date semesterStart, Date semesterEnd) {
+        super(semesterStart, semesterEnd);
         this.semester = semester;
         Date startMonday = getMonday(semesterStart);
         weeks = new Week[calculateWeekAmount()];
-        for(int i = 0; i<weeks.length; i++) {
-            weeks[i] = new Week(startMonday,i);
-            startMonday.setDate(startMonday.getDate()+7);
+        for (int i = 0; i < weeks.length; i++) {
+            weeks[i] = new Week(startMonday, i);
+            startMonday.setDate(startMonday.getDate() + 7);
         }
         currentWeekIndex = 0;
         subjects = new ArrayList<Subject>();
     }
 
     //Control Methods
+
     /**
-     * starts a Learning Phase
-     * Study need to control that this Semester is the current Semester
-     * @param subject - Subject for which is learned
-     * @return started LearningPhase
+     * Starts a new learning phase for the given subject
+     * Note: The study should control that this semester is the current semester
+     *
+     * @param subject - The subject for which to start a learning phase
+     * @return The started learning phase
      */
-    public  LearningPhase startLearningPhase(Subject subject){
+    public LearningPhase startLearningPhase(Subject subject) {
         upDateWeek();
         return weeks[currentWeekIndex].startLearningPhase(subject);
     }
 
     //Getter and Setter
-     /**
-     * adds p to subjects
-     * @param subject - Subject to add
+
+    /**
+     * Adds a subject to the list of subjects for this semester
+     *
+     * @param subject - The subject to add
      */
     public void addSubject(Subject subject) {
         subjects.add(subject);
     }
 
-    public int getSemester(){
+    /**
+     * Returns the semester number of this semester
+     *
+     * @return The semester number
+     */
+    public int getSemester() {
         return semester;
     }
 
 
     //Private Methods
+
     /**
-     * @return number of Weeks in this Semester
+     * Calculates the number of weeks in this semester
+     *
+     * @return The number of weeks
      */
     private int calculateWeekAmount() {
         Date startMonday = getMonday(this);
         Date endMonday = getMonday(endDate);
         int anzahl = 0;
 
-        while(startMonday.compareTo(endMonday)<= 0) {
-            startMonday.setDate(startMonday.getDate()+7);
-            anzahl ++;
+        while (startMonday.compareTo(endMonday) <= 0) {
+            startMonday.setDate(startMonday.getDate() + 7);
+            anzahl++;
         }
         return anzahl;
     }
 
-    private void upDateWeek(){
+    /**
+     * Updates the current week index for this semester
+     */
+    private void upDateWeek() {
         Date aktDate = getAktDate();
-        if(compareTo(aktDate) != 0)//Check if current Date is in this Semester
+        if (compareTo(aktDate) != 0)//Check if current Date is in this Semester
             currentWeekIndex = -1;
-        for(int i = currentWeekIndex;i<weeks.length;i++){
-            if(weeks[i].compareTo(aktDate) == 0){
+        for (int i = currentWeekIndex; i < weeks.length; i++) {
+            if (weeks[i].compareTo(aktDate) == 0) {
                 currentWeekIndex = i;
                 break;
             }
         }
-     }
+    }
+
+    /**
+     * Returns the list of subjects for this semester
+     *
+     * @return Array of subjects
+     */
+    public Subject[] getSubjects() {
+        return subjects.toArray((new Subject[subjects.size()]));
+    }
 }
