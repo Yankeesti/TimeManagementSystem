@@ -204,4 +204,11 @@ public class Study {
         return null;
     }
 
+    //for Test purposes
+    public void addLearningPhase(LearningPhase learningPhase){
+        int semester = learningPhase.getSubject().getSemester();
+        findSemester(semester).addLearningPhaseHard(learningPhase);
+        learningPhase.getSubject().addLearningPhase(learningPhase);
+    }
+
 }

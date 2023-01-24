@@ -43,4 +43,14 @@ public class LearningPhase extends TimePeriod {
     public Subject getSubject() {
         return subject;
     }
+
+
+    @Override
+    public void setEndTime(long time){
+        if(time >= 0){
+            super.setEndTime(time);
+            timeLearned = getDiffrence()/1000;
+        }
+    }
+    public long getTimeLearned(){return timeLearned;}
 }
