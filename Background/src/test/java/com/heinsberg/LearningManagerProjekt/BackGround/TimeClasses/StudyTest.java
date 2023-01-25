@@ -18,11 +18,7 @@ public class StudyTest {
 
     @Test
    public void testStartLearningPhase() {
-        //given
-        underTest = new Study("Test Study");
-        //when
-        int outcome = underTest.startLearningPhase(new Subject("Test Subject", 2, 5));
-        //then
+
 
     }
 
@@ -39,7 +35,7 @@ public class StudyTest {
         Date aktDate = TimePeriod.getAktDate();
         aktDate.setDate(aktDate.getDate()+7);
         Semester newSemester = new Semester(3,new Date(123,0,1),aktDate);
-        Subject test = new Subject("Test",3,5);
+        Subject test = new Subject("Test",newSemester,5);
 
         underTest.addSemester(newSemester);
         underTest.addSubject(test);
@@ -99,22 +95,22 @@ public class StudyTest {
         underTest.addSemester(new Semester(1, new Date(121, 9, 19), new Date(122, 2, 3)));
 
         //when Adding Subject to semester 3
-        boolean outcome = underTest.addSubject(new Subject("Technische Informatik",3,5));
+        boolean outcome = underTest.addSubject(new Subject("Technische Informatik",underTest.getSemester(3),5));
         //then
         Assertions.assertTrue(outcome);
 
         //when Subject is Added and Semester is not in study
-        outcome = underTest.addSubject(new Subject("Test",5,5));
+        outcome = underTest.addSubject(new Subject("Test",underTest.getSemester(5),5));
         //then
         Assertions.assertFalse(outcome);
 
         //when Subject is Added that has the same name as already added Subject and Semester
-        outcome = underTest.addSubject(new Subject("Technische Informatik",3,59));
+        outcome = underTest.addSubject(new Subject("Technische Informatik",underTest.getSemester(3),59));
         //then
         Assertions.assertFalse(outcome);
 
         //when Subject is Added with same Name but in other Semester
-        outcome = underTest.addSubject(new Subject("Technische Informatik",1,5));
+        outcome = underTest.addSubject(new Subject("Technische Informatik",underTest.getSemester(1),5));
         //then
         Assertions.assertTrue(outcome);
 

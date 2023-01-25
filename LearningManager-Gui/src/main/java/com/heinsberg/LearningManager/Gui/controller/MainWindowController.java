@@ -25,8 +25,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -62,11 +65,11 @@ public class MainWindowController extends BaseController implements Initializabl
     }
 
 
-
     @FXML
-    void saveAsAction(){
-        File file = new File("/Users/timheinsberg/Desktop/Programmieren/WorkSpace/LearningManager/Data/test.json");
-        FileManagerSevice.saveStudy(studyManager.getStudy(),file);
+    void saveAsAction() {
+        String[][] filter = {{"Json File", "*.json"}};
+        File file = viewFactory.showFileSaver((Stage) menueBar.getScene().getWindow(), filter,studyManager.getStudy().getName()+" Study Progress");
+        studyManager.studyToJson(file);
     }
 
     @Override
@@ -77,46 +80,46 @@ public class MainWindowController extends BaseController implements Initializabl
 
     private void setUpInformationPane() {
         //SetUp study Information Pane
-        studyInformationController = new StudyInformationController(studyManager,viewFactory,"fxmlComponents/StudyInformation.fxml");
+        studyInformationController = new StudyInformationController(studyManager, viewFactory, "fxmlComponents/StudyInformation.fxml");
         setUpNode(studyInformationController);
         studyInformationController.getNode().setManaged(true);
         shownInformationNode = studyInformationController.getNode();// set Study information to be shown first default
 
         //SetUp SemesterInformationPane
-        semesterInformationController = new SemesterInformationController(studyManager,viewFactory,"fxmlComponents/SemesterInformation.fxml");
+        semesterInformationController = new SemesterInformationController(studyManager, viewFactory, "fxmlComponents/SemesterInformation.fxml");
         setUpNode(semesterInformationController);
 
         //SetUp SubjectInformationPane
-        subjectInformationController = new SubjectInformationController(studyManager,viewFactory,"fxmlComponents/SubjectInformation.fxml");
+        subjectInformationController = new SubjectInformationController(studyManager, viewFactory, "fxmlComponents/SubjectInformation.fxml");
         setUpNode(subjectInformationController);
     }
 
-    private void setUpNode(BaseInformationComponentController informationController){
+    private void setUpNode(BaseInformationComponentController informationController) {
         Node informationPanel = loadFXML(informationController);
-        if(informationPanel != null){
+        if (informationPanel != null) {
             setInformationMainPaneAnchor(informationPanel);
             informationMainPane.getChildren().add(informationPanel);
             informationPanel.setManaged(false);
             informationController.setNode(informationPanel);
-        }else{
+        } else {
             System.err.println("Node not provided");
         }
     }
 
-    private void setInformationMainPaneAnchor(Node node){
-        informationMainPane.setTopAnchor(node,0.0);
-        informationMainPane.setBottomAnchor(node,0.0);
-        informationMainPane.setRightAnchor(node,0.0);
-        informationMainPane.setLeftAnchor(node,0.0);
+    private void setInformationMainPaneAnchor(Node node) {
+        informationMainPane.setTopAnchor(node, 0.0);
+        informationMainPane.setBottomAnchor(node, 0.0);
+        informationMainPane.setRightAnchor(node, 0.0);
+        informationMainPane.setLeftAnchor(node, 0.0);
 
     }
 
-    private void setTreeView(){
+    private void setTreeView() {
         treeView.setRoot(studyManager.getFoldersRoot());
         treeView.setShowRoot(false);
-        treeView.setOnMouseClicked(e ->{
+        treeView.setOnMouseClicked(e -> {
             BaseTreeItem<String> item = (BaseTreeItem<String>) treeView.getSelectionModel().getSelectedItem();
-            if(item != null){
+            if (item != null) {
                 upDateInformationPane(item.getHoldObject());
             }
         });
@@ -125,15 +128,15 @@ public class MainWindowController extends BaseController implements Initializabl
 
     private void upDateInformationPane(Object holdObject) {
         Node nodeToBeShown = null;
-        if(holdObject.getClass() == Semester.class){
+        if (holdObject.getClass() == Semester.class) {
             System.out.println("show Semester Information");
             semesterInformationController.upDateInformation(holdObject);
             nodeToBeShown = semesterInformationController.getNode();
-        }else if(holdObject.getClass() == Subject.class){
+        } else if (holdObject.getClass() == Subject.class) {
             System.out.println("show Subject Information");
             subjectInformationController.upDateInformation(holdObject);
             nodeToBeShown = subjectInformationController.getNode();
-        }else if(holdObject.getClass() == Study.class){
+        } else if (holdObject.getClass() == Study.class) {
             System.out.println("show Study Information");
             studyInformationController.upDateInformation(holdObject);
             nodeToBeShown = studyInformationController.getNode();
@@ -146,19 +149,19 @@ public class MainWindowController extends BaseController implements Initializabl
         shownInformationNode = nodeToBeShown;
     }
 
-    public Node loadFXML(BaseController controller){
+    public Node loadFXML(BaseController controller) {
         String fxmlFileName = controller.getFxmlName();
-        try{
+        try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             URL url = getClass().getResource(fxmlFileName);
-            if(url == null) {
+            if (url == null) {
                 System.err.println("Error");
                 return null;
             }
             fxmlLoader.setLocation(getClass().getResource(fxmlFileName));
             fxmlLoader.setController(controller);
             return fxmlLoader.load();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }

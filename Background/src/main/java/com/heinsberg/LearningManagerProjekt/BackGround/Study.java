@@ -8,6 +8,7 @@ import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * The Study class represents a study program, containing information about the semesters, subjects, and learning phases of the program.
@@ -84,6 +85,10 @@ public class Study {
         }
         semesters.add(semesterToAdd);
         semesters.sort((Semester s1, Semester s2) -> s1.getSemester() - s2.getSemester());
+        //Add subjects of semester to subjects (used when loading from json)
+        for(Semester semester: semesters){
+            subjects.addAll(List.of(semester.getSubjects()));
+        }
         return true;
     }
 
@@ -95,7 +100,7 @@ public class Study {
      */
     public boolean addSubject(Subject subjectToAdd) {
         if (!subjectAllreadyExistend(subjectToAdd)) {
-            Semester subjectSemester = findSemester(subjectToAdd.getSemester());
+            Semester subjectSemester = subjectToAdd.getSemester();
             if (subjectSemester != null) {
                 subjectSemester.addSubject(subjectToAdd);
                 subjects.add(subjectToAdd);
@@ -202,6 +207,21 @@ public class Study {
             }
         }
         return null;
+    }
+
+    //for Test purposes
+
+    /**
+     * Method only for testing and loading Data
+     * Loads a learningphase in subject and in Semester
+     * @param learningPhase
+     */
+    public void addLearningPhase(LearningPhase learningPhase){
+        learningPhase.getSubject().getSemester().addLearningPhaseHard(learningPhase);
+        learningPhase.getSubject().addLearningPhase(learningPhase);
+        if(learningPhase.getEndDate() == null){
+            currentLearningPhase = learningPhase;
+        }
     }
 
 }

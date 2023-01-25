@@ -107,4 +107,30 @@ public class Semester extends TimePeriod {
             weeks[currentWeekIndex].addLearningPhase(currentLearningPhase);
         }
     }
+
+    /**
+     * This Method is for test and loading purpos, it adds the current no matter wether the current Date is in this Semester
+     * @param learningPhase
+     */
+    public void addLearningPhaseHard(LearningPhase learningPhase){
+        for(Week week: weeks){
+            int comparisonResult = week.compareTo(learningPhase);
+            if(comparisonResult == 0 || comparisonResult == -1){//learning Phase is in that week
+                week.addLearningPhase(learningPhase);
+            }
+        }
+    }
+
+    /**
+     * Method for loading from Data Set
+     * loads the learningPhases of Subjects in to the Weeks they belong
+     */
+    public void loadLearningPhasesFromSubject(){
+        for(Subject subject: subjects){
+            LearningPhase[] learningPhases = subject.getLearningPhases().toArray(new LearningPhase[0]);
+            for(LearningPhase learningPhase: learningPhases){
+                addLearningPhaseHard(learningPhase);
+            }
+        }
+    }
 }

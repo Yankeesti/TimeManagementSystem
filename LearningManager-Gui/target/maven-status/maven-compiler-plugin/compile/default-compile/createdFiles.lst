@@ -1,6 +1,6 @@
+com/heinsberg/LearningManager/Gui/controller/FileResult.class
 com/heinsberg/LearningManager/Gui/treeItems/BaseTreeItem.class
 com/heinsberg/LearningManager/Gui/treeItems/SemesterTreeItem.class
-com/heinsberg/LearningManager/Gui/controller/LoadFileResult.class
 com/heinsberg/LearningManager/Gui/App.class
 com/heinsberg/LearningManager/Gui/StudyManager.class
 com/heinsberg/LearningManager/Gui/controller/componentController/SubjectInformationController.class

@@ -31,6 +31,22 @@ public abstract class TimePeriod extends Date {
     }
 
     /**
+     * Constructor for loading from json File
+     * Note: when endate == long minValue no enddate is set
+     *
+     * @param startDate - start date in ms after January 1, 1970, 00:00:00 GMT
+     * @param endDate - end date in ms January 1, 1970, 00:00:00 GMT
+     */
+    public TimePeriod(long startDate, long endDate){
+        setTime(startDate);
+        if(endDate != Long.MIN_VALUE)
+        {
+            this.endDate = new Date();
+            this.endDate.setTime(endDate);
+        }
+    }
+
+    /**
      * Compares a TimePeriod and a Date for ordering.
      *
      * @param anotherDate the date to compare
