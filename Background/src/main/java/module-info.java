@@ -5,4 +5,5 @@ module com.heinsberg.LearningManagerProjekt.Background {
     exports com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses;
     exports com.heinsberg.LearningManagerProjekt.BackGround.subject;
     exports com.heinsberg.LearningManagerProjekt.BackGround.dataHandler;
+    exports com.heinsberg.LearningManagerProjekt.BackGround.typeAdapters;
 }
