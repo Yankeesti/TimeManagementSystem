@@ -23,6 +23,17 @@ public class LearningPhase extends TimePeriod {
     }
 
     /**
+     * Constructor for loading from json File
+     * when endDate < 0 no enddate is set (learningPhase didnt endet yet)
+     *
+     * @param startDate - start date in ms after January 1, 1970, 00:00:00 GMT
+     * @param endDate - end date in ms January 1, 1970, 00:00:00 GMT
+     */
+    public LearningPhase(long startDate,long endDate){
+        super(startDate,endDate);
+    }
+
+    /**
      * Ends this learning phase and calculates the time spent learning in seconds.
      *
      * @return the time learned in seconds.
@@ -53,4 +64,8 @@ public class LearningPhase extends TimePeriod {
         }
     }
     public long getTimeLearned(){return timeLearned;}
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
 }

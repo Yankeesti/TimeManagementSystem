@@ -120,4 +120,17 @@ public class Semester extends TimePeriod {
             }
         }
     }
+
+    /**
+     * Method for loading from Data Set
+     * loads the learningPhases of Subjects in to the Weeks they belong
+     */
+    public void loadLearningPhasesFromSubject(){
+        for(Subject subject: subjects){
+            LearningPhase[] learningPhases = subject.getLearningPhases().toArray(new LearningPhase[0]);
+            for(LearningPhase learningPhase: learningPhases){
+                addLearningPhaseHard(learningPhase);
+            }
+        }
+    }
 }
