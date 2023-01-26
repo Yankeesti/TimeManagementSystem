@@ -22,12 +22,13 @@ public class SemesterSpinnerValueFactory extends SpinnerValueFactory.IntegerSpin
     public SemesterSpinnerValueFactory(Study study) {
         super(0,Integer.MAX_VALUE);
         this.study = study;
-        semesters = FXCollections.observableList(study.getSemesters());
+        semesters = study.getSemesters();
         updateBannedSelection();
         semesters.addListener(new ListChangeListener() {
             @Override
-            public void onChanged(Change change) {
+            public void onChanged(Change change) {//changes to be made when a new Semester was Added/ a Semester was deleted
                 updateBannedSelection();
+                setLowestPossibleValue();
             }
         });
     }
@@ -35,7 +36,7 @@ public class SemesterSpinnerValueFactory extends SpinnerValueFactory.IntegerSpin
     private void updateBannedSelection() {
         bannedSelection = new int[semesters.size()];
         for (int i = 0; i < bannedSelection.length; i++) {
-            bannedSelection[0] = semesters.get(i).getSemester();
+            bannedSelection[i] = semesters.get(i).getSemester();
         }
     }
 
@@ -46,11 +47,16 @@ public class SemesterSpinnerValueFactory extends SpinnerValueFactory.IntegerSpin
      */
     @Override
     public void decrement(int i) {
-        int newValue = getValue()-i;
-        if(newValue>0 && semesterPossible(newValue))
-            setValue(newValue);
-        else if(newValue > 1)
-            decrement(newValue);
+        int newValue = getValue()-1;
+        while(true){
+            if(semesterPossible(newValue)){
+                setValue(newValue);
+                break;
+            } else if (newValue <= 1) {
+                break;
+            }else
+                newValue--;
+        }
     }
 
     /**
@@ -59,10 +65,29 @@ public class SemesterSpinnerValueFactory extends SpinnerValueFactory.IntegerSpin
      */
     @Override
     public void increment(int i) {
-        int newValue = i+getValue();
-        if(semesterPossible(newValue)){
-            setValue(newValue);}
-        else {increment(newValue);}
+        int newValue = getValue()+1;
+        while (true){
+            if(semesterPossible(newValue)){
+                setValue(newValue);
+                break;
+            }else{
+                newValue++;
+            }
+        }
+    }
+
+    /**
+     * Sets the Value to the lowest possible choosable Value
+     */
+    public void setLowestPossibleValue(){
+        int i = 1;
+        while(true){
+            if(semesterPossible(i)){
+                setValue(i);
+                break;
+            }else
+                i++;
+        }
     }
 
     private boolean semesterPossible(int i) {

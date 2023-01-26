@@ -25,16 +25,20 @@
                         <Label text="Actions" />
                      </children>
                   </StackPane>
-                  <HBox prefHeight="60.0" prefWidth="399.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
+                  <HBox prefHeight="60.0" prefWidth="675.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
                      <children>
-                        <VBox prefHeight="60.0" prefWidth="145.0">
+                        <VBox prefHeight="60.0" prefWidth="85.0">
                            <children>
                               <StackPane prefHeight="27.0" prefWidth="100.0">
                                  <children>
                                     <Label text="Semester" />
                                  </children>
                               </StackPane>
-                              <Spinner fx:id="semesterChooserSpinner" editable="true" />
+                              <StackPane>
+                                 <children>
+                                    <Spinner fx:id="semesterChooserSpinner" prefHeight="26.0" prefWidth="65.0" />
+                                 </children>
+                              </StackPane>
                            </children>
                         </VBox>
                         <VBox layoutX="10.0" layoutY="10.0" prefHeight="60.0" prefWidth="200.0">

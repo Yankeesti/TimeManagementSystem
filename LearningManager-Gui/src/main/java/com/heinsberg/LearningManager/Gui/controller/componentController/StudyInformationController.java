@@ -94,8 +94,8 @@ public class StudyInformationController extends BaseInformationComponentControll
     }
 
     private void setUpSpinner() {
-        SpinnerValueFactory valueFactory = new SemesterSpinnerValueFactory(study);
-        valueFactory.setValue(1);
+        SemesterSpinnerValueFactory valueFactory = new SemesterSpinnerValueFactory(study);
+        valueFactory.setLowestPossibleValue();
         semesterChooserSpinner.setValueFactory(valueFactory);
     }
 }
