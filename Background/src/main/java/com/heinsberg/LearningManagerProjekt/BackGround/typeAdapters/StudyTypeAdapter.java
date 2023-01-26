@@ -9,6 +9,7 @@ import com.heinsberg.LearningManagerProjekt.BackGround.Study;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
 import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
+import javafx.collections.ObservableList;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -23,7 +24,7 @@ public class StudyTypeAdapter extends TypeAdapter<Study> {
         jsonWriter.name("study Name").value(study.getName());
         jsonWriter.name("semesters");
         jsonWriter.beginArray();
-        ArrayList<Semester> semesters = study.getSemesters();
+        ObservableList<Semester> semesters = study.getSemesters();
         for (Semester semester : semesters) {
             gson.create().toJson(semester, Semester.class, jsonWriter); //writes Semester
         }

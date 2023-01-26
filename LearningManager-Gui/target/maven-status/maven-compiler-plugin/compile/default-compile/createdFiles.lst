@@ -8,6 +8,7 @@ com/heinsberg/LearningManager/Gui/controller/services/FileManagerSevice.class
 com/heinsberg/LearningManager/Gui/controller/MainWindowController.class
 com/heinsberg/LearningManager/Gui/controller/componentController/StudyInformationController.class
 com/heinsberg/LearningManager/Gui/controller/componentController/BaseInformationComponentController.class
+com/heinsberg/LearningManager/Gui/treeItems/StudyTreeItem$1.class
 com/heinsberg/LearningManager/Gui/controller/BaseController.class
 com/heinsberg/LearningManager/Gui/treeItems/BaseTreeItem.class
 com/heinsberg/LearningManager/Gui/treeItems/SemesterTreeItem.class
