@@ -118,9 +118,8 @@ public class Study {
      *
      * @return an array of all semesters in this study.
      */
-    public Semester[] getSemesters() {
-        Semester[] outPut = semesters.toArray(new Semester[semesters.size()]);
-        return outPut;
+    public ArrayList<Semester> getSemesters() {
+        return semesters;
 
     }
 

@@ -23,7 +23,7 @@ public class StudyTypeAdapter extends TypeAdapter<Study> {
         jsonWriter.name("study Name").value(study.getName());
         jsonWriter.name("semesters");
         jsonWriter.beginArray();
-        Semester[] semesters = study.getSemesters();
+        ArrayList<Semester> semesters = study.getSemesters();
         for (Semester semester : semesters) {
             gson.create().toJson(semester, Semester.class, jsonWriter); //writes Semester
         }

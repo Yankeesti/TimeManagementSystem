@@ -1,5 +1,6 @@
 /Users/timheinsberg/Desktop/Programmieren/WorkSpace/LearningManager/LearningManager-Gui/src/main/java/com/heinsberg/LearningManager/Gui/controller/LoadWindowController.java
 /Users/timheinsberg/Desktop/Programmieren/WorkSpace/LearningManager/LearningManager-Gui/src/main/java/com/heinsberg/LearningManager/Gui/controller/componentController/SemesterInformationController.java
+/Users/timheinsberg/Desktop/Programmieren/WorkSpace/LearningManager/LearningManager-Gui/src/main/java/com/heinsberg/LearningManager/Gui/controller/componentController/studyInformationControlls/SemesterSpinnerValueFactory.java
 /Users/timheinsberg/Desktop/Programmieren/WorkSpace/LearningManager/LearningManager-Gui/src/main/java/com/heinsberg/LearningManager/Gui/view/ViewFactory.java
 /Users/timheinsberg/Desktop/Programmieren/WorkSpace/LearningManager/LearningManager-Gui/src/main/java/com/heinsberg/LearningManager/Gui/controller/FileResult.java
 /Users/timheinsberg/Desktop/Programmieren/WorkSpace/LearningManager/LearningManager-Gui/src/main/java/com/heinsberg/LearningManager/Gui/controller/componentController/BaseInformationComponentController.java

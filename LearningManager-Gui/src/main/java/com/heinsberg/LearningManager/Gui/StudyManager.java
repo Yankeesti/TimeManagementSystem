@@ -99,4 +99,8 @@ public class StudyManager {
             return FileResult.UNEXPECTED_ERROR;
         }
     }
+
+    public void addNewSemester(Semester semester) {
+        study.addSemester(semester);
+    }
 }

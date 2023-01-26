@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -126,11 +127,11 @@ public class StudyTest {
         underTest.addSemester(new Semester(5, new Date(123, 9, 25), new Date(124, 2, 9)));
         underTest.addSemester(new Semester(3, new Date(122, 9, 19), new Date(123, 2, 3)));
         //when
-        Semester[] outcome = underTest.getSemesters();
+        ArrayList<Semester> outcome = underTest.getSemesters();
         //then
-        Assertions.assertTrue(outcome[0].getSemester() == 3);
-        Assertions.assertTrue(outcome[1].getSemester() == 4);
-        Assertions.assertTrue(outcome[2].getSemester() == 5);
+        Assertions.assertTrue(outcome.get(0).getSemester() == 3);
+        Assertions.assertTrue(outcome.get(1).getSemester() == 4);
+        Assertions.assertTrue(outcome.get(2).getSemester() == 5);
     }
 
     //Life cycle
