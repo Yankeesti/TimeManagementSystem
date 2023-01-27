@@ -31,6 +31,22 @@ public abstract class TimePeriod extends Date {
     }
 
     /**
+     * Constructor for loading from json File
+     * Note: when endate == long minValue no enddate is set
+     *
+     * @param startDate - start date in ms after January 1, 1970, 00:00:00 GMT
+     * @param endDate - end date in ms January 1, 1970, 00:00:00 GMT
+     */
+    public TimePeriod(long startDate, long endDate){
+        setTime(startDate);
+        if(endDate != Long.MIN_VALUE)
+        {
+            this.endDate = new Date();
+            this.endDate.setTime(endDate);
+        }
+    }
+
+    /**
      * Compares a TimePeriod and a Date for ordering.
      *
      * @param anotherDate the date to compare
@@ -51,10 +67,11 @@ public abstract class TimePeriod extends Date {
      * Compares two TimePeriods for ordering
      *
      * @param anotherTimePeriod - TimePeriod to compare
-     * @return the value 0 if the argument TimePeriod is in the Time Period; -1 if the Time PeriodArgument start is in this time Period but the ending is after this Time Period; -2 if the Time Period Argument is after this Time Period; 1 if the Time Period ends is in this time Period but the start is before this Time Period; 2 if the Time Period Argument is before this Time Period
+     * @return the value 0 if the argument TimePeriod is in the Time Period also if anotherTimePeriod is not ended yet but the start is in this TimePeriod; -1 if the Time PeriodArgument start is in this time Period but the ending is after this Time Period; -2 if the Time Period Argument is after this Time Period; 1 if the Time Period ends is in this time Period but the start is before this Time Period; 2 if the Time Period Argument is before this Time Period
      */
     public int compareTo(TimePeriod anotherTimePeriod) {
-        if (super.compareTo(anotherTimePeriod) <= 0 && endDate.compareTo(anotherTimePeriod.getEndDate()) >= 0)
+        if ((super.compareTo(anotherTimePeriod) <= 0 && anotherTimePeriod.getEndDate()== null)||
+            (super.compareTo(anotherTimePeriod) <= 0 && endDate.compareTo(anotherTimePeriod.getEndDate()) >= 0))
             return 0;
 
         if (super.compareTo(anotherTimePeriod) <= 0 && endDate.compareTo(anotherTimePeriod) >= 0)

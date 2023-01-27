@@ -1,14 +1,16 @@
 package com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses;
 
 import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 
-public class Semester extends TimePeriod {
+public class Semester extends TimePeriod{
     int semester;
-    ArrayList<Subject> subjects;
+    ObservableList<Subject> subjects;
     Week weeks[];
     private int currentWeekIndex;//current Week index when this Semester does not include the akt Date = -1
 
@@ -29,22 +31,10 @@ public class Semester extends TimePeriod {
             startMonday.setDate(startMonday.getDate() + 7);
         }
         currentWeekIndex = 0;
-        subjects = new ArrayList<Subject>();
+        subjects = FXCollections.observableArrayList();;
     }
 
     //Control Methods
-
-    /**
-     * Starts a new learning phase for the given subject
-     * Note: The study should control that this semester is the current semester
-     *
-     * @param subject - The subject for which to start a learning phase
-     * @return The started learning phase
-     */
-    public LearningPhase startLearningPhase(Subject subject) {
-        upDateWeek();
-        return weeks[currentWeekIndex].startLearningPhase(subject);
-    }
 
     //Getter and Setter
 
@@ -106,7 +96,43 @@ public class Semester extends TimePeriod {
      *
      * @return Array of subjects
      */
-    public Subject[] getSubjects() {
-        return subjects.toArray((new Subject[subjects.size()]));
+    public ObservableList<Subject> getSubjects() {
+        return subjects;
+    }
+    public boolean includesSubject(Subject subject){
+        return subjects.contains(subject);
+    }
+
+    public void addLearningPhase(LearningPhase currentLearningPhase) {
+        upDateWeek();
+        if(weeks[currentWeekIndex].compareTo(currentLearningPhase) == 0){//start of learning Phase is in Week
+            weeks[currentWeekIndex].addLearningPhase(currentLearningPhase);
+        }
+    }
+
+    /**
+     * This Method is for test and loading purpos, it adds the current no matter wether the current Date is in this Semester
+     * @param learningPhase
+     */
+    public void addLearningPhaseHard(LearningPhase learningPhase){
+        for(Week week: weeks){
+            int comparisonResult = week.compareTo(learningPhase);
+            if(comparisonResult == 0 || comparisonResult == -1){//learning Phase is in that week
+                week.addLearningPhase(learningPhase);
+            }
+        }
+    }
+
+    /**
+     * Method for loading from Data Set
+     * loads the learningPhases of Subjects in to the Weeks they belong
+     */
+    public void loadLearningPhasesFromSubject(){
+        for(Subject subject: subjects){
+            LearningPhase[] learningPhases = subject.getLearningPhases().toArray(new LearningPhase[0]);
+            for(LearningPhase learningPhase: learningPhases){
+                addLearningPhaseHard(learningPhase);
+            }
+        }
     }
 }

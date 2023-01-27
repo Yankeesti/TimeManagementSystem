@@ -9,6 +9,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.io.File;
+
 public class LoadWindowController extends BaseController {
 
     @FXML
@@ -41,6 +43,16 @@ public class LoadWindowController extends BaseController {
         if(!textCleared){
         studyNameField.clear();
         textCleared = true;}
+    }
+
+    @FXML
+    void loadFromFileAction(){
+        File file = viewFactory.showFileOpener((Stage)studyNameField.getScene().getWindow(),new String[][]{{"JSon File", "*.json"}});
+        if(studyManager.studyFromJson(file) == FileResult.SUCCESS)//succesfull loaded
+        {
+            viewFactory.showMainWindow();
+            closeStage();
+        }
     }
 
     private void closeStage(){

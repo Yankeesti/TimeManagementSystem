@@ -1,8 +1,13 @@
 package com.heinsberg.LearningManagerProjekt.BackGround.subject;
 
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Week;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -13,10 +18,13 @@ import java.util.ArrayList;
 public class Subject {
     private double finalGrade;
     private int ectsPoints;
-    private int weekGoal;//learning goal per week in Minutes
+
+
+
+    private int weekGoal; //learning goal per week in Minutes
     private String subjectName;
     private ArrayList<LearningPhase> learningPhases;
-    private int semester;
+    private Semester semester;
     private Week currenWeek;
 
     /**
@@ -27,7 +35,7 @@ public class Subject {
      * @param ectsPoints  - The number of ECTS points for this subject.
      */
 
-    public Subject(String subjectName, int semester, int ectsPoints) {
+    public Subject(String subjectName, Semester semester, int ectsPoints) {
         learningPhases = new ArrayList<LearningPhase>();
         this.subjectName = subjectName;
         this.semester = semester;
@@ -55,12 +63,46 @@ public class Subject {
         return subjectName;
     }
 
+    public void setWeekGoal(int weekGoal) {
+        this.weekGoal = weekGoal;
+    }
+
     /**
      * Returns the semester in which this subject is taken.
      *
      * @return The semester in which this subject is taken.
      */
-    public int getSemester() {
+    public Semester getSemester() {
         return semester;
+    }
+
+    public double getFinalGrade() {
+        return finalGrade;
+    }
+
+    public int getEctsPoints() {
+        return ectsPoints;
+    }
+
+    public int getWeekGoal() {
+        return weekGoal;
+    }
+
+    public ArrayList<LearningPhase> getLearningPhases() {
+        return learningPhases;
+    }
+
+    public Week getCurrenWeek() {
+        return currenWeek;
+    }
+
+    public LearningPhase startLearningPhase() {
+        LearningPhase learningPhase = new LearningPhase(this);
+        return learningPhase;
+    }
+
+
+    public void setSemester(Semester semester) {
+        this.semester = semester;
     }
 }

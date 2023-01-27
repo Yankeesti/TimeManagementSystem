@@ -69,4 +69,7 @@ public class Week extends TimePeriod {
     }
 
 
+    public void addLearningPhase(LearningPhase learningPhase) {
+        learningPhases.add(learningPhase);
+    }
 }

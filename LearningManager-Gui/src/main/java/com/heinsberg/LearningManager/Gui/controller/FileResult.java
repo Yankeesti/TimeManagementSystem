@@ -1,6 +1,7 @@
 package com.heinsberg.LearningManager.Gui.controller;
 
-public enum LoadFileResult {
+public enum FileResult {
     SUCCESS,
-    FAILED;
+    FILE_NOT_FOUND,
+    UNEXPECTED_ERROR;
 }

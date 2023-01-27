@@ -16,5 +16,6 @@
          </font>
       </Label>
       <Label fx:id="errorLabel" layoutX="186.0" layoutY="190.0" prefHeight="17.0" prefWidth="0.0" />
+      <Button layoutX="169.0" layoutY="178.0" mnemonicParsing="false" onAction="#loadFromFileAction" text="Load from File" />
    </children>
 </AnchorPane>

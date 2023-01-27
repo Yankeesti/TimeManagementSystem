@@ -5,9 +5,12 @@ import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.TimePeriod;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Week;
 import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * The Study class represents a study program, containing information about the semesters, subjects, and learning phases of the program.
@@ -16,16 +19,16 @@ import java.util.Date;
 public class Study {
     private String studyName;
 
-    private ArrayList<Semester> semesters;//Semesters that are ended
-    private ArrayList<Subject> subjects;
+    private ObservableList<Semester> semesters;//Semesters that are ended
+    private ObservableList<Subject> subjects;
     private LearningPhase currentLearningPhase;
 
     private Semester currentSemester; //stores the current Semester
 
     public Study(String studyName) {
         this.studyName = studyName;
-        subjects = new ArrayList<Subject>();
-        semesters = new ArrayList<Semester>();
+        subjects = FXCollections.observableArrayList();
+        semesters = FXCollections.observableArrayList();
     }
 
     //Methodes to Control learningPhase
@@ -35,16 +38,18 @@ public class Study {
      * and stores it in currentLearningPhase
      *
      * @param subject - Subject to start Learning
-     * @return 0 if a Learning Phase has started 1 when there is allready a started learningPhase and -1 when there is no Semester that includes the current date
+     * @return 0 if a Learning Phase has started 1 when there is allready a started learningPhase -1 when there is no Semester that includes the current date and -2 if the current Semester doesn't include subject
      */
     public int startLearningPhase(Subject subject) {
         if (currentLearningPhase != null)
             return 1;
         if (!upDateSemester())
             return -1;
+        if(!currentSemester.includesSubject(subject))
+            return -2;
 
-        currentLearningPhase = currentSemester.startLearningPhase(subject);
-        subject.addLearningPhase(currentLearningPhase);
+        currentLearningPhase = subject.startLearningPhase();
+        currentSemester.addLearningPhase(currentLearningPhase);
         return 0;
     }
 
@@ -67,22 +72,24 @@ public class Study {
      * adds a new Semester to the Study
      *
      * @param semesterToAdd - Semester to be added
-     * @return true if Semester was added successfully, false if parts of this Semester are already included in another Semester or semesterValue is already taken
+     * @return true if Semester was added successfully, false if parts of this Semester are already included in another Semester or Semester Number is already taken
      */
-    public boolean addSemester(Semester semesterToAdd) {
+    public AddSemesterResult addSemester(Semester semesterToAdd) {
 
-        //check if ther is already a Semester with the Same Dates in it
+        //check if there is already a Semester with the Same Dates in it
         for (int i = 0; i < semesters.size(); i++) {
             if (semesters.get(i).getSemester() == semesterToAdd.getSemester())
-                return false;
+                return AddSemesterResult.SEMESTER_NUMBER_ALREADY_EXISTENT;
             int compared = semesters.get(i).compareTo(semesterToAdd);
             if (compared != 2 && compared != -2) {//semester is in a Semester that already exists
-                return false;
+                return AddSemesterResult.SEMESTER_IN_OTHER_SEMESTER;
             }
         }
         semesters.add(semesterToAdd);
         semesters.sort((Semester s1, Semester s2) -> s1.getSemester() - s2.getSemester());
-        return true;
+        //Add subjects of semester to subjects (used when loading from json)
+        subjects.addAll(semesterToAdd.getSubjects());
+        return AddSemesterResult.SUCCESS;
     }
 
     /**
@@ -91,17 +98,17 @@ public class Study {
      * @param subjectToAdd - subject to be added
      * @return true if Subject was added, false if not
      */
-    public boolean addSubject(Subject subjectToAdd) {
+    public AddSubjectResult addSubject(Subject subjectToAdd) {
         if (!subjectAllreadyExistend(subjectToAdd)) {
-            Semester subjectSemester = findSemester(subjectToAdd.getSemester());
+            Semester subjectSemester = subjectToAdd.getSemester();
             if (subjectSemester != null) {
                 subjectSemester.addSubject(subjectToAdd);
                 subjects.add(subjectToAdd);
-                return true;
+                return AddSubjectResult.SUCCESS;
             }
-            return false;
+            return AddSubjectResult.SUBJECT_IS_NULL;
         }
-        return false;
+        return AddSubjectResult.SUBJECT_ALLREADY_EXISTEND;
     }
 
     //Get Mehtodes
@@ -111,9 +118,8 @@ public class Study {
      *
      * @return an array of all semesters in this study.
      */
-    public Semester[] getSemesters() {
-        Semester[] outPut = semesters.toArray(new Semester[semesters.size()]);
-        return outPut;
+    public ObservableList<Semester> getSemesters() {
+        return semesters;
 
     }
 
@@ -200,6 +206,21 @@ public class Study {
             }
         }
         return null;
+    }
+
+    //for Test purposes
+
+    /**
+     * Method only for testing and loading Data
+     * Loads a learningphase in subject and in Semester
+     * @param learningPhase
+     */
+    public void addLearningPhase(LearningPhase learningPhase){
+        learningPhase.getSubject().getSemester().addLearningPhaseHard(learningPhase);
+        learningPhase.getSubject().addLearningPhase(learningPhase);
+        if(learningPhase.getEndDate() == null){
+            currentLearningPhase = learningPhase;
+        }
     }
 
 }
