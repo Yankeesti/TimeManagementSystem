@@ -20,6 +20,9 @@ public class SemesterTreeItem<String> extends BaseTreeItem<String> {
         setExpanded(true);
     }
 
+    /**
+     * Sets up the Subject TreeView and adds a Listener to the Subject List
+     */
     private void setUpSubjects() {
         subjects = semester.getSubjects();
         for (Subject subject : subjects) {
@@ -43,6 +46,11 @@ public class SemesterTreeItem<String> extends BaseTreeItem<String> {
         });
     }
 
+    /**
+     * Adds subject to Tree View
+     * gets called when changes were detected in the Subjects List
+     * @param subject
+     */
     private void addSubjectTreeItem(Subject subject) {
         SubjectTreeItem newTreeItem = new SubjectTreeItem(subject);
         getChildren().add(newTreeItem);
