@@ -88,9 +88,7 @@ public class Study {
         semesters.add(semesterToAdd);
         semesters.sort((Semester s1, Semester s2) -> s1.getSemester() - s2.getSemester());
         //Add subjects of semester to subjects (used when loading from json)
-        for(Semester semester: semesters){
-            subjects.addAll(List.of(semester.getSubjects()));
-        }
+        subjects.addAll(semesterToAdd.getSubjects());
         return AddSemesterResult.SUCCESS;
     }
 
@@ -100,17 +98,17 @@ public class Study {
      * @param subjectToAdd - subject to be added
      * @return true if Subject was added, false if not
      */
-    public boolean addSubject(Subject subjectToAdd) {
+    public AddSubjectResult addSubject(Subject subjectToAdd) {
         if (!subjectAllreadyExistend(subjectToAdd)) {
             Semester subjectSemester = subjectToAdd.getSemester();
             if (subjectSemester != null) {
                 subjectSemester.addSubject(subjectToAdd);
                 subjects.add(subjectToAdd);
-                return true;
+                return AddSubjectResult.SUCCESS;
             }
-            return false;
+            return AddSubjectResult.SUBJECT_IS_NULL;
         }
-        return false;
+        return AddSubjectResult.SUBJECT_ALLREADY_EXISTEND;
     }
 
     //Get Mehtodes

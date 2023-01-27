@@ -7,6 +7,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
 import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
+import javafx.collections.ObservableList;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -21,7 +22,7 @@ public class SemesterTypeAdapter extends TypeAdapter<Semester> {
         jsonWriter.name("semester").value(semester.getSemester());
         jsonWriter.name("start").value(semester.getTime());
         jsonWriter.name("end").value(semester.getEndDate().getTime());
-        Subject[] subjects = semester.getSubjects();
+        ObservableList<Subject> subjects = semester.getSubjects();
         jsonWriter.name("subjects");
         jsonWriter.beginArray();
         for (Subject subject : subjects) {

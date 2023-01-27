@@ -115,4 +115,7 @@ public class StudyManager {
         System.out.println(result);
     }
 
+    public void addNewSubject(Subject subject) {
+        System.out.println(study.addSubject(subject));
+    }
 }

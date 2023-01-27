@@ -1,6 +1,8 @@
 package com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses;
 
 import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -8,7 +10,7 @@ import java.util.Date;
 
 public class Semester extends TimePeriod{
     int semester;
-    ArrayList<Subject> subjects;
+    ObservableList<Subject> subjects;
     Week weeks[];
     private int currentWeekIndex;//current Week index when this Semester does not include the akt Date = -1
 
@@ -29,7 +31,7 @@ public class Semester extends TimePeriod{
             startMonday.setDate(startMonday.getDate() + 7);
         }
         currentWeekIndex = 0;
-        subjects = new ArrayList<Subject>();
+        subjects = FXCollections.observableArrayList();;
     }
 
     //Control Methods
@@ -94,8 +96,8 @@ public class Semester extends TimePeriod{
      *
      * @return Array of subjects
      */
-    public Subject[] getSubjects() {
-        return subjects.toArray((new Subject[subjects.size()]));
+    public ObservableList<Subject> getSubjects() {
+        return subjects;
     }
     public boolean includesSubject(Subject subject){
         return subjects.contains(subject);
