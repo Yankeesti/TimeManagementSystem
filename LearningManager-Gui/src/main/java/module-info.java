@@ -3,6 +3,7 @@ module com.heinsberg.LearningManager.Gui {
     requires javafx.fxml;
     requires com.heinsberg.LearningManagerProjekt.Background;
     requires com.google.gson;
+    requires java.sql;
 
 
     opens com.heinsberg.LearningManager.Gui to javafx.fxml;

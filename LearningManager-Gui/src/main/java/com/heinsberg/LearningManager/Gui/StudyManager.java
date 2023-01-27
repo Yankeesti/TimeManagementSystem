@@ -5,6 +5,7 @@ import com.heinsberg.LearningManager.Gui.controller.FileResult;
 import com.heinsberg.LearningManager.Gui.treeItems.SemesterTreeItem;
 import com.heinsberg.LearningManager.Gui.treeItems.StudyTreeItem;
 import com.heinsberg.LearningManager.Gui.treeItems.SubjectTreeItem;
+import com.heinsberg.LearningManagerProjekt.BackGround.AddSemesterResult;
 import com.heinsberg.LearningManagerProjekt.BackGround.Study;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
 import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
@@ -98,5 +99,10 @@ public class StudyManager {
         } catch (IOException e) {
             return FileResult.UNEXPECTED_ERROR;
         }
+    }
+
+    public void addNewSemester(Semester semester) {
+        AddSemesterResult result = study.addSemester(semester);
+        System.out.println(result);
     }
 }

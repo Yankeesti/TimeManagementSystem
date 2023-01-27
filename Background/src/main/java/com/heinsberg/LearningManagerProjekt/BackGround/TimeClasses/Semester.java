@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 
-public class Semester extends TimePeriod {
+public class Semester extends TimePeriod{
     int semester;
     ArrayList<Subject> subjects;
     Week weeks[];
