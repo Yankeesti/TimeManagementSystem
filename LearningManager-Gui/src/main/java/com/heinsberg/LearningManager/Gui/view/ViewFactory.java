@@ -5,16 +5,26 @@ import com.heinsberg.LearningManager.Gui.StudyManager;
 import com.heinsberg.LearningManager.Gui.controller.BaseController;
 import com.heinsberg.LearningManager.Gui.controller.LoadWindowController;
 import com.heinsberg.LearningManager.Gui.controller.MainWindowController;
+import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.SubjectChooserController;
 import com.heinsberg.LearningManagerProjekt.BackGround.Study;
+import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Controls the Windows
@@ -23,22 +33,32 @@ public class ViewFactory {
     private String fxmlFolder = "fxmlWindows";
     private StudyManager studyManager;
 
+
+    private DialogViewFactory dialogViewFactory;
+
     public ViewFactory(StudyManager studyManager) {
         this.studyManager = studyManager;
+        dialogViewFactory = new DialogViewFactory(studyManager,this);
     }
 
 
     public void showLoadWindow() {
         System.out.println("show Load window Called");
-        BaseController controller = new LoadWindowController(studyManager, this, "loadWindow");
+        BaseController controller = new LoadWindowController(studyManager, this, fxmlFolder + "/" + "loadWindow");
         initializeStage(controller);
     }
 
     public void showMainWindow() {
         System.out.println("show Main Window Called");
-        MainWindowController controller = new MainWindowController(studyManager, this, "MainWindow");
+        MainWindowController controller = new MainWindowController(studyManager, this, fxmlFolder + "/" + "MainWindow");
         initializeStage(controller);
     }
+
+    public DialogViewFactory getDialogViewFactory() {
+        return dialogViewFactory;
+    }
+
+
 
     /**
      * Method to show a file open dialog and allow the user to open a file.
@@ -80,7 +100,7 @@ public class ViewFactory {
     }
 
     private void initializeStage(BaseController controller) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlFolder + "/" + controller.getFxmlName() + ".fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(controller.getFxmlName() + ".fxml"));
         fxmlLoader.setController(controller);
         Parent parent;
         try {
@@ -94,6 +114,10 @@ public class ViewFactory {
         stage.setScene(scene);
         stage.show();
     }
+
+
+
+
 
 
 }

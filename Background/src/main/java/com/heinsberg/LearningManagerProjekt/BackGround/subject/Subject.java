@@ -6,6 +6,7 @@ import com.google.gson.stream.JsonWriter;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Week;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase;
+import javafx.beans.property.SimpleStringProperty;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class Subject {
 
     private int weekGoal; //learning goal per week in Minutes
     private String subjectName;
+    private SimpleStringProperty subjectNameProperty;
     private ArrayList<LearningPhase> learningPhases;
     private Semester semester;
     private Week currenWeek;
@@ -38,6 +40,7 @@ public class Subject {
     public Subject(String subjectName, Semester semester, int ectsPoints) {
         learningPhases = new ArrayList<LearningPhase>();
         this.subjectName = subjectName;
+        this.subjectNameProperty = new SimpleStringProperty(subjectName);
         this.semester = semester;
         this.ectsPoints = ectsPoints;
     }
@@ -104,5 +107,10 @@ public class Subject {
 
     public void setSemester(Semester semester) {
         this.semester = semester;
+    }
+
+    @Override
+    public String toString(){
+        return subjectName;
     }
 }
