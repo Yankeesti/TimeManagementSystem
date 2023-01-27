@@ -70,7 +70,9 @@ public class MainWindowController extends BaseController implements Initializabl
 
     @FXML
     void endLearningPhaseAction() {
-
+        System.out.println(studyManager.endLearningPhase());
+        startLearningPhaseButton.setVisible(true);
+        endLearrningPhaseButton.setVisible(false);
     }
 
 

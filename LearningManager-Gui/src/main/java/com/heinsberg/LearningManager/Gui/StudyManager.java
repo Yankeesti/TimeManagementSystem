@@ -124,4 +124,12 @@ public class StudyManager {
         LearningPhaseActionResult result = study.startLearningPhase(subjectToStartLearningPhase);
         return result;
     }
+
+    /**
+     * Ends the current LearningPhase
+     * @return the Time Learned when there was no current LearningPhase a number lower than 0
+     */
+    public long endLearningPhase() {
+        return study.finishLearningPhase();
+    }
 }
