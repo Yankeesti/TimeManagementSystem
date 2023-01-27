@@ -6,6 +6,7 @@ import com.heinsberg.LearningManager.Gui.treeItems.SemesterTreeItem;
 import com.heinsberg.LearningManager.Gui.treeItems.StudyTreeItem;
 import com.heinsberg.LearningManager.Gui.treeItems.SubjectTreeItem;
 import com.heinsberg.LearningManagerProjekt.BackGround.AddSemesterResult;
+import com.heinsberg.LearningManagerProjekt.BackGround.LearningPhaseActionResult;
 import com.heinsberg.LearningManagerProjekt.BackGround.Study;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
 import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
@@ -117,5 +118,10 @@ public class StudyManager {
 
     public void addNewSubject(Subject subject) {
         System.out.println(study.addSubject(subject));
+    }
+
+    public LearningPhaseActionResult startLearningPhase(Subject subjectToStartLearningPhase) {
+        LearningPhaseActionResult result = study.startLearningPhase(subjectToStartLearningPhase);
+        return result;
     }
 }

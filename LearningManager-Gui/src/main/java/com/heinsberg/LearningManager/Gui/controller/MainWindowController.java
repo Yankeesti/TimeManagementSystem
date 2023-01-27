@@ -5,13 +5,10 @@ import com.heinsberg.LearningManager.Gui.controller.componentController.BaseInfo
 import com.heinsberg.LearningManager.Gui.controller.componentController.SemesterInformationController;
 import com.heinsberg.LearningManager.Gui.controller.componentController.StudyInformationController;
 import com.heinsberg.LearningManager.Gui.controller.componentController.SubjectInformationController;
-import com.heinsberg.LearningManager.Gui.controller.services.FileManagerSevice;
 import com.heinsberg.LearningManager.Gui.treeItems.BaseTreeItem;
-import com.heinsberg.LearningManager.Gui.treeItems.SemesterTreeItem;
-import com.heinsberg.LearningManager.Gui.treeItems.StudyTreeItem;
-import com.heinsberg.LearningManager.Gui.treeItems.SubjectTreeItem;
 import com.heinsberg.LearningManager.Gui.view.ViewFactory;
 
+import com.heinsberg.LearningManagerProjekt.BackGround.LearningPhaseActionResult;
 import com.heinsberg.LearningManagerProjekt.BackGround.Study;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
 import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
@@ -20,16 +17,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -41,7 +35,7 @@ public class MainWindowController extends BaseController implements Initializabl
     private MenuBar menueBar;
 
     @FXML
-    private Button startLearningPhaseButton;
+    private Button startLearningPhaseButton, endLearrningPhaseButton;
 
     @FXML
     private TreeView<String> treeView;
@@ -61,14 +55,29 @@ public class MainWindowController extends BaseController implements Initializabl
 
     @FXML
     void startLearningPhaseAction(ActionEvent event) {
-        System.out.println("startLearningPhase");
+        Subject learningPhaseSubject = viewFactory.getDialogViewFactory().showSubjectChooser(studyManager.getStudy().getCurrentSemester().getSubjects());//The selected subjects for wich will be learned
+        if (learningPhaseSubject != null) {
+            LearningPhaseActionResult result = studyManager.startLearningPhase(learningPhaseSubject);
+            if (result == LearningPhaseActionResult.SUCCESS) {//LearningPhase was started
+                startLearningPhaseButton.setVisible(false);
+                endLearrningPhaseButton.setVisible(true);
+            }
+            System.out.println(result);
+        }else{
+            System.out.println("No Subject selected");
+        }
+    }
+
+    @FXML
+    void endLearningPhaseAction() {
+
     }
 
 
     @FXML
     void saveAsAction() {
         String[][] filter = {{"Json File", "*.json"}};
-        File file = viewFactory.showFileSaver((Stage) menueBar.getScene().getWindow(), filter,studyManager.getStudy().getName()+" Study Progress");
+        File file = viewFactory.showFileSaver((Stage) menueBar.getScene().getWindow(), filter, studyManager.getStudy().getName() + " Study Progress");
         System.out.println(studyManager.studyToJson(file));
     }
 
@@ -77,11 +86,11 @@ public class MainWindowController extends BaseController implements Initializabl
      * when there is no current File selected saveAsAction Method is called
      */
     @FXML
-    void saveAction(){
+    void saveAction() {
         File currentFile = studyManager.getCurrentFile();
-        if(currentFile == null){//there is now current file --> save as new File
+        if (currentFile == null) {//there is now current file --> save as new File
             saveAsAction();
-        }else{
+        } else {
             System.out.println(studyManager.studyToJson(currentFile));
         }
     }

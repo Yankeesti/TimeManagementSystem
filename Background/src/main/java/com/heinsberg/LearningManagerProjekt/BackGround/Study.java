@@ -33,6 +33,11 @@ public class Study {
 
     //Methodes to Control learningPhase
 
+    public Semester getCurrentSemester() {
+        upDateSemester();
+        return currentSemester;
+    }
+
     /**
      * starts a Learning Phase for the Subject subject
      * and stores it in currentLearningPhase
@@ -40,17 +45,17 @@ public class Study {
      * @param subject - Subject to start Learning
      * @return 0 if a Learning Phase has started 1 when there is allready a started learningPhase -1 when there is no Semester that includes the current date and -2 if the current Semester doesn't include subject
      */
-    public int startLearningPhase(Subject subject) {
+    public LearningPhaseActionResult startLearningPhase(Subject subject) {
         if (currentLearningPhase != null)
-            return 1;
+            return LearningPhaseActionResult.LEARNINGPHASE_ALREADY_STARTED;
         if (!upDateSemester())
-            return -1;
+            return LearningPhaseActionResult.NO_CURRENT_SEMESTER;
         if(!currentSemester.includesSubject(subject))
-            return -2;
+            return LearningPhaseActionResult.CURRENT_SEMESTER_DOSENT_INCLUEDE_SUBJECT;
 
         currentLearningPhase = subject.startLearningPhase();
         currentSemester.addLearningPhase(currentLearningPhase);
-        return 0;
+        return LearningPhaseActionResult.SUCCESS;
     }
 
     /**
@@ -185,7 +190,7 @@ public class Study {
      */
     private boolean subjectAllreadyExistend(Subject subject) {
         for (int i = 0; i < subjects.size(); i++) {
-            if (subjects.get(i).getSubjectName() == subject.getSubjectName() && subjects.get(i).getSemester() == subject.getSemester()) {
+            if (subjects.get(i).getSubjectName().equals(subject.getSubjectName()) && subjects.get(i).getSemester() == subject.getSemester()) {
                 //subject is already existends
                 return true;
             }

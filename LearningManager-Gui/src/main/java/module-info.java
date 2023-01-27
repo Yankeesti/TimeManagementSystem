@@ -9,5 +9,6 @@ module com.heinsberg.LearningManager.Gui {
     opens com.heinsberg.LearningManager.Gui to javafx.fxml;
     opens com.heinsberg.LearningManager.Gui.controller to javafx.fxml;
     opens com.heinsberg.LearningManager.Gui.controller.componentController to javafx.fxml;
+    opens com.heinsberg.LearningManager.Gui.view.DialogPaneControllers to javafx.fxml;
     exports com.heinsberg.LearningManager.Gui;
 }

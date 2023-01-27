@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.layout.StackPane?>
+
+<DialogPane maxHeight="150.0" maxWidth="400.0" minHeight="150.0" minWidth="400.0" prefHeight="148.0" prefWidth="288.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <graphic>
+      <StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="400.0">
+         <children>
+            <ChoiceBox fx:id="subjectChooser" prefWidth="150.0" />
+         </children>
+      </StackPane>
+   </graphic>
+   <buttonTypes>
+      <ButtonType fx:constant="CLOSE" />
+      <ButtonType fx:constant="OK" />
+   </buttonTypes>
+</DialogPane>
