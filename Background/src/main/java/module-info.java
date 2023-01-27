@@ -1,5 +1,6 @@
 module com.heinsberg.LearningManagerProjekt.Background {
     requires com.google.gson;
+    requires javafx.controls;
 
     exports com.heinsberg.LearningManagerProjekt.BackGround;
     exports com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses;

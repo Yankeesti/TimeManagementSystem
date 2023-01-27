@@ -5,6 +5,8 @@ import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.TimePeriod;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Week;
 import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,16 +19,16 @@ import java.util.List;
 public class Study {
     private String studyName;
 
-    private ArrayList<Semester> semesters;//Semesters that are ended
-    private ArrayList<Subject> subjects;
+    private ObservableList<Semester> semesters;//Semesters that are ended
+    private ObservableList<Subject> subjects;
     private LearningPhase currentLearningPhase;
 
     private Semester currentSemester; //stores the current Semester
 
     public Study(String studyName) {
         this.studyName = studyName;
-        subjects = new ArrayList<Subject>();
-        semesters = new ArrayList<Semester>();
+        subjects = FXCollections.observableArrayList();
+        semesters = FXCollections.observableArrayList();
     }
 
     //Methodes to Control learningPhase
@@ -70,17 +72,17 @@ public class Study {
      * adds a new Semester to the Study
      *
      * @param semesterToAdd - Semester to be added
-     * @return true if Semester was added successfully, false if parts of this Semester are already included in another Semester or semesterValue is already taken
+     * @return true if Semester was added successfully, false if parts of this Semester are already included in another Semester or Semester Number is already taken
      */
-    public boolean addSemester(Semester semesterToAdd) {
+    public AddSemesterResult addSemester(Semester semesterToAdd) {
 
-        //check if ther is already a Semester with the Same Dates in it
+        //check if there is already a Semester with the Same Dates in it
         for (int i = 0; i < semesters.size(); i++) {
             if (semesters.get(i).getSemester() == semesterToAdd.getSemester())
-                return false;
+                return AddSemesterResult.SEMESTER_NUMBER_ALREADY_EXISTENT;
             int compared = semesters.get(i).compareTo(semesterToAdd);
             if (compared != 2 && compared != -2) {//semester is in a Semester that already exists
-                return false;
+                return AddSemesterResult.SEMESTER_IN_OTHER_SEMESTER;
             }
         }
         semesters.add(semesterToAdd);
@@ -89,7 +91,7 @@ public class Study {
         for(Semester semester: semesters){
             subjects.addAll(List.of(semester.getSubjects()));
         }
-        return true;
+        return AddSemesterResult.SUCCESS;
     }
 
     /**
@@ -118,9 +120,8 @@ public class Study {
      *
      * @return an array of all semesters in this study.
      */
-    public Semester[] getSemesters() {
-        Semester[] outPut = semesters.toArray(new Semester[semesters.size()]);
-        return outPut;
+    public ObservableList<Semester> getSemesters() {
+        return semesters;
 
     }
 
