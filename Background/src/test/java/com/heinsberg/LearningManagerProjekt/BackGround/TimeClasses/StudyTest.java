@@ -1,6 +1,7 @@
 package com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses;
 
 import com.heinsberg.LearningManagerProjekt.BackGround.AddSemesterResult;
+import com.heinsberg.LearningManagerProjekt.BackGround.AddSubjectResult;
 import com.heinsberg.LearningManagerProjekt.BackGround.Study;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
 import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
@@ -98,24 +99,24 @@ public class StudyTest {
         underTest.addSemester(new Semester(1, new Date(121, 9, 19), new Date(122, 2, 3)));
 
         //when Adding Subject to semester 3
-        boolean outcome = underTest.addSubject(new Subject("Technische Informatik",underTest.getSemester(3),5));
+        AddSubjectResult outcome = underTest.addSubject(new Subject("Technische Informatik",underTest.getSemester(3),5));
         //then
-        Assertions.assertTrue(outcome);
+        Assertions.assertTrue(outcome == AddSubjectResult.SUCCESS);
 
         //when Subject is Added and Semester is not in study
         outcome = underTest.addSubject(new Subject("Test",underTest.getSemester(5),5));
         //then
-        Assertions.assertFalse(outcome);
+        Assertions.assertFalse(outcome == AddSubjectResult.SUCCESS);
 
         //when Subject is Added that has the same name as already added Subject and Semester
         outcome = underTest.addSubject(new Subject("Technische Informatik",underTest.getSemester(3),59));
         //then
-        Assertions.assertFalse(outcome);
+        Assertions.assertFalse(outcome == AddSubjectResult.SUCCESS);
 
         //when Subject is Added with same Name but in other Semester
         outcome = underTest.addSubject(new Subject("Technische Informatik",underTest.getSemester(1),5));
         //then
-        Assertions.assertTrue(outcome);
+        Assertions.assertTrue(outcome == AddSubjectResult.SUCCESS);
 
 
     }
