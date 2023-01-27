@@ -23,6 +23,7 @@ import java.util.Date;
 public class StudyManager {
     private Study study;
     private TreeItem<String> foldersRoot = new TreeItem<String>(""); //
+    private File currentFile;//saves the File currently editing.
 
     /**
      * Creates a new Study object with the given name and sets up the TreeView object to display the study information.
@@ -62,7 +63,7 @@ public class StudyManager {
         return study;
     }
 
-    public void studyToJson(File file){
+    public FileResult studyToJson(File file){
         GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapter(Study.class, new StudyTypeAdapter());
         //Write in File
         if (file != null) {
@@ -70,11 +71,14 @@ public class StudyManager {
                 FileWriter writer = new FileWriter(file);
                 writer.write(gsonBuilder.create().toJson(study));
                 writer.close();
+                currentFile = file;
+                return FileResult.SUCCESS;
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                return FileResult.UNEXPECTED_ERROR;
             }
         }else{
             System.err.println("File null");
+            return FileResult.FILE_NOT_FOUND;
         }
     }
 
@@ -93,6 +97,7 @@ public class StudyManager {
             BufferedReader reader = new BufferedReader(simpleReader);
             study = gsonBuilder.create().fromJson(reader.readLine(),Study.class);
             setUpTreeView();
+            currentFile = file;
             return FileResult.SUCCESS;
         } catch (FileNotFoundException e) {
             return FileResult.FILE_NOT_FOUND;
@@ -101,8 +106,13 @@ public class StudyManager {
         }
     }
 
+    public File getCurrentFile() {
+        return currentFile;
+    }
+
     public void addNewSemester(Semester semester) {
         AddSemesterResult result = study.addSemester(semester);
         System.out.println(result);
     }
+
 }

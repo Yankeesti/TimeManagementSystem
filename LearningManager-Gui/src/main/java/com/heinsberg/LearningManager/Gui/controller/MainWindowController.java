@@ -69,7 +69,21 @@ public class MainWindowController extends BaseController implements Initializabl
     void saveAsAction() {
         String[][] filter = {{"Json File", "*.json"}};
         File file = viewFactory.showFileSaver((Stage) menueBar.getScene().getWindow(), filter,studyManager.getStudy().getName()+" Study Progress");
-        studyManager.studyToJson(file);
+        System.out.println(studyManager.studyToJson(file));
+    }
+
+    /**
+     * When save Button is clicked and there is a current File the study gets saved to that file,
+     * when there is no current File selected saveAsAction Method is called
+     */
+    @FXML
+    void saveAction(){
+        File currentFile = studyManager.getCurrentFile();
+        if(currentFile == null){//there is now current file --> save as new File
+            saveAsAction();
+        }else{
+            System.out.println(studyManager.studyToJson(currentFile));
+        }
     }
 
     @Override

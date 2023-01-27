@@ -76,8 +76,9 @@ public class StudyInformationController extends BaseInformationComponentControll
             Date endDate = java.sql.Date.valueOf(endDatePicker.getValue());
 
             return new Semester(semesterChooserSpinner.getValue(),startDate,endDate);
-        }else
-            return null;
+        }else{
+            System.out.println("Data for new Semester missing!");
+            return null;}
     }
 
     private void setUpDatePicker() {
