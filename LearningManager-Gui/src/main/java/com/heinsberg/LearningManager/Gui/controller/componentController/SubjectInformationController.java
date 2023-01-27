@@ -16,6 +16,10 @@ public class SubjectInformationController extends BaseInformationComponentContro
         super(studyManager, viewFactory, fxmlName);
     }
 
+    @FXML
+    void subjectSettingsAction(){
+        viewFactory.getDialogViewFactory().showSubjectEditor(subject);
+    }
     @Override
     public void upDateInformation(Object subject) throws ClassCastException{
         if(subject.getClass() == Subject.class){

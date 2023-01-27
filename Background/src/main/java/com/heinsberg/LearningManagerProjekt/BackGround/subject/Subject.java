@@ -113,4 +113,23 @@ public class Subject {
     public String toString(){
         return subjectName;
     }
+
+    public void setName(String newName) {
+        subjectName = newName;
+    }
+
+    public void setEctsPoint(int ectsPoints) {
+        this.ectsPoints = ectsPoints;
+    }
+
+    /**
+     * redefines the Week Goal
+     * @param hours - hours to be learned per Week
+     * @param minutes - Minutes to be learned per Week
+     */
+    public void setWeekGoal(Integer hours, Integer minutes) {
+        weekGoal = 0;
+        weekGoal += hours*60;
+        weekGoal += minutes;
+    }
 }

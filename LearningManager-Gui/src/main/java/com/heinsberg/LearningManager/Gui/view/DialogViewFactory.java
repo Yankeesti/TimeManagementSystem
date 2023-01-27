@@ -3,6 +3,7 @@ package com.heinsberg.LearningManager.Gui.view;
 import com.heinsberg.LearningManager.Gui.StudyManager;
 import com.heinsberg.LearningManager.Gui.controller.BaseController;
 import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.SubjectChooserController;
+import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.SubjectEditController;
 import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -26,6 +27,15 @@ public class DialogViewFactory {
         this.viewFactory = viewFactory;
     }
 
+
+    public void showSubjectEditor(Subject subject){
+        System.out.println("show Subject Editor");
+        SubjectEditController controller = new SubjectEditController(studyManager,viewFactory,"dialogBoxes/subjectEditDialogBox",subject);
+        Optional<ButtonType> buttonClicked = showDialog(controller, "Edit Subject");
+        if(buttonClicked.get() == ButtonType.OK){
+            controller.submitChanges();
+        }
+    }
     /**
      * Opens a Dialog Window where a subject from subjects can be picked
      *
