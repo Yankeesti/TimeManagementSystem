@@ -139,6 +139,15 @@ public class Subject {
         notifyListeners(SubjectChange.CHANGED_WEEK_GOAL);
     }
 
+    public void editInformation(String newName, int newEctsPoints,int newWeekoalHours,int newWeekGoalMinutes){
+        this.subjectName = newName;
+        ectsPoints = newEctsPoints;
+        weekGoal = 0;
+        weekGoal += newWeekoalHours*60;
+        weekGoal += newWeekGoalMinutes;
+        notifyListeners(SubjectChange.EDITED_SUBJECT);
+    }
+
     /**
      * This method is used to notify all registered listeners that a change has occurred in the subject.
      * The change is passed as a parameter of type SubjectChange.

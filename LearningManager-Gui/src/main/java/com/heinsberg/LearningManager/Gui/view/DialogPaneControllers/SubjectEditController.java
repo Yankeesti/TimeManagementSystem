@@ -35,9 +35,7 @@ public class SubjectEditController extends BaseController implements Initializab
     }
 
     public void submitChanges() {
-        subject.setName(subjectNameField.getText());
-        subject.setEctsPoint(ectsChooser.getValue());
-        subject.setWeekGoal(hourChooser.getValue(), minuteChooser.getValue());
+        subject.editInformation(subjectNameField.getText(),ectsChooser.getValue(),hourChooser.getValue(),minuteChooser.getValue());
     }
 
 

@@ -108,6 +108,7 @@ public class MainWindowController extends BaseController implements Initializabl
         studyInformationController = new StudyInformationController(studyManager, viewFactory, "fxmlComponents/StudyInformation.fxml");
         setUpNode(studyInformationController);
         studyInformationController.getNode().setManaged(true);
+        studyInformationController.getNode().setVisible(true);
         shownInformationNode = studyInformationController.getNode();// set Study information to be shown first default
 
         //SetUp SemesterInformationPane
@@ -125,6 +126,7 @@ public class MainWindowController extends BaseController implements Initializabl
             setInformationMainPaneAnchor(informationPanel);
             informationMainPane.getChildren().add(informationPanel);
             informationPanel.setManaged(false);
+            informationPanel.setVisible(false);
             informationController.setNode(informationPanel);
         } else {
             System.err.println("Node not provided");
