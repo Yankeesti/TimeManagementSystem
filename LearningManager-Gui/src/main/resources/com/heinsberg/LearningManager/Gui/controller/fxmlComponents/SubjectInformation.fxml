@@ -3,10 +3,13 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
@@ -28,27 +31,52 @@
             </Button>
          </children>
       </HBox>
-        <SplitPane dividerPositions="0.5" layoutX="1.0" layoutY="64.0" prefHeight="336.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="64.0">
-            <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                    <children>
-                        <StackPane prefHeight="40.0" prefWidth="296.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <children>
-                                <Label text="Actions" />
-                            </children>
-                        </StackPane>
-                    </children>
-                </AnchorPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="334.0" prefWidth="199.0">
-                    <children>
-                        <StackPane layoutX="48.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <children>
-                                <Label text="Information" />
-                            </children>
-                        </StackPane>
-                    </children>
-                </AnchorPane>
-            </items>
-        </SplitPane>
+      <GridPane gridLinesVisible="true" layoutY="64.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="64.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <HBox alignment="CENTER_LEFT">
+               <children>
+                  <Label text="Lern Ziel pro Woche">
+                     <HBox.margin>
+                        <Insets left="10.0" right="15.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="weekGoalLabel" text="Label">
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1">
+               <children>
+                  <Label text="DieseWoche gelernt:">
+                     <HBox.margin>
+                        <Insets left="10.0" right="15.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="learnedLabel" text="Label">
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+      </GridPane>
+      <TableView layoutY="114.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="114.0">
+        <columns>
+          <TableColumn prefWidth="132.0" text="Semester Woche" />
+            <TableColumn prefWidth="153.0" text="Datum" />
+            <TableColumn prefWidth="145.0" text="Start Zeit" />
+          <TableColumn minWidth="2.0" prefWidth="143.0" text="Gelernt" />
+        </columns>
+      </TableView>
     </children>
 </AnchorPane>

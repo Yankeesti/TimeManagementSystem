@@ -22,7 +22,6 @@ public class Subject {
     private int ectsPoints;
     private int weekGoal; //learning goal per week in Minutes
     private String subjectName;
-    private SimpleStringProperty subjectNameProperty;
     private ArrayList<LearningPhase> learningPhases;
     private Semester semester;
     private Week currenWeek;
@@ -40,7 +39,6 @@ public class Subject {
     public Subject(String subjectName, Semester semester, int ectsPoints) {
         learningPhases = new ArrayList<LearningPhase>();
         this.subjectName = subjectName;
-        this.subjectNameProperty = new SimpleStringProperty(subjectName);
         this.semester = semester;
         this.ectsPoints = ectsPoints;
     }
