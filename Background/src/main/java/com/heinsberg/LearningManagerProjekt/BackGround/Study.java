@@ -1,5 +1,7 @@
 package com.heinsberg.LearningManagerProjekt.BackGround;
 
+import com.heinsberg.LearningManagerProjekt.BackGround.Listeners.ChangeEnums.StudyChange;
+import com.heinsberg.LearningManagerProjekt.BackGround.Listeners.StudyListener;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.TimePeriod;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Week;
@@ -24,11 +26,13 @@ public class Study {
     private LearningPhase currentLearningPhase;
 
     private Semester currentSemester; //stores the current Semester
+    private ArrayList<StudyListener> listeners;
 
     public Study(String studyName) {
         this.studyName = studyName;
         subjects = FXCollections.observableArrayList();
         semesters = FXCollections.observableArrayList();
+        listeners = new ArrayList<StudyListener>();
     }
 
     //Methodes to Control learningPhase
@@ -242,8 +246,20 @@ public class Study {
     }
 
     public void deleteLearningPhase(LearningPhase learningPhase) {
-        if(currentLearningPhase == learningPhase)
-            currentLearningPhase = null;
+        if(currentLearningPhase == learningPhase){
+            notifyListners(StudyChange.CURRENT_LEARNINGPHASE_DELETED);
+            currentLearningPhase = null;}
         learningPhase.getSubject().getSemester().deleteLearningPhase(learningPhase);
+    }
+
+    //Listener Methods
+    private void notifyListners(StudyChange changed){
+        for(StudyListener listener :listeners){
+            listener.notifyListener(changed);
+        }
+    }
+
+    public void addListener(StudyListener listener){
+        listeners.add(listener);
     }
 }

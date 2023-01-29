@@ -9,6 +9,8 @@ import com.heinsberg.LearningManager.Gui.treeItems.BaseTreeItem;
 import com.heinsberg.LearningManager.Gui.view.ViewFactory;
 
 import com.heinsberg.LearningManagerProjekt.BackGround.LearningPhaseActionResult;
+import com.heinsberg.LearningManagerProjekt.BackGround.Listeners.ChangeEnums.StudyChange;
+import com.heinsberg.LearningManagerProjekt.BackGround.Listeners.StudyListener;
 import com.heinsberg.LearningManagerProjekt.BackGround.Study;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
 import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
@@ -101,6 +103,19 @@ public class MainWindowController extends BaseController implements Initializabl
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setTreeView();
         setUpInformationPane();
+        setUpStudyListner();
+    }
+
+    private void setUpStudyListner() {
+        studyManager.getStudy().addListener(new StudyListener() {
+            @Override
+            public void changed(StudyChange studyChange) {
+                if(studyChange == StudyChange.CURRENT_LEARNINGPHASE_DELETED){
+                    startLearningPhaseButton.setVisible(true);
+                    endLearrningPhaseButton.setVisible(false);
+                }
+            }
+        });
     }
 
     private void setUpInformationPane() {
