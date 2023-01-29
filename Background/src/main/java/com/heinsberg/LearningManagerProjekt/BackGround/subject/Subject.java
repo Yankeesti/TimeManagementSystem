@@ -8,6 +8,8 @@ import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.security.Provider;
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ public class Subject {
     private int ectsPoints;
     private int weekGoal; //learning goal per week in Minutes
     private String subjectName;
-    private ArrayList<LearningPhase> learningPhases;
+    private ObservableList<LearningPhase> learningPhases;
     private Semester semester;
     private Week currenWeek;
 
@@ -37,7 +39,7 @@ public class Subject {
      */
 
     public Subject(String subjectName, Semester semester, int ectsPoints) {
-        learningPhases = new ArrayList<LearningPhase>();
+        learningPhases = FXCollections.observableArrayList();
         this.subjectName = subjectName;
         this.semester = semester;
         this.ectsPoints = ectsPoints;
@@ -45,6 +47,7 @@ public class Subject {
 
     public LearningPhase startLearningPhase() {
         LearningPhase learningPhase = new LearningPhase(this);
+        learningPhases.add(learningPhase);
         return learningPhase;
     }
 
@@ -91,7 +94,7 @@ public class Subject {
         return weekGoal;
     }
 
-    public ArrayList<LearningPhase> getLearningPhases() {
+    public ObservableList<LearningPhase> getLearningPhases() {
         return learningPhases;
     }
 

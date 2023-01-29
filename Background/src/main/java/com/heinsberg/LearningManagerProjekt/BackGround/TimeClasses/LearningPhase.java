@@ -2,6 +2,9 @@ package com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses;
 
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.TimePeriod;
 import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
+import javafx.beans.property.SimpleObjectProperty;
+
+import java.text.SimpleDateFormat;
 
 /**
  * Represents a specific period of learning for a subject.
@@ -63,9 +66,11 @@ public class LearningPhase extends TimePeriod {
             timeLearned = getDiffrence()/1000;
         }
     }
-    public long getTimeLearned(){return timeLearned;}
+    public long getTimeLearned(){
+        return timeLearned;}
 
     public void setSubject(Subject subject) {
         this.subject = subject;
     }
+
 }

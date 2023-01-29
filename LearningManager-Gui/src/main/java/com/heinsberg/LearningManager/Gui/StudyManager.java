@@ -130,6 +130,9 @@ public class StudyManager {
      * @return the Time Learned when there was no current LearningPhase a number lower than 0
      */
     public long endLearningPhase() {
-        return study.finishLearningPhase();
+        System.out.println("ended learningphase");
+        study.finishLearningPhase();
+        System.out.println("ended learningphase");
+        return 0;
     }
 }

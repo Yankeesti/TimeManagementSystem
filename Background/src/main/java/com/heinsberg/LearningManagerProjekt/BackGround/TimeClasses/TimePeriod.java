@@ -35,12 +35,11 @@ public abstract class TimePeriod extends Date {
      * Note: when endate == long minValue no enddate is set
      *
      * @param startDate - start date in ms after January 1, 1970, 00:00:00 GMT
-     * @param endDate - end date in ms January 1, 1970, 00:00:00 GMT
+     * @param endDate   - end date in ms January 1, 1970, 00:00:00 GMT
      */
-    public TimePeriod(long startDate, long endDate){
+    public TimePeriod(long startDate, long endDate) {
         setTime(startDate);
-        if(endDate != Long.MIN_VALUE)
-        {
+        if (endDate != Long.MIN_VALUE) {
             this.endDate = new Date();
             this.endDate.setTime(endDate);
         }
@@ -50,40 +49,53 @@ public abstract class TimePeriod extends Date {
      * Compares a TimePeriod and a Date for ordering.
      *
      * @param anotherDate the date to compare
-     * @return the value 0 if the argument Date is in the Time Period; a value less than 0 if this Time Period is before the Date argument; and a value greater than 0 if this Time Period is after the Date argument.
+     * @return the value 0 if the argument Date is within the Time Period; a value less than 0 if this Time Period is before the Date argument; and a value greater than 0 if this Time Period is after the Date argument.
      */
+    @Override
     public int compareTo(Date anotherDate) {
 
         if ((endDate != null && super.compareTo(anotherDate) <= 0 && endDate.compareTo(anotherDate) >= 0) || super.compareTo(anotherDate) == 0 || (endDate == null && super.compareTo(anotherDate) <= 0))
             return 0;
 
         if (super.compareTo(anotherDate) < 0)
-            return -1;
+            return -2;
 
-        return 1;
+        return 2;
     }
 
     /**
      * Compares two TimePeriods for ordering
      *
      * @param anotherTimePeriod - TimePeriod to compare
-     * @return the value 0 if the argument TimePeriod is in the Time Period also if anotherTimePeriod is not ended yet but the start is in this TimePeriod; -1 if the Time PeriodArgument start is in this time Period but the ending is after this Time Period; -2 if the Time Period Argument is after this Time Period; 1 if the Time Period ends is in this time Period but the start is before this Time Period; 2 if the Time Period Argument is before this Time Period
+     * @return 0 if the argument TimePeriod is contained within the Time Period also if anotherTimePeriod is not ended yet but the start is in this TimePeriod; -1 if the start of the Time Period argument is contained within this Time Period but the end is after this Time Period; -2 if the Time Period argument is after this Time Period; 1 if the end of the Time Period argument is contained within this Time Period but the start is before this Time Period; 2 if the Time Period argument is before this Time Period; Integer.MAX_VALUE if the argument Time Period completely encompasses this Time Period
      */
     public int compareTo(TimePeriod anotherTimePeriod) {
-        if ((super.compareTo(anotherTimePeriod) <= 0 && anotherTimePeriod.getEndDate()== null)||
-            (super.compareTo(anotherTimePeriod) <= 0 && endDate.compareTo(anotherTimePeriod.getEndDate()) >= 0))
-            return 0;
+        if (anotherTimePeriod.endDate == null) {
+            return compareTo(anotherTimePeriod.getStartDate());
+        } else {
+            int resultAnotherTimePeriodStart = compareTo((Date) anotherTimePeriod.getStartDate());
+            int resultAnotherTimePeriodEnd = compareTo((Date) anotherTimePeriod.getEndDate());
 
-        if (super.compareTo(anotherTimePeriod) <= 0 && endDate.compareTo(anotherTimePeriod) >= 0)
-            return -1;
-
-        if (endDate.compareTo(anotherTimePeriod) < 0)
-            return -2;
-
-        if (super.compareTo(anotherTimePeriod.getEndDate()) > 0)
-            return 2;
-
-        return 1;
+            if (resultAnotherTimePeriodStart == 0) { //another Time Period start is in Time Period
+                if (resultAnotherTimePeriodEnd == 0) {//another Time Period is in this Time Period
+                    return 0;
+                } else { //another TimerPeriod starts in this Time Period but ends after it
+                    return -1;
+                }
+            } else {//another TimePeriod start is not in this Time Period
+                if (resultAnotherTimePeriodStart < 0) { //start of another Time Period is after this Time Period --> another TimePeriod is after this TimePeriod
+                    return -2;
+                } else { // result is bigger than 0 --> start of other Time Period is before this TimePeriod
+                    if (resultAnotherTimePeriodEnd == 0) { //another Time Period starts before this Timer period but ends in it
+                        return 1;
+                    } else if (resultAnotherTimePeriodEnd > 0) {//end of another Time Period is before start of this Time Period
+                        return 2;
+                    } else { //this time Period is in anouther Time Period
+                        return Integer.MAX_VALUE;
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -123,6 +135,10 @@ public abstract class TimePeriod extends Date {
         return endDate;
     }
 
+    public Date getStartDate() {
+        return this;
+    }
+
     /**
      * Returns the current date.
      *
@@ -147,7 +163,9 @@ public abstract class TimePeriod extends Date {
      * @return the difference in milliseconds between the start date and end date of this time period.
      */
     public long getDiffrence() {
-        return endDate.getTime() - getTime();
+        if (endDate != null)
+            return endDate.getTime() - getTime();
+        return getAktDate().getTime() - getTime();
     }
 
     /**

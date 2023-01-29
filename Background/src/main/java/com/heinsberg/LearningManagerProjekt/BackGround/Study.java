@@ -228,4 +228,16 @@ public class Study {
         }
     }
 
+    /**
+     * Calculates how much was learned for subject in the current Week
+     * @param subject - subject
+     * @return learned for subject in current week in Minutes and -1 if this subject isn't in currentSemester
+     */
+    public int getLearnedInCurrentWeek(Subject subject) {
+        upDateSemester();
+        if(currentSemester == subject.getSemester()){
+            return currentSemester.getCurrentWeek().getLearnedFor(subject);
+        }
+        return -1;
+    }
 }
