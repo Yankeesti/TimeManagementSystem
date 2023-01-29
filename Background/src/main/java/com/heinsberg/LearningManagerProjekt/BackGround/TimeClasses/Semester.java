@@ -140,4 +140,18 @@ public class Semester extends TimePeriod{
         upDateWeek();
         return weeks[currentWeekIndex];
     }
+
+    /**
+     * deletes the given LearningPhase out of it's Week and the Subject
+     * @param learningPhase
+     */
+    public void deleteLearningPhase(LearningPhase learningPhase) {
+        for(Week week: weeks){
+            if(week.compareTo(learningPhase) == 0){
+                week.deleteLearningPhase(learningPhase);
+                break;
+            }
+        }
+        learningPhase.getSubject().deleteLearningPhase(learningPhase);
+    }
 }

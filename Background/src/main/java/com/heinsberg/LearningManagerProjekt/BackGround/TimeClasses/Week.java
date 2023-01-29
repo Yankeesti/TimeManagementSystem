@@ -75,4 +75,13 @@ public class Week extends TimePeriod {
         }
         return (int) (learned/60);
     }
+
+
+    /**
+     * deletes The given Learning Phase
+     * @param learningPhase
+     */
+    public void deleteLearningPhase(LearningPhase learningPhase) {
+        learningPhases.remove(learningPhase);
+    }
 }

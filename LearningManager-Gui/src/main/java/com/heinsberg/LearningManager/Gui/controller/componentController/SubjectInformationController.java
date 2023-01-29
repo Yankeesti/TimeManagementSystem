@@ -12,12 +12,10 @@ import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.Callback;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -35,6 +33,8 @@ public class SubjectInformationController extends BaseInformationComponentContro
     private TableColumn<LearningPhase, Date> dateColum;
     @FXML
     private TableColumn<LearningPhase, Long> learnedColum;
+    @FXML
+    private TableColumn<LearningPhase, Void> actionCoulumn;
     private Subject subject;
 
     public SubjectInformationController(StudyManager studyManager, ViewFactory viewFactory, String fxmlName) {
@@ -73,23 +73,25 @@ public class SubjectInformationController extends BaseInformationComponentContro
     }
 
 
-
     private void setUpLearningPhaseTableView() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy 'um' HH:mm 'Uhr'");
         dateColum.setCellValueFactory(new PropertyValueFactory<>("startDate"));
-        dateColum.setCellFactory(column -> new TextFieldTableCell<LearningPhase,Date>(){//is called to format the cell
+        //set Up dateColumn
+        dateColum.setCellFactory(column -> new TextFieldTableCell<LearningPhase, Date>() {//is called to format the cell
             @Override
             public void updateItem(Date date, boolean empty) {//when item is updated this method is called
-                super.updateItem(date,empty);
-                if(date == null|| empty){
+                super.updateItem(date, empty);
+                if (date == null || empty) {
                     setText(null);
-                }else{
+                } else {
                     setText(dateFormat.format(date));
                 }
             }
         });
+
+        //set up Learned Column
         learnedColum.setCellValueFactory(new PropertyValueFactory<>("timeLearned"));
-        learnedColum.setCellFactory(column -> new TableCell<LearningPhase,Long>(){ //Formats the showing of time learned to "... Minuten"
+        learnedColum.setCellFactory(column -> new TableCell<LearningPhase, Long>() { //Formats the showing of time learned to "... Minuten"
             @Override
             protected void updateItem(Long learned, boolean empty) {
                 super.updateItem(learned, empty);
@@ -97,11 +99,43 @@ public class SubjectInformationController extends BaseInformationComponentContro
                     setText(null);
                 } else {
                     learned /= 60;//time learned in Minutes
-                    setText(learned+"Minuten");
+                    setText(learned + " Minuten");
                 }
             }
         });
+
+        //set up action Column
+        Callback<TableColumn<LearningPhase, Void>, TableCell<LearningPhase, Void>> cellFactory = new Callback<TableColumn<LearningPhase, Void>, TableCell<LearningPhase, Void>>() { // new Cell Factory that is called when a new Cell needs to be created
+            @Override
+            public TableCell<LearningPhase, Void> call(TableColumn<LearningPhase, Void> learningPhaseVoidTableColumn) {//is called to create a Table cell for the column learningPhaseVoidTableColumn
+                final TableCell<LearningPhase, Void> outPut = new TableCell<LearningPhase, Void>() {
+                    private final Button deleteButton = new Button("Delete");
+
+                    {//is called when instance of class is created ( everytime a new cell is "Renderd
+                        deleteButton.setOnAction(e -> {
+                            LearningPhase data = getTableView().getItems().get(getIndex());
+                            viewFactory.getDialogViewFactory().showDeleteLearningPhaseDialog(data);
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(deleteButton);
+                        }
+                    }
+                };
+                return outPut;
+            }
+        };
+
+        actionCoulumn.setCellFactory(cellFactory);
+
     }
+
 
     private void setWeekGoalLabel() {
         int weekGoal = ((Subject) subject).getWeekGoal();

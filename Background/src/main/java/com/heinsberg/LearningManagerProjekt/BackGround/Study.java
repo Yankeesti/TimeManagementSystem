@@ -240,4 +240,10 @@ public class Study {
         }
         return -1;
     }
+
+    public void deleteLearningPhase(LearningPhase learningPhase) {
+        if(currentLearningPhase == learningPhase)
+            currentLearningPhase = null;
+        learningPhase.getSubject().getSemester().deleteLearningPhase(learningPhase);
+    }
 }

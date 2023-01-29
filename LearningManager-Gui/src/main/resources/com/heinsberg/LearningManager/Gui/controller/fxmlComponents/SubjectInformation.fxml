@@ -72,6 +72,7 @@
       </GridPane>
       <TableView fx:id="learningPhaseView" layoutY="114.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="114.0">
         <columns>
+            <TableColumn fx:id="actionCoulumn" prefWidth="75.0" text="Action" />
             <TableColumn fx:id="dateColum" prefWidth="153.0" text="Datum" />
           <TableColumn fx:id="learnedColum" minWidth="2.0" prefWidth="143.0" text="Gelernt" />
         </columns>

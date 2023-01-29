@@ -188,4 +188,12 @@ public class Subject {
     public void removeListener(SubjectListener subjectListener) {
         removeListener(subjectListener);
     }
+
+    /**
+     * deletes the given LearningPhase
+     * @param learningPhase
+     */
+    public void deleteLearningPhase(LearningPhase learningPhase) {
+        learningPhases.remove(learningPhase);
+    }
 }
