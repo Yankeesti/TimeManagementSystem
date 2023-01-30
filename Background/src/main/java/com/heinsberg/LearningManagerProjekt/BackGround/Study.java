@@ -262,4 +262,13 @@ public class Study {
     public void addListener(StudyListener listener){
         listeners.add(listener);
     }
+
+    /**
+     * Deletes a Subject and all LearningPhases for this Subject
+     * @param subject - subject to be deleted
+     */
+    public void deleteSubject(Subject subject) {
+        subjects.remove(subject);
+        subject.getSemester().deleteSubject(subject);
+    }
 }

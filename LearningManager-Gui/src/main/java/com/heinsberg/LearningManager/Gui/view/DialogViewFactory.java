@@ -2,6 +2,7 @@ package com.heinsberg.LearningManager.Gui.view;
 
 import com.heinsberg.LearningManager.Gui.StudyManager;
 import com.heinsberg.LearningManager.Gui.controller.BaseController;
+import com.heinsberg.LearningManager.Gui.controller.MainWindowController;
 import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.SubjectChooserController;
 import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.SubjectEditController;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase;
@@ -24,18 +25,26 @@ public class DialogViewFactory {
     private StudyManager studyManager;
     private ViewFactory viewFactory;
 
+
     public DialogViewFactory(StudyManager studyManager, ViewFactory viewFactory) {
         this.studyManager = studyManager;
         this.viewFactory = viewFactory;
     }
 
 
+    /**
+     * Shows a Dialog Pane where the user can edit the properties of subject
+     * or delete it
+     * @param subject
+     */
     public void showSubjectEditor(Subject subject){
         System.out.println("show Subject Editor");
         SubjectEditController controller = new SubjectEditController(studyManager,viewFactory,"dialogBoxes/subjectEditDialogBox",subject);
         Optional<ButtonType> buttonClicked = showDialog(controller, "Edit Subject");
         if(buttonClicked.get() == ButtonType.OK){
             controller.submitChanges();
+        }else if(buttonClicked.get() == controller.getDeleteButton()){
+            deleteSubject(subject);
         }
     }
     /**
@@ -94,6 +103,24 @@ public class DialogViewFactory {
         Optional<ButtonType> result = learningPhaseDeleteAlert.showAndWait();
         if(result.get() == ButtonType.OK){
             studyManager.deleteLearningPhase(learningPhase);
+        }
+    }
+
+    /**
+     * Opens a new Dialog pane where the user is asked
+     * if he really wants to delete the subject
+     * when he selects Ok the Subject gets deleted and main Window shows the Information pane of Study
+     * @param subject - subject to be deleted
+     */
+    private void deleteSubject(Subject subject){
+        Alert deleteSubjectAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        deleteSubjectAlert.setHeaderText("Are you shure you want to delete: "+subject.getSubjectName()+" ?");
+        deleteSubjectAlert.setTitle("DeleteSubject");
+
+        Optional<ButtonType> result = deleteSubjectAlert.showAndWait();
+        if(result.get() == ButtonType.OK){
+            studyManager.deleteSubject(subject);
+            viewFactory.getMainWindowController().upDateInformationPane(studyManager.getStudy());//shows study Information Pane
         }
     }
 }

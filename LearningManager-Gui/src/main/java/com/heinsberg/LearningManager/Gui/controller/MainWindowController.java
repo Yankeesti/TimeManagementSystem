@@ -168,7 +168,7 @@ public class MainWindowController extends BaseController implements Initializabl
     }
 
 
-    private void upDateInformationPane(Object holdObject) {
+    public void upDateInformationPane(Object holdObject) {
         Node nodeToBeShown = null;
         if (holdObject.getClass() == Semester.class) {
             System.out.println("show Semester Information");

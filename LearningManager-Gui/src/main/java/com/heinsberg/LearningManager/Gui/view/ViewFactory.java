@@ -32,6 +32,7 @@ import java.util.Optional;
 public class ViewFactory {
     private String fxmlFolder = "fxmlWindows";
     private StudyManager studyManager;
+    private MainWindowController mainWindowController;
 
 
     private DialogViewFactory dialogViewFactory;
@@ -50,9 +51,10 @@ public class ViewFactory {
 
     public void showMainWindow() {
         System.out.println("show Main Window Called");
-        MainWindowController controller = new MainWindowController(studyManager, this, fxmlFolder + "/" + "MainWindow");
-        initializeStage(controller);
+        mainWindowController = new MainWindowController(studyManager, this, fxmlFolder + "/" + "MainWindow");
+        initializeStage(mainWindowController);
     }
+    public MainWindowController getMainWindowController(){return mainWindowController;}
 
     public DialogViewFactory getDialogViewFactory() {
         return dialogViewFactory;

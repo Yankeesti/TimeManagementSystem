@@ -8,10 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -33,6 +30,9 @@ public class SubjectEditController extends BaseController implements Initializab
     private CheckBox ungradedCheckBox;
     @FXML
     private Spinner<Double> gradeSpinner;
+    @FXML
+    private DialogPane dialogPane;
+    private ButtonType deleteButton;
     private Subject subject;
 
     public SubjectEditController(StudyManager studyManager, ViewFactory viewFactory, String fxmlName, Subject subject) {
@@ -53,6 +53,21 @@ public class SubjectEditController extends BaseController implements Initializab
         setUpSpinners();
         setUpNameField();
         setUpUngradedCheckbox();
+        setUpDeleteButton();
+    }
+
+
+
+    /**
+     * Creates a delete Button
+     */
+    private void setUpDeleteButton() {
+        deleteButton = new ButtonType("Delete");
+        dialogPane.getButtonTypes().add(deleteButton);
+    }
+
+    public ButtonType getDeleteButton() {
+        return deleteButton;
     }
 
     private void setUpUngradedCheckbox() {
@@ -111,7 +126,7 @@ public class SubjectEditController extends BaseController implements Initializab
             gradeSpinner.setDisable(true);
         } else if (subject.getFinalGrade() == 0) {//subject grade is not set yet
             gradSpinnerValueFactory.setValue(3.0);
-        }else{//Final grade is set --> set predefined Value
+        } else {//Final grade is set --> set predefined Value
             gradSpinnerValueFactory.setValue(subject.getFinalGrade());
         }
         gradSpinnerValueFactory.setAmountToStepBy(0.1);

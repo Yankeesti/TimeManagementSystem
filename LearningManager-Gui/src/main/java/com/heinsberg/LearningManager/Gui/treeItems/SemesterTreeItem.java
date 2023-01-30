@@ -41,7 +41,14 @@ public class SemesterTreeItem<String> extends BaseTreeItem<String> implements Co
 
                     addSubjectTreeItem((Subject)addedList.get(addedList.size()-1));
                 }else if (change.wasRemoved()){
-
+                    ObservableList<TreeItem<String>> children = getChildren();
+                    List<? extends Subject> removedItems = change.getRemoved();
+                    for(TreeItem<String> child: children){
+                        if(((SubjectTreeItem)child).getHoldObject() == removedItems.get(removedItems.size()-1)){
+                            getChildren().remove(child);
+                            break;
+                        }
+                    }
                 }
             }
         });

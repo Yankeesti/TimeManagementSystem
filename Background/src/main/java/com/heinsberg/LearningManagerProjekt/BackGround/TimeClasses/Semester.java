@@ -154,4 +154,12 @@ public class Semester extends TimePeriod{
         }
         learningPhase.getSubject().deleteLearningPhase(learningPhase);
     }
+
+    public void deleteSubject(Subject subject) {
+        subjects.remove(subject);
+        LearningPhase[] learningPhases = subject.getLearningPhases().toArray(new LearningPhase[0]);
+        for(LearningPhase learningPhase:learningPhases){
+            deleteLearningPhase(learningPhase);
+        }
+    }
 }

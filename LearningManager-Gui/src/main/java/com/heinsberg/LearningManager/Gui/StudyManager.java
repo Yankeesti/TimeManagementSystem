@@ -139,4 +139,9 @@ public class StudyManager {
         study.deleteLearningPhase(learningPhase);
         System.out.println("deleted LearningPhase");
     }
+
+    public void deleteSubject(Subject subject) {
+        study.deleteSubject(subject);
+        System.out.println("deleted");
+    }
 }
