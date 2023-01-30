@@ -117,6 +117,10 @@ public class Subject {
         notifyListeners(SubjectChange.CHANGED_FINAL_GRADE);
     }
 
+    public Boolean gradeIsSet(){
+        return finalGrade!=0;
+    }
+
     @Override
     public String toString() {
         return subjectName;

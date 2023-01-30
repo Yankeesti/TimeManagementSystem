@@ -17,6 +17,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 
 import java.net.URL;
@@ -37,6 +39,11 @@ public class SubjectInformationController extends BaseInformationComponentContro
     private TableColumn<LearningPhase, Long> learnedColum;
     @FXML
     private TableColumn<LearningPhase, Void> actionCoulumn;
+    @FXML
+    private GridPane learnedInformationPane;
+    @FXML
+    private AnchorPane mainPane;
+
     private Subject subject;
 
     public SubjectInformationController(StudyManager studyManager, ViewFactory viewFactory, String fxmlName) {
@@ -58,8 +65,10 @@ public class SubjectInformationController extends BaseInformationComponentContro
         if (subject.getClass() == Subject.class) {
             this.subject = (Subject) subject; //updates the Subject
             this.titleLabel.setText(this.subject.getSubjectName());//updates Title
+            setUpLearnedInformarmation();
             setWeekGoalLabel();
-            setUpLearned();
+            if (((Subject) subject).gradeIsSet())
+                setUpLearned(); //just needs to be setUp when grade is not set yet
             ObservableList<LearningPhase> learningPhases = ((Subject) subject).getLearningPhases();
             learningPhaseView.setItems(learningPhases);
             ((Subject) subject).addListener(new SubjectListener() {//when Something changes in Subject the information gets Updated
@@ -85,6 +94,22 @@ public class SubjectInformationController extends BaseInformationComponentContro
 
         } else {
             throw new ClassCastException("Object must be from type Subject");
+        }
+    }
+
+    private void setUpLearnedInformarmation() {
+        if (subject.gradeIsSet()) { // if grade is set it's not necessery to show learned Information
+            learnedInformationPane.setVisible(false);
+            learnedInformationPane.setManaged(false);
+            //adjust Anchopane
+            mainPane.setTopAnchor(learningPhaseView,64.0);
+        }else{
+            //adjust Anchopane
+            mainPane.setTopAnchor(learningPhaseView,114.0);
+            learnedInformationPane.setVisible(true);
+            learnedInformationPane.setManaged(true);
+            setUpLearned();
+            setWeekGoalLabel();
         }
     }
 
@@ -168,6 +193,7 @@ public class SubjectInformationController extends BaseInformationComponentContro
             weekGoalLabel.setStyle("-fx-background-color: red;");
             weekGoalLabel.setText("Es wurde noch kein Wochen Ziel Festgelegt");
         }
+
     }
 
     private void setUpLearned() {
