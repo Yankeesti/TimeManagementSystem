@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * @author Heinsberg
  */
 public class Subject {
-    private double finalGrade;
+    private double finalGrade; //Double maxValue when ungraded
     private int ectsPoints;
     private int weekGoal; //learning goal per week in Minutes
     private String subjectName;
@@ -112,6 +112,11 @@ public class Subject {
         notifyListeners(SubjectChange.CHANGED_SEMESTER);
     }
 
+    public void setFinalGrade(double finalGrade){
+        this.finalGrade = finalGrade;
+        notifyListeners(SubjectChange.CHANGED_FINAL_GRADE);
+    }
+
     @Override
     public String toString() {
         return subjectName;
@@ -140,12 +145,13 @@ public class Subject {
         notifyListeners(SubjectChange.CHANGED_WEEK_GOAL);
     }
 
-    public void editInformation(String newName, int newEctsPoints,int newWeekoalHours,int newWeekGoalMinutes){
+    public void editInformation(String newName, int newEctsPoints,int newWeekoalHours,int newWeekGoalMinutes, double grade){
         this.subjectName = newName;
         ectsPoints = newEctsPoints;
         weekGoal = 0;
         weekGoal += newWeekoalHours*60;
         weekGoal += newWeekGoalMinutes;
+        this.finalGrade = grade;
         notifyListeners(SubjectChange.EDITED_SUBJECT);
     }
 

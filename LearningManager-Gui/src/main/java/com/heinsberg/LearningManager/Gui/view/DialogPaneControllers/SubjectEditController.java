@@ -5,8 +5,10 @@ import com.heinsberg.LearningManager.Gui.controller.BaseController;
 import com.heinsberg.LearningManager.Gui.view.ViewFactory;
 import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
 import javafx.collections.FXCollections;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
@@ -27,6 +29,10 @@ public class SubjectEditController extends BaseController implements Initializab
 
     @FXML
     private TextField subjectNameField;
+    @FXML
+    private CheckBox ungradedCheckBox;
+    @FXML
+    private Spinner<Double> gradeSpinner;
     private Subject subject;
 
     public SubjectEditController(StudyManager studyManager, ViewFactory viewFactory, String fxmlName, Subject subject) {
@@ -35,7 +41,10 @@ public class SubjectEditController extends BaseController implements Initializab
     }
 
     public void submitChanges() {
-        subject.editInformation(subjectNameField.getText(),ectsChooser.getValue(),hourChooser.getValue(),minuteChooser.getValue());
+        if (ungradedCheckBox.isSelected())
+            subject.editInformation(subjectNameField.getText(), ectsChooser.getValue(), hourChooser.getValue(), minuteChooser.getValue(), Double.MAX_VALUE);
+        else
+            subject.editInformation(subjectNameField.getText(), ectsChooser.getValue(), hourChooser.getValue(), minuteChooser.getValue(), gradeSpinner.getValue());
     }
 
 
@@ -43,6 +52,20 @@ public class SubjectEditController extends BaseController implements Initializab
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setUpSpinners();
         setUpNameField();
+        setUpUngradedCheckbox();
+    }
+
+    private void setUpUngradedCheckbox() {
+        if (subject.getFinalGrade() == Double.MAX_VALUE) {
+            ungradedCheckBox.setSelected(true);
+        }
+        ungradedCheckBox.setOnAction((evt) -> {
+            if (ungradedCheckBox.isSelected()) {//checkBox is selected make gradeSpinner unclickable
+                gradeSpinner.setDisable(true);
+            } else {
+                gradeSpinner.setDisable(false);
+            }
+        });
     }
 
     private void setUpNameField() {
@@ -78,8 +101,21 @@ public class SubjectEditController extends BaseController implements Initializab
                     setValue(getValue() + i);
             }
         };
-        minuteValueFactory.setValue(subject.getWeekGoal()%60);
+        minuteValueFactory.setValue(subject.getWeekGoal() % 60);
         minuteChooser.setValueFactory(minuteValueFactory);
 
+        //Set up Grade Spinner
+        SpinnerValueFactory.DoubleSpinnerValueFactory gradSpinnerValueFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 6);
+        if (subject.getFinalGrade() == Double.MAX_VALUE) {//if Subject is ungraded
+            gradSpinnerValueFactory.setValue(null);
+            gradeSpinner.setDisable(true);
+        } else if (subject.getFinalGrade() == 0) {//subject grade is not set yet
+            gradSpinnerValueFactory.setValue(3.0);
+        }else{//Final grade is set --> set predefined Value
+            gradSpinnerValueFactory.setValue(subject.getFinalGrade());
+        }
+        gradSpinnerValueFactory.setAmountToStepBy(0.1);
+        gradeSpinner.setValueFactory(gradSpinnerValueFactory);
     }
+
 }

@@ -33,7 +33,7 @@ public class SubjectTypeAdapter extends TypeAdapter<Subject> {
 
     @Override
     public Subject read(JsonReader jsonReader) throws IOException {
-        double finalGrade;
+        double finalGrade = 0;
         String subjectName = null;
         int ectsPoint = 0;
         int weekGoal = 0;
@@ -60,6 +60,7 @@ public class SubjectTypeAdapter extends TypeAdapter<Subject> {
         jsonReader.endObject();
         Subject outPut = new Subject(subjectName, null, ectsPoint);
         outPut.setWeekGoal(weekGoal);
+        outPut.setFinalGrade(finalGrade);
         for (LearningPhase learningPhase : learningPhases){
             outPut.addLearningPhase(learningPhase);
             learningPhase.setSubject(outPut);
