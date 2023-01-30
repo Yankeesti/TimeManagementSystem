@@ -5,9 +5,10 @@ import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
+import java.util.Comparator;
 import java.util.List;
 
-public class StudyTreeItem<String> extends BaseTreeItem<String>{
+public class StudyTreeItem<String> extends BaseTreeItem<String> {
 
     private Study study;
     ObservableList<Semester> semesters;
@@ -15,6 +16,8 @@ public class StudyTreeItem<String> extends BaseTreeItem<String>{
         super((String) study.getName());
         this.study = study;
         this.semesters = study.getSemesters();
+
+        //Comperator to sort the treeView
         semesters.addListener(new ListChangeListener<Semester>() { //Listener to check when element was added
             @Override
             public void onChanged(Change<? extends Semester> change) {
@@ -22,8 +25,8 @@ public class StudyTreeItem<String> extends BaseTreeItem<String>{
                 if(change.wasAdded()){ //add new Semester to tree
                     //get the last addedObject
                     List<? extends Semester> addedList = change.getAddedSubList();
-
                     addSemesterTreeItem((Semester)addedList.get(addedList.size()-1));
+                    getChildren().sort((SemesterTreeItem)getChildren().get(0));
                 }else if (change.wasRemoved()){
 
                 }
@@ -50,4 +53,6 @@ public class StudyTreeItem<String> extends BaseTreeItem<String>{
     public Object getHoldObject() {
         return study;
     }
+
+
 }

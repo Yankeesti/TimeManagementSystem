@@ -7,9 +7,10 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 
+import java.util.Comparator;
 import java.util.List;
 
-public class SemesterTreeItem<String> extends BaseTreeItem<String> {
+public class SemesterTreeItem<String> extends BaseTreeItem<String> implements Comparator<SemesterTreeItem> {
     private Semester semester;
     private ObservableList<Subject> subjects;
 
@@ -59,5 +60,10 @@ public class SemesterTreeItem<String> extends BaseTreeItem<String> {
     @Override
     public Object getHoldObject() {
         return semester;
+    }
+
+    @Override
+    public int compare(SemesterTreeItem o1, SemesterTreeItem o2) {
+        return ((Semester)o1.getHoldObject()).getSemester() -((Semester)o2.getHoldObject()).getSemester();
     }
 }
