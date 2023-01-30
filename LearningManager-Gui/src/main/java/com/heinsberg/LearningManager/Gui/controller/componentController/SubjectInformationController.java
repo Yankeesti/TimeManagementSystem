@@ -10,6 +10,8 @@ import com.heinsberg.LearningManagerProjekt.BackGround.Listeners.SubjectListener
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase;
 import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
 import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -58,7 +60,8 @@ public class SubjectInformationController extends BaseInformationComponentContro
             this.titleLabel.setText(this.subject.getSubjectName());//updates Title
             setWeekGoalLabel();
             setUpLearned();
-            learningPhaseView.setItems(((Subject) subject).getLearningPhases());
+            ObservableList<LearningPhase> learningPhases = ((Subject) subject).getLearningPhases();
+            learningPhaseView.setItems(learningPhases);
             ((Subject) subject).addListener(new SubjectListener() {//when Something changes in Subject the information gets Updated
                 @Override
                 public void changed(SubjectChange subjectChange) {
@@ -67,6 +70,19 @@ public class SubjectInformationController extends BaseInformationComponentContro
                     });
                 }
             });
+            learningPhases.addListener(new ListChangeListener<LearningPhase>() {
+                @Override
+                public void onChanged(Change<? extends LearningPhase> change) {
+                    while (change.next()) {
+                        if (change.wasAdded()) {
+                            learningPhaseView.getSortOrder().clear();
+                            learningPhaseView.getSortOrder().add(dateColum);
+                            learningPhaseView.sort();
+                        }
+                    }
+                }
+            });
+
         } else {
             throw new ClassCastException("Object must be from type Subject");
         }
@@ -88,6 +104,7 @@ public class SubjectInformationController extends BaseInformationComponentContro
                 }
             }
         });
+        dateColum.setSortType(TableColumn.SortType.DESCENDING);
 
         //set up Learned Column
         learnedColum.setCellValueFactory(new PropertyValueFactory<>("timeLearned"));
@@ -103,7 +120,7 @@ public class SubjectInformationController extends BaseInformationComponentContro
                 }
             }
         });
-
+        learnedColum.setSortable(false);
         //set up action Column
         Callback<TableColumn<LearningPhase, Void>, TableCell<LearningPhase, Void>> cellFactory = new Callback<TableColumn<LearningPhase, Void>, TableCell<LearningPhase, Void>>() { // new Cell Factory that is called when a new Cell needs to be created
             @Override
@@ -133,6 +150,8 @@ public class SubjectInformationController extends BaseInformationComponentContro
         };
 
         actionCoulumn.setCellFactory(cellFactory);
+        actionCoulumn.setSortable(false);
+
 
     }
 
