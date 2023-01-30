@@ -9,6 +9,8 @@ import com.heinsberg.LearningManager.Gui.treeItems.BaseTreeItem;
 import com.heinsberg.LearningManager.Gui.view.ViewFactory;
 
 import com.heinsberg.LearningManagerProjekt.BackGround.LearningPhaseActionResult;
+import com.heinsberg.LearningManagerProjekt.BackGround.Listeners.ChangeEnums.StudyChange;
+import com.heinsberg.LearningManagerProjekt.BackGround.Listeners.StudyListener;
 import com.heinsberg.LearningManagerProjekt.BackGround.Study;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
 import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
@@ -101,6 +103,19 @@ public class MainWindowController extends BaseController implements Initializabl
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setTreeView();
         setUpInformationPane();
+        setUpStudyListner();
+    }
+
+    private void setUpStudyListner() {
+        studyManager.getStudy().addListener(new StudyListener() {
+            @Override
+            public void changed(StudyChange studyChange) {
+                if(studyChange == StudyChange.CURRENT_LEARNINGPHASE_DELETED){
+                    startLearningPhaseButton.setVisible(true);
+                    endLearrningPhaseButton.setVisible(false);
+                }
+            }
+        });
     }
 
     private void setUpInformationPane() {
@@ -108,6 +123,7 @@ public class MainWindowController extends BaseController implements Initializabl
         studyInformationController = new StudyInformationController(studyManager, viewFactory, "fxmlComponents/StudyInformation.fxml");
         setUpNode(studyInformationController);
         studyInformationController.getNode().setManaged(true);
+        studyInformationController.getNode().setVisible(true);
         shownInformationNode = studyInformationController.getNode();// set Study information to be shown first default
 
         //SetUp SemesterInformationPane
@@ -125,6 +141,7 @@ public class MainWindowController extends BaseController implements Initializabl
             setInformationMainPaneAnchor(informationPanel);
             informationMainPane.getChildren().add(informationPanel);
             informationPanel.setManaged(false);
+            informationPanel.setVisible(false);
             informationController.setNode(informationPanel);
         } else {
             System.err.println("Node not provided");

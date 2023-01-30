@@ -7,4 +7,6 @@ module com.heinsberg.LearningManagerProjekt.Background {
     exports com.heinsberg.LearningManagerProjekt.BackGround.subject;
     exports com.heinsberg.LearningManagerProjekt.BackGround.dataHandler;
     exports com.heinsberg.LearningManagerProjekt.BackGround.typeAdapters;
+    exports com.heinsberg.LearningManagerProjekt.BackGround.Listeners;
+    exports com.heinsberg.LearningManagerProjekt.BackGround.Listeners.ChangeEnums;
 }

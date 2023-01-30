@@ -3,10 +3,13 @@ package com.heinsberg.LearningManager.Gui.view;
 import com.heinsberg.LearningManager.Gui.StudyManager;
 import com.heinsberg.LearningManager.Gui.controller.BaseController;
 import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.SubjectChooserController;
+import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.SubjectEditController;
+import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase;
 import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
@@ -26,6 +29,15 @@ public class DialogViewFactory {
         this.viewFactory = viewFactory;
     }
 
+
+    public void showSubjectEditor(Subject subject){
+        System.out.println("show Subject Editor");
+        SubjectEditController controller = new SubjectEditController(studyManager,viewFactory,"dialogBoxes/subjectEditDialogBox",subject);
+        Optional<ButtonType> buttonClicked = showDialog(controller, "Edit Subject");
+        if(buttonClicked.get() == ButtonType.OK){
+            controller.submitChanges();
+        }
+    }
     /**
      * Opens a Dialog Window where a subject from subjects can be picked
      *
@@ -71,5 +83,17 @@ public class DialogViewFactory {
         }
 
         return node;
+    }
+
+    public void showDeleteLearningPhaseDialog(LearningPhase learningPhase) {
+        Alert learningPhaseDeleteAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        learningPhaseDeleteAlert.setTitle("Lern Phase Löschen");
+        learningPhaseDeleteAlert.setHeaderText("Sind Sie sicher das Sie die Lern Phase löschen möchten?");
+
+
+        Optional<ButtonType> result = learningPhaseDeleteAlert.showAndWait();
+        if(result.get() == ButtonType.OK){
+            studyManager.deleteLearningPhase(learningPhase);
+        }
     }
 }

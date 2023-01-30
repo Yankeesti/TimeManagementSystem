@@ -1,14 +1,17 @@
 package com.heinsberg.LearningManagerProjekt.BackGround.subject;
 
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import com.heinsberg.LearningManagerProjekt.BackGround.Listeners.ChangeEnums.SubjectChange;
+import com.heinsberg.LearningManagerProjekt.BackGround.Listeners.SubjectListener;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Week;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
-import java.io.IOException;
+import java.security.Provider;
 import java.util.ArrayList;
 
 /**
@@ -19,15 +22,13 @@ import java.util.ArrayList;
 public class Subject {
     private double finalGrade;
     private int ectsPoints;
-
-
-
     private int weekGoal; //learning goal per week in Minutes
     private String subjectName;
-    private SimpleStringProperty subjectNameProperty;
-    private ArrayList<LearningPhase> learningPhases;
+    private ObservableList<LearningPhase> learningPhases;
     private Semester semester;
     private Week currenWeek;
+
+    private ArrayList<SubjectListener> listeners = new ArrayList<SubjectListener>();
 
     /**
      * Creates a new Subject with given name, semester and ects points.
@@ -38,11 +39,16 @@ public class Subject {
      */
 
     public Subject(String subjectName, Semester semester, int ectsPoints) {
-        learningPhases = new ArrayList<LearningPhase>();
+        learningPhases = FXCollections.observableArrayList();
         this.subjectName = subjectName;
-        this.subjectNameProperty = new SimpleStringProperty(subjectName);
         this.semester = semester;
         this.ectsPoints = ectsPoints;
+    }
+
+    public LearningPhase startLearningPhase() {
+        LearningPhase learningPhase = new LearningPhase(this);
+        learningPhases.add(learningPhase);
+        return learningPhase;
     }
 
 
@@ -66,9 +72,6 @@ public class Subject {
         return subjectName;
     }
 
-    public void setWeekGoal(int weekGoal) {
-        this.weekGoal = weekGoal;
-    }
 
     /**
      * Returns the semester in which this subject is taken.
@@ -91,7 +94,7 @@ public class Subject {
         return weekGoal;
     }
 
-    public ArrayList<LearningPhase> getLearningPhases() {
+    public ObservableList<LearningPhase> getLearningPhases() {
         return learningPhases;
     }
 
@@ -99,18 +102,98 @@ public class Subject {
         return currenWeek;
     }
 
-    public LearningPhase startLearningPhase() {
-        LearningPhase learningPhase = new LearningPhase(this);
-        return learningPhase;
+    public void setWeekGoal(int weekGoal) {
+        this.weekGoal = weekGoal;
+        notifyListeners(SubjectChange.CHANGED_WEEK_GOAL);
     }
-
 
     public void setSemester(Semester semester) {
         this.semester = semester;
+        notifyListeners(SubjectChange.CHANGED_SEMESTER);
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return subjectName;
+    }
+
+    public void setName(String newName) {
+        subjectName = newName;
+        notifyListeners(SubjectChange.CHANGED_NAME);
+    }
+
+    public void setEctsPoint(int ectsPoints) {
+        this.ectsPoints = ectsPoints;
+        notifyListeners(SubjectChange.CHANGED_ECTS_POINTS);
+    }
+
+    /**
+     * redefines the Week Goal
+     *
+     * @param hours   - hours to be learned per Week
+     * @param minutes - Minutes to be learned per Week
+     */
+    public void setWeekGoal(Integer hours, Integer minutes) {
+        weekGoal = 0;
+        weekGoal += hours * 60;
+        weekGoal += minutes;
+        notifyListeners(SubjectChange.CHANGED_WEEK_GOAL);
+    }
+
+    public void editInformation(String newName, int newEctsPoints,int newWeekoalHours,int newWeekGoalMinutes){
+        this.subjectName = newName;
+        ectsPoints = newEctsPoints;
+        weekGoal = 0;
+        weekGoal += newWeekoalHours*60;
+        weekGoal += newWeekGoalMinutes;
+        notifyListeners(SubjectChange.EDITED_SUBJECT);
+    }
+
+    /**
+     * This method is used to notify all registered listeners that a change has occurred in the subject.
+     * The change is passed as a parameter of type SubjectChange.
+     * This method starts a new thread to run the notification process, allowing the rest of the program to continue executing while the listeners are being notified.
+     *
+     * @param subjectChange The change that has occurred in the subject.
+     */
+
+    private void notifyListeners(SubjectChange subjectChange) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (SubjectListener listener : listeners) {
+                    listener.notifyListener(subjectChange);
+                }
+            }
+        });
+        thread.start();
+    }
+
+    /**
+     * This method is used to register a new listener to the subject.
+     * The listener will be notified when a change occurs in the subject.
+     *
+     * @param subjectListener The listener that should be registered to the subject.
+     */
+    public void addListener(SubjectListener subjectListener) {
+        listeners.add(subjectListener);
+    }
+
+    /**
+     * This method is used to remove a registered listener from the subject.
+     * The listener will no longer be notified when a change occurs in the subject.
+     *
+     * @param subjectListener The listener that should be removed from the subject.
+     */
+    public void removeListener(SubjectListener subjectListener) {
+        removeListener(subjectListener);
+    }
+
+    /**
+     * deletes the given LearningPhase
+     * @param learningPhase
+     */
+    public void deleteLearningPhase(LearningPhase learningPhase) {
+        learningPhases.remove(learningPhase);
     }
 }

@@ -8,6 +8,7 @@ import com.heinsberg.LearningManager.Gui.treeItems.SubjectTreeItem;
 import com.heinsberg.LearningManagerProjekt.BackGround.AddSemesterResult;
 import com.heinsberg.LearningManagerProjekt.BackGround.LearningPhaseActionResult;
 import com.heinsberg.LearningManagerProjekt.BackGround.Study;
+import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
 import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
 import com.heinsberg.LearningManagerProjekt.BackGround.typeAdapters.StudyTypeAdapter;
@@ -130,6 +131,12 @@ public class StudyManager {
      * @return the Time Learned when there was no current LearningPhase a number lower than 0
      */
     public long endLearningPhase() {
-        return study.finishLearningPhase();
+        study.finishLearningPhase();
+        return 0;
+    }
+
+    public void deleteLearningPhase(LearningPhase learningPhase) {
+        study.deleteLearningPhase(learningPhase);
+        System.out.println("deleted LearningPhase");
     }
 }

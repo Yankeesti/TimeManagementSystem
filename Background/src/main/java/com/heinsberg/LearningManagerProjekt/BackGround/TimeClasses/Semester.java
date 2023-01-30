@@ -124,7 +124,7 @@ public class Semester extends TimePeriod{
     }
 
     /**
-     * Method for loading from Data Set
+     * Method for loading from Data Set(Json File
      * loads the learningPhases of Subjects in to the Weeks they belong
      */
     public void loadLearningPhasesFromSubject(){
@@ -134,5 +134,24 @@ public class Semester extends TimePeriod{
                 addLearningPhaseHard(learningPhase);
             }
         }
+    }
+
+    public Week getCurrentWeek(){
+        upDateWeek();
+        return weeks[currentWeekIndex];
+    }
+
+    /**
+     * deletes the given LearningPhase out of it's Week and the Subject
+     * @param learningPhase
+     */
+    public void deleteLearningPhase(LearningPhase learningPhase) {
+        for(Week week: weeks){
+            if(week.compareTo(learningPhase) == 0){
+                week.deleteLearningPhase(learningPhase);
+                break;
+            }
+        }
+        learningPhase.getSubject().deleteLearningPhase(learningPhase);
     }
 }

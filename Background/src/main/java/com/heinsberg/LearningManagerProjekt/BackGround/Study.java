@@ -1,5 +1,7 @@
 package com.heinsberg.LearningManagerProjekt.BackGround;
 
+import com.heinsberg.LearningManagerProjekt.BackGround.Listeners.ChangeEnums.StudyChange;
+import com.heinsberg.LearningManagerProjekt.BackGround.Listeners.StudyListener;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.TimePeriod;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Week;
@@ -24,11 +26,13 @@ public class Study {
     private LearningPhase currentLearningPhase;
 
     private Semester currentSemester; //stores the current Semester
+    private ArrayList<StudyListener> listeners;
 
     public Study(String studyName) {
         this.studyName = studyName;
         subjects = FXCollections.observableArrayList();
         semesters = FXCollections.observableArrayList();
+        listeners = new ArrayList<StudyListener>();
     }
 
     //Methodes to Control learningPhase
@@ -228,4 +232,34 @@ public class Study {
         }
     }
 
+    /**
+     * Calculates how much was learned for subject in the current Week
+     * @param subject - subject
+     * @return learned for subject in current week in Minutes and -1 if this subject isn't in currentSemester
+     */
+    public int getLearnedInCurrentWeek(Subject subject) {
+        upDateSemester();
+        if(currentSemester == subject.getSemester()){
+            return currentSemester.getCurrentWeek().getLearnedFor(subject);
+        }
+        return -1;
+    }
+
+    public void deleteLearningPhase(LearningPhase learningPhase) {
+        if(currentLearningPhase == learningPhase){
+            notifyListners(StudyChange.CURRENT_LEARNINGPHASE_DELETED);
+            currentLearningPhase = null;}
+        learningPhase.getSubject().getSemester().deleteLearningPhase(learningPhase);
+    }
+
+    //Listener Methods
+    private void notifyListners(StudyChange changed){
+        for(StudyListener listener :listeners){
+            listener.notifyListener(changed);
+        }
+    }
+
+    public void addListener(StudyListener listener){
+        listeners.add(listener);
+    }
 }

@@ -33,18 +33,6 @@ public class Week extends TimePeriod {
     }
 
     /**
-     * Starts a new learning phase for the given subject and adds it to the list of learning phases for this week.
-     *
-     * @param subject the subject being learned
-     * @return the started learning phase
-     */
-    public LearningPhase startLearningPhase(Subject subject) {
-        LearningPhase aktLearningPhase = new LearningPhase(subject);
-        learningPhases.add(aktLearningPhase);
-        return aktLearningPhase;
-    }
-
-    /**
      * Returns the amount of time learned for the given subject during this week.
      *
      * @param subject the subject for which the time learned is calculated
@@ -71,5 +59,29 @@ public class Week extends TimePeriod {
 
     public void addLearningPhase(LearningPhase learningPhase) {
         learningPhases.add(learningPhase);
+    }
+
+    /**
+     * Calculates how much was learned for subject in this Week
+     * @param subject
+     * @return how much was learned for subject in Minutes
+     */
+    public int getLearnedFor(Subject subject) {
+        long learned = 0;
+        for(LearningPhase learningPhase:learningPhases){
+            if(learningPhase.getSubject() == subject){
+                learned+= learningPhase.getDiffrence()/1000;
+            }
+        }
+        return (int) (learned/60);
+    }
+
+
+    /**
+     * deletes The given Learning Phase
+     * @param learningPhase
+     */
+    public void deleteLearningPhase(LearningPhase learningPhase) {
+        learningPhases.remove(learningPhase);
     }
 }
