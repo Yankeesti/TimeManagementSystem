@@ -13,25 +13,7 @@ import javafx.scene.control.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SubjectEditController extends BaseController implements Initializable {
-
-    @FXML
-    private Spinner<Integer> ectsChooser;
-
-    @FXML
-    private Spinner<Integer> hourChooser;
-
-    @FXML
-    private Spinner<Integer> minuteChooser;
-
-    @FXML
-    private TextField subjectNameField;
-    @FXML
-    private CheckBox ungradedCheckBox;
-    @FXML
-    private Spinner<Double> gradeSpinner;
-    @FXML
-    private DialogPane dialogPane;
+public class SubjectEditController extends SubjectManipulateBaseController implements Initializable {
     private ButtonType deleteButton;
     private Subject subject;
 
@@ -50,9 +32,10 @@ public class SubjectEditController extends BaseController implements Initializab
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setUpBasic();
         setUpSpinners();
-        setUpNameField();
         setUpUngradedCheckbox();
+        setUpNameField();
         setUpDeleteButton();
     }
 
@@ -73,14 +56,8 @@ public class SubjectEditController extends BaseController implements Initializab
     private void setUpUngradedCheckbox() {
         if (subject.getFinalGrade() == Double.MAX_VALUE) {
             ungradedCheckBox.setSelected(true);
+            gradeSpinner.setDisable(true);
         }
-        ungradedCheckBox.setOnAction((evt) -> {
-            if (ungradedCheckBox.isSelected()) {//checkBox is selected make gradeSpinner unclickable
-                gradeSpinner.setDisable(true);
-            } else {
-                gradeSpinner.setDisable(false);
-            }
-        });
     }
 
     private void setUpNameField() {
@@ -89,38 +66,15 @@ public class SubjectEditController extends BaseController implements Initializab
 
     private void setUpSpinners() {
         //SetUp EctsPoint Spinner
-        SpinnerValueFactory ectsValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 20);
         ectsValueFactory.setValue(subject.getEctsPoints());
-        ectsChooser.setValueFactory(ectsValueFactory);
 
         //setUp hourChooser
-        SpinnerValueFactory hourValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 70);
         hourValueFactory.setValue(subject.getWeekGoal() / 60);
-        hourChooser.setValueFactory(hourValueFactory);
 
         //setUp minuteChooser
-        SpinnerValueFactory minuteValueFactory = new SpinnerValueFactory<Integer>() {
-            @Override
-            public void decrement(int i) {//when decrementing and under 0 start by 60
-                if (getValue() - i < 0)
-                    setValue(60);
-                else
-                    setValue(getValue() - 1);
-            }
-
-            @Override
-            public void increment(int i) { // when incrementing and over 60 start by 0
-                if (getValue() + i > 60)
-                    setValue(0);
-                else
-                    setValue(getValue() + i);
-            }
-        };
         minuteValueFactory.setValue(subject.getWeekGoal() % 60);
-        minuteChooser.setValueFactory(minuteValueFactory);
 
         //Set up Grade Spinner
-        SpinnerValueFactory.DoubleSpinnerValueFactory gradSpinnerValueFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 6);
         if (subject.getFinalGrade() == Double.MAX_VALUE) {//if Subject is ungraded
             gradSpinnerValueFactory.setValue(null);
             gradeSpinner.setDisable(true);
@@ -129,8 +83,6 @@ public class SubjectEditController extends BaseController implements Initializab
         } else {//Final grade is set --> set predefined Value
             gradSpinnerValueFactory.setValue(subject.getFinalGrade());
         }
-        gradSpinnerValueFactory.setAmountToStepBy(0.1);
-        gradeSpinner.setValueFactory(gradSpinnerValueFactory);
     }
 
 }
