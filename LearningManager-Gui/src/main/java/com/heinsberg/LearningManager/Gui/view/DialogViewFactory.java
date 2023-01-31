@@ -4,8 +4,10 @@ import com.heinsberg.LearningManager.Gui.StudyManager;
 import com.heinsberg.LearningManager.Gui.controller.BaseController;
 import com.heinsberg.LearningManager.Gui.controller.MainWindowController;
 import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.SubjectChooserController;
+import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.SubjectCreatorController;
 import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.SubjectEditController;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase;
+import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
 import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -31,6 +33,17 @@ public class DialogViewFactory {
         this.viewFactory = viewFactory;
     }
 
+    public Subject showSubjectCreator(Semester semester){
+        System.out.println("show Subject Creator");
+        SubjectCreatorController controller = new SubjectCreatorController(studyManager,viewFactory,"dialogBoxes/subjectDialogBox",semester);
+        Optional<ButtonType> buttonClicked = showDialog(controller,"Erstelle Fach im "+semester.getSemester()+". Semester");
+        if(buttonClicked.get() == ButtonType.OK){
+            return  controller.getSelectedStudy();
+        }else{
+            return null;
+        }
+    }
+
 
     /**
      * Shows a Dialog Pane where the user can edit the properties of subject
@@ -39,7 +52,7 @@ public class DialogViewFactory {
      */
     public void showSubjectEditor(Subject subject){
         System.out.println("show Subject Editor");
-        SubjectEditController controller = new SubjectEditController(studyManager,viewFactory,"dialogBoxes/subjectEditDialogBox",subject);
+        SubjectEditController controller = new SubjectEditController(studyManager,viewFactory,"dialogBoxes/subjectDialogBox",subject);
         Optional<ButtonType> buttonClicked = showDialog(controller, "Edit Subject");
         if(buttonClicked.get() == ButtonType.OK){
             controller.submitChanges();

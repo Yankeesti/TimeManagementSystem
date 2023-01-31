@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * @author Heinsberg
  */
 public class Subject {
-    private double finalGrade; //Double maxValue when ungraded
+    private double finalGrade; //Double maxValue when ungraded and 0 when not graded yet
     private int ectsPoints;
     private int weekGoal; //learning goal per week in Minutes
     private String subjectName;

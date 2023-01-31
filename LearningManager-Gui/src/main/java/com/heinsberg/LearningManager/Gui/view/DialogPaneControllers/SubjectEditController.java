@@ -23,18 +23,23 @@ public class SubjectEditController extends SubjectManipulateBaseController imple
     }
 
     public void submitChanges() {
-        if (ungradedCheckBox.isSelected())
-            subject.editInformation(subjectNameField.getText(), ectsChooser.getValue(), hourChooser.getValue(), minuteChooser.getValue(), Double.MAX_VALUE);
-        else
-            subject.editInformation(subjectNameField.getText(), ectsChooser.getValue(), hourChooser.getValue(), minuteChooser.getValue(), gradeSpinner.getValue());
-    }
+            double grade;
+            if(currentlyUngradedCheckBox.isSelected()){
+                grade = 0.0;
+            }else if(ungradedCheckBox.isSelected()){
+                grade = Double.MAX_VALUE;
+            }else{
+                grade = gradeSpinner.getValue();
+            }
+            subject.editInformation(subjectNameField.getText(), ectsChooser.getValue(), hourChooser.getValue(), minuteChooser.getValue(), grade);
+         }
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setUpBasic();
         setUpSpinners();
-        setUpUngradedCheckbox();
+        setUpCheckBoxes();
         setUpNameField();
         setUpDeleteButton();
     }
@@ -53,9 +58,12 @@ public class SubjectEditController extends SubjectManipulateBaseController imple
         return deleteButton;
     }
 
-    private void setUpUngradedCheckbox() {
+    private void setUpCheckBoxes() {
         if (subject.getFinalGrade() == Double.MAX_VALUE) {
             ungradedCheckBox.setSelected(true);
+        }else if(subject.getFinalGrade() == 0.0){
+            currentlyUngradedCheckBox.setSelected(true);
+            ungradedCheckBox.setSelected(false);
             gradeSpinner.setDisable(true);
         }
     }
@@ -79,7 +87,7 @@ public class SubjectEditController extends SubjectManipulateBaseController imple
             gradSpinnerValueFactory.setValue(null);
             gradeSpinner.setDisable(true);
         } else if (subject.getFinalGrade() == 0) {//subject grade is not set yet
-            gradSpinnerValueFactory.setValue(3.0);
+            gradSpinnerValueFactory.setValue(0.0);
         } else {//Final grade is set --> set predefined Value
             gradSpinnerValueFactory.setValue(subject.getFinalGrade());
         }

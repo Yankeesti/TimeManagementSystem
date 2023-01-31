@@ -14,14 +14,14 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<DialogPane fx:id="dialogPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<DialogPane fx:id="dialogPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <graphic>
-      <StackPane prefHeight="250.0" prefWidth="400.0">
+      <StackPane prefHeight="250.0" prefWidth="500.0">
          <children>
-            <GridPane alignment="CENTER" hgap="10.0" prefHeight="241.0" prefWidth="271.0" vgap="10.0">
+            <GridPane alignment="CENTER" hgap="10.0" prefHeight="241.0" prefWidth="500.0" vgap="10.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="126.49183654785156" minWidth="10.0" prefWidth="85.91847229003906" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="182.97079467773438" minWidth="10.0" prefWidth="175.08152770996094" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" />
               </columnConstraints>
               <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
@@ -63,11 +63,19 @@
                   </HBox>
                   <VBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
-                        <CheckBox fx:id="ungradedCheckBox" mnemonicParsing="false" text="Unbenotet">
+                        <HBox alignment="CENTER_LEFT">
                            <VBox.margin>
                               <Insets bottom="10.0" />
                            </VBox.margin>
-                        </CheckBox>
+                           <children>
+                              <CheckBox fx:id="ungradedCheckBox" mnemonicParsing="false" text="Unbenotet" />
+                              <CheckBox fx:id="currentlyUngradedCheckBox" mnemonicParsing="false" text="noch nicht benotet">
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin>
+                              </CheckBox>
+                           </children>
+                        </HBox>
                         <Spinner fx:id="gradeSpinner" />
                      </children>
                   </VBox>
