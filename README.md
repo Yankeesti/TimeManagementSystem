@@ -8,3 +8,5 @@ A Programm to track your Learning progress for a study
 + JavaFx
 + Oberver Design Patter
 + Basic use of Threads
++ Jason
++ Gson Library
