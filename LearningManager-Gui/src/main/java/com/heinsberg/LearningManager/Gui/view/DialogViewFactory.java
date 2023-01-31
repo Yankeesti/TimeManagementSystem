@@ -1,14 +1,15 @@
 package com.heinsberg.LearningManager.Gui.view;
 
-import com.heinsberg.LearningManager.Gui.StudyManager;
+import com.heinsberg.LearningManager.Gui.ContentManager;
 import com.heinsberg.LearningManager.Gui.controller.BaseController;
-import com.heinsberg.LearningManager.Gui.controller.MainWindowController;
-import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.SubjectChooserController;
-import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.SubjectCreatorController;
-import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.SubjectEditController;
-import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase;
-import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
-import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
+import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.Project.ProjectCreateController;
+import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.Subject.SubjectChooserController;
+import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.Subject.SubjectCreatorController;
+import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.Subject.SubjectEditController;
+import com.heinsberg.LearningManagerProjekt.BackGround.Project.Project;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses.LearningPhase;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses.Semester;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.subject.Subject;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -24,21 +25,32 @@ import java.util.Optional;
  * A Class wich handles the Dialog Windows of the Application
  */
 public class DialogViewFactory {
-    private StudyManager studyManager;
+    private ContentManager contentManager;
     private ViewFactory viewFactory;
 
 
-    public DialogViewFactory(StudyManager studyManager, ViewFactory viewFactory) {
-        this.studyManager = studyManager;
+    public DialogViewFactory(ContentManager contentManager, ViewFactory viewFactory) {
+        this.contentManager = contentManager;
         this.viewFactory = viewFactory;
     }
 
     public Subject showSubjectCreator(Semester semester){
         System.out.println("show Subject Creator");
-        SubjectCreatorController controller = new SubjectCreatorController(studyManager,viewFactory,"dialogBoxes/subjectDialogBox",semester);
+        SubjectCreatorController controller = new SubjectCreatorController(contentManager,viewFactory,"dialogBoxes/subjectDialogBox",semester);
         Optional<ButtonType> buttonClicked = showDialog(controller,"Erstelle Fach im "+semester.getSemester()+". Semester");
         if(buttonClicked.get() == ButtonType.OK){
             return  controller.getSelectedStudy();
+        }else{
+            return null;
+        }
+    }
+
+    public Project showProjectCreator(){
+        System.out.println("Show Project Creator");
+        ProjectCreateController controller = new ProjectCreateController(contentManager,viewFactory,"dialogBoxes/projectDialogBox");
+        Optional<ButtonType> buttonClicked = showDialog(controller,"Erstelle Project");
+        if(buttonClicked.get() == ButtonType.OK){
+            return controller.getCreatedProject();
         }else{
             return null;
         }
@@ -52,7 +64,7 @@ public class DialogViewFactory {
      */
     public void showSubjectEditor(Subject subject){
         System.out.println("show Subject Editor");
-        SubjectEditController controller = new SubjectEditController(studyManager,viewFactory,"dialogBoxes/subjectDialogBox",subject);
+        SubjectEditController controller = new SubjectEditController(contentManager,viewFactory,"dialogBoxes/subjectDialogBox",subject);
         Optional<ButtonType> buttonClicked = showDialog(controller, "Edit Subject");
         if(buttonClicked.get() == ButtonType.OK){
             controller.submitChanges();
@@ -68,7 +80,7 @@ public class DialogViewFactory {
      */
     public Subject showSubjectChooser(ObservableList subjects) {
         System.out.println("show Subject Chooser");
-        SubjectChooserController controller = new SubjectChooserController(studyManager, viewFactory, "dialogBoxes/selectSubjectDialogBox",subjects);
+        SubjectChooserController controller = new SubjectChooserController(contentManager, viewFactory, "dialogBoxes/selectSubjectDialogBox",subjects);
         Optional<ButtonType> buttonClicked = showDialog(controller, "Select Subject");
         if (buttonClicked.get() == ButtonType.OK) {
             return controller.getSelected();
@@ -115,7 +127,7 @@ public class DialogViewFactory {
 
         Optional<ButtonType> result = learningPhaseDeleteAlert.showAndWait();
         if(result.get() == ButtonType.OK){
-            studyManager.deleteLearningPhase(learningPhase);
+            contentManager.deleteLearningPhase(learningPhase);
         }
     }
 
@@ -132,8 +144,8 @@ public class DialogViewFactory {
 
         Optional<ButtonType> result = deleteSubjectAlert.showAndWait();
         if(result.get() == ButtonType.OK){
-            studyManager.deleteSubject(subject);
-            viewFactory.getMainWindowController().upDateInformationPane(studyManager.getStudy());//shows study Information Pane
+            contentManager.deleteSubject(subject);
+            viewFactory.getMainWindowController().upDateInformationPane(contentManager.getStudy());//shows study Information Pane
         }
     }
 }

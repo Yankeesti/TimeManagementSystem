@@ -1,57 +1,44 @@
 package com.heinsberg.LearningManager.Gui.view;
 
-import com.heinsberg.LearningManager.Gui.App;
-import com.heinsberg.LearningManager.Gui.StudyManager;
+import com.heinsberg.LearningManager.Gui.ContentManager;
 import com.heinsberg.LearningManager.Gui.controller.BaseController;
 import com.heinsberg.LearningManager.Gui.controller.LoadWindowController;
 import com.heinsberg.LearningManager.Gui.controller.MainWindowController;
-import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.SubjectChooserController;
-import com.heinsberg.LearningManagerProjekt.BackGround.Study;
-import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceDialog;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Optional;
 
 /**
  * Controls the Windows
  */
 public class ViewFactory {
     private String fxmlFolder = "fxmlWindows";
-    private StudyManager studyManager;
+    private ContentManager contentManager;
     private MainWindowController mainWindowController;
 
 
     private DialogViewFactory dialogViewFactory;
 
-    public ViewFactory(StudyManager studyManager) {
-        this.studyManager = studyManager;
-        dialogViewFactory = new DialogViewFactory(studyManager,this);
+    public ViewFactory(ContentManager contentManager) {
+        this.contentManager = contentManager;
+        dialogViewFactory = new DialogViewFactory(contentManager,this);
     }
 
 
     public void showLoadWindow() {
         System.out.println("show Load window Called");
-        BaseController controller = new LoadWindowController(studyManager, this, fxmlFolder + "/" + "loadWindow");
+        BaseController controller = new LoadWindowController(contentManager, this, fxmlFolder + "/" + "loadWindow");
         initializeStage(controller);
     }
 
     public void showMainWindow() {
         System.out.println("show Main Window Called");
-        mainWindowController = new MainWindowController(studyManager, this, fxmlFolder + "/" + "MainWindow");
+        mainWindowController = new MainWindowController(contentManager, this, fxmlFolder + "/" + "MainWindow");
         initializeStage(mainWindowController);
     }
     public MainWindowController getMainWindowController(){return mainWindowController;}

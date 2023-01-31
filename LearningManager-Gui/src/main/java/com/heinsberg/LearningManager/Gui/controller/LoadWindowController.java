@@ -1,8 +1,7 @@
 package com.heinsberg.LearningManager.Gui.controller;
 
-import com.heinsberg.LearningManager.Gui.StudyManager;
+import com.heinsberg.LearningManager.Gui.ContentManager;
 import com.heinsberg.LearningManager.Gui.view.ViewFactory;
-import com.heinsberg.LearningManagerProjekt.BackGround.Study;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -21,8 +20,8 @@ public class LoadWindowController extends BaseController {
     private Label errorLabel;
 
 
-    public LoadWindowController(StudyManager studyManager, ViewFactory viewFactory,String fxmlName) {
-        super(studyManager, viewFactory,fxmlName);
+    public LoadWindowController(ContentManager contentManager, ViewFactory viewFactory, String fxmlName) {
+        super(contentManager, viewFactory,fxmlName);
     }
 
 
@@ -32,7 +31,7 @@ public class LoadWindowController extends BaseController {
         if(!textCleared || studyNameField.getText().isEmpty()){ // no name For Study given
             errorLabel.setText("Please type in a Name for the Study");
         }else{
-            studyManager.createStudy(studyNameField.getText());
+            contentManager.createStudy(studyNameField.getText());
             viewFactory.showMainWindow();
             closeStage();
         }
@@ -48,7 +47,7 @@ public class LoadWindowController extends BaseController {
     @FXML
     void loadFromFileAction(){
         File file = viewFactory.showFileOpener((Stage)studyNameField.getScene().getWindow(),new String[][]{{"JSon File", "*.json"}});
-        if(studyManager.studyFromJson(file) == FileResult.SUCCESS)//succesfull loaded
+        if(contentManager.studyFromJson(file) == FileResult.SUCCESS)//succesfull loaded
         {
             viewFactory.showMainWindow();
             closeStage();

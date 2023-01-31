@@ -1,17 +1,15 @@
 package com.heinsberg.LearningManager.Gui.controller.componentController;
 
-import com.heinsberg.LearningManager.Gui.StudyManager;
-import com.heinsberg.LearningManager.Gui.controller.BaseController;
+import com.heinsberg.LearningManager.Gui.ContentManager;
 import com.heinsberg.LearningManager.Gui.controller.componentController.studyInformationControlls.SemesterSpinnerValueFactory;
 import com.heinsberg.LearningManager.Gui.view.ViewFactory;
-import com.heinsberg.LearningManagerProjekt.BackGround.Study;
-import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.Study;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses.Semester;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -31,9 +29,9 @@ public class StudyInformationController extends BaseInformationComponentControll
 
     private Study study;
 
-    public StudyInformationController(StudyManager studyManager, ViewFactory viewFactory, String fxmlName) {
-        super(studyManager, viewFactory, fxmlName);
-        this.study = studyManager.getStudy();
+    public StudyInformationController(ContentManager contentManager, ViewFactory viewFactory, String fxmlName) {
+        super(contentManager, viewFactory, fxmlName);
+        this.study = contentManager.getStudy();
     }
 
     /**
@@ -62,7 +60,7 @@ public class StudyInformationController extends BaseInformationComponentControll
     void createSemesterAction() {
         Semester temp = getSemester();
         if(temp != null)
-            studyManager.addNewSemester(temp);
+            contentManager.addNewSemester(temp);
     }
 
     /**
@@ -89,8 +87,8 @@ public class StudyInformationController extends BaseInformationComponentControll
     }
 
     private void setUpStudy() {
-        if (studyManager.getStudy() != null) {
-            titleLabel.setText(studyManager.getStudy().getName());
+        if (contentManager.getStudy() != null) {
+            titleLabel.setText(contentManager.getStudy().getName());
         }
     }
 

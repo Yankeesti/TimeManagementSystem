@@ -1,12 +1,9 @@
 package com.heinsberg.LearningManager.Gui.treeItems;
 
-import com.heinsberg.LearningManagerProjekt.BackGround.Listeners.ChangeEnums.SubjectChange;
-import com.heinsberg.LearningManagerProjekt.BackGround.Listeners.SubjectListener;
-import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.Listeners.ChangeEnums.SubjectChange;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.Listeners.SubjectListener;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.subject.Subject;
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.scene.control.TreeItem;
 
 public class SubjectTreeItem<String> extends BaseTreeItem<String> {
     private Subject subject;

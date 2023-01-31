@@ -1,14 +1,10 @@
 package com.heinsberg.LearningManager.Gui.controller.componentController.studyInformationControlls;
 
-import com.heinsberg.LearningManagerProjekt.BackGround.Study;
-import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
-import javafx.collections.FXCollections;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.Study;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses.Semester;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.control.SpinnerValueFactory;
-
-import java.util.ArrayList;
-import java.util.Comparator;
 
 /**
  * Class used to specifie which semester number can be chosen for a new Semester

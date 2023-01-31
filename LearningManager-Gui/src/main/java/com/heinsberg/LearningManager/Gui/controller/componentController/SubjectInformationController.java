@@ -1,14 +1,11 @@
 package com.heinsberg.LearningManager.Gui.controller.componentController;
 
-import com.heinsberg.LearningManager.Gui.Model.DateModel;
-import com.heinsberg.LearningManager.Gui.Model.LearningPhaseModel;
-import com.heinsberg.LearningManager.Gui.Model.TimeModel;
-import com.heinsberg.LearningManager.Gui.StudyManager;
+import com.heinsberg.LearningManager.Gui.ContentManager;
 import com.heinsberg.LearningManager.Gui.view.ViewFactory;
-import com.heinsberg.LearningManagerProjekt.BackGround.Listeners.ChangeEnums.SubjectChange;
-import com.heinsberg.LearningManagerProjekt.BackGround.Listeners.SubjectListener;
-import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase;
-import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.Listeners.ChangeEnums.SubjectChange;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.Listeners.SubjectListener;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses.LearningPhase;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.subject.Subject;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -46,8 +43,8 @@ public class SubjectInformationController extends BaseInformationComponentContro
 
     private Subject subject;
 
-    public SubjectInformationController(StudyManager studyManager, ViewFactory viewFactory, String fxmlName) {
-        super(studyManager, viewFactory, fxmlName);
+    public SubjectInformationController(ContentManager contentManager, ViewFactory viewFactory, String fxmlName) {
+        super(contentManager, viewFactory, fxmlName);
     }
 
     @Override
@@ -197,7 +194,7 @@ public class SubjectInformationController extends BaseInformationComponentContro
     }
 
     private void setUpLearned() {
-        int learned = studyManager.getStudy().getLearnedInCurrentWeek(subject);
+        int learned = contentManager.getStudy().getLearnedInCurrentWeek(subject);
         if (learned < 0) {
             learnedLabel.setText("Dieses Fach ist nicht im aktuellen Semster");
             weekGoalLabel.setStyle("-fx-background-color: red;");

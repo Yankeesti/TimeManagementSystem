@@ -1,11 +1,10 @@
 package com.heinsberg.LearningManager.Gui.treeItems;
 
-import com.heinsberg.LearningManagerProjekt.BackGround.Study;
-import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.Study;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses.Semester;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
-import java.util.Comparator;
 import java.util.List;
 
 public class StudyTreeItem<String> extends BaseTreeItem<String> {

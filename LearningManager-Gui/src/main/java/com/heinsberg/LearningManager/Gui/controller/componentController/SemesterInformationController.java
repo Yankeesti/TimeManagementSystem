@@ -1,18 +1,11 @@
 package com.heinsberg.LearningManager.Gui.controller.componentController;
 
-import com.heinsberg.LearningManager.Gui.StudyManager;
-import com.heinsberg.LearningManager.Gui.controller.BaseController;
+import com.heinsberg.LearningManager.Gui.ContentManager;
 import com.heinsberg.LearningManager.Gui.view.ViewFactory;
-import com.heinsberg.LearningManagerProjekt.BackGround.Study;
-import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
-import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
-import javafx.collections.FXCollections;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses.Semester;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.subject.Subject;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class SemesterInformationController extends BaseInformationComponentController{
     @FXML
@@ -20,15 +13,15 @@ public class SemesterInformationController extends BaseInformationComponentContr
     @FXML
     Button createSubjectButton;
     private Semester semester;
-    public SemesterInformationController(StudyManager studyManager, ViewFactory viewFactory, String fxmlName) {
-        super(studyManager, viewFactory, fxmlName);
+    public SemesterInformationController(ContentManager contentManager, ViewFactory viewFactory, String fxmlName) {
+        super(contentManager, viewFactory, fxmlName);
     }
 
     @FXML
     void createSubjectAction(){
         Subject newSubject = viewFactory.getDialogViewFactory().showSubjectCreator(semester);
         if(newSubject != null)
-        studyManager.addNewSubject(newSubject);
+        contentManager.addNewSubject(newSubject);
     }
 
     @Override

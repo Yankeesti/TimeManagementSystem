@@ -19,6 +19,7 @@
               <MenuItem mnemonicParsing="false" text="Close" />
                   <MenuItem mnemonicParsing="false" onAction="#saveAsAction" text="Save as..." />
                   <MenuItem mnemonicParsing="false" onAction="#saveAction" text="Save" />
+                  <MenuItem mnemonicParsing="false" onAction="#createNewProjectAction" text="new Project" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">

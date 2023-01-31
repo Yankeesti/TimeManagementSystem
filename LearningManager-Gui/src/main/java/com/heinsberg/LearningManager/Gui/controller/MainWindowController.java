@@ -1,6 +1,6 @@
 package com.heinsberg.LearningManager.Gui.controller;
 
-import com.heinsberg.LearningManager.Gui.StudyManager;
+import com.heinsberg.LearningManager.Gui.ContentManager;
 import com.heinsberg.LearningManager.Gui.controller.componentController.BaseInformationComponentController;
 import com.heinsberg.LearningManager.Gui.controller.componentController.SemesterInformationController;
 import com.heinsberg.LearningManager.Gui.controller.componentController.StudyInformationController;
@@ -8,12 +8,12 @@ import com.heinsberg.LearningManager.Gui.controller.componentController.SubjectI
 import com.heinsberg.LearningManager.Gui.treeItems.BaseTreeItem;
 import com.heinsberg.LearningManager.Gui.view.ViewFactory;
 
-import com.heinsberg.LearningManagerProjekt.BackGround.LearningPhaseActionResult;
-import com.heinsberg.LearningManagerProjekt.BackGround.Listeners.ChangeEnums.StudyChange;
-import com.heinsberg.LearningManagerProjekt.BackGround.Listeners.StudyListener;
-import com.heinsberg.LearningManagerProjekt.BackGround.Study;
-import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
-import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.LearningPhaseActionResult;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.Listeners.ChangeEnums.StudyChange;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.Listeners.StudyListener;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.Study;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses.Semester;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.subject.Subject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -51,15 +51,15 @@ public class MainWindowController extends BaseController implements Initializabl
     private SemesterInformationController semesterInformationController;
     private SubjectInformationController subjectInformationController;
 
-    public MainWindowController(StudyManager studyManager, ViewFactory viewFactory, String fxmlName) {
-        super(studyManager, viewFactory, fxmlName);
+    public MainWindowController(ContentManager contentManager, ViewFactory viewFactory, String fxmlName) {
+        super(contentManager, viewFactory, fxmlName);
     }
 
     @FXML
     void startLearningPhaseAction(ActionEvent event) {
-        Subject learningPhaseSubject = viewFactory.getDialogViewFactory().showSubjectChooser(studyManager.getStudy().getCurrentSemester().getSubjects());//The selected subjects for wich will be learned
+        Subject learningPhaseSubject = viewFactory.getDialogViewFactory().showSubjectChooser(contentManager.getStudy().getCurrentSemester().getSubjects());//The selected subjects for wich will be learned
         if (learningPhaseSubject != null) {
-            LearningPhaseActionResult result = studyManager.startLearningPhase(learningPhaseSubject);
+            LearningPhaseActionResult result = contentManager.startLearningPhase(learningPhaseSubject);
             if (result == LearningPhaseActionResult.SUCCESS) {//LearningPhase was started
                 startLearningPhaseButton.setVisible(false);
                 endLearrningPhaseButton.setVisible(true);
@@ -72,7 +72,7 @@ public class MainWindowController extends BaseController implements Initializabl
 
     @FXML
     void endLearningPhaseAction() {
-        System.out.println(studyManager.endLearningPhase());
+        System.out.println(contentManager.endLearningPhase());
         startLearningPhaseButton.setVisible(true);
         endLearrningPhaseButton.setVisible(false);
     }
@@ -81,8 +81,8 @@ public class MainWindowController extends BaseController implements Initializabl
     @FXML
     void saveAsAction() {
         String[][] filter = {{"Json File", "*.json"}};
-        File file = viewFactory.showFileSaver((Stage) menueBar.getScene().getWindow(), filter, studyManager.getStudy().getName() + " Study Progress");
-        System.out.println(studyManager.studyToJson(file));
+        File file = viewFactory.showFileSaver((Stage) menueBar.getScene().getWindow(), filter, contentManager.getStudy().getName() + " Study Progress");
+        System.out.println(contentManager.studyToJson(file));
     }
 
     /**
@@ -91,12 +91,17 @@ public class MainWindowController extends BaseController implements Initializabl
      */
     @FXML
     void saveAction() {
-        File currentFile = studyManager.getCurrentFile();
+        File currentFile = contentManager.getCurrentFile();
         if (currentFile == null) {//there is now current file --> save as new File
             saveAsAction();
         } else {
-            System.out.println(studyManager.studyToJson(currentFile));
+            System.out.println(contentManager.studyToJson(currentFile));
         }
+    }
+
+    @FXML
+    void createNewProjectAction(){
+        contentManager.addProject(viewFactory.getDialogViewFactory().showProjectCreator());
     }
 
     @Override
@@ -107,7 +112,7 @@ public class MainWindowController extends BaseController implements Initializabl
     }
 
     private void setUpStudyListner() {
-        studyManager.getStudy().addListener(new StudyListener() {
+        contentManager.getStudy().addListener(new StudyListener() {
             @Override
             public void changed(StudyChange studyChange) {
                 if(studyChange == StudyChange.CURRENT_LEARNINGPHASE_DELETED){
@@ -120,18 +125,18 @@ public class MainWindowController extends BaseController implements Initializabl
 
     private void setUpInformationPane() {
         //SetUp study Information Pane
-        studyInformationController = new StudyInformationController(studyManager, viewFactory, "fxmlComponents/StudyInformation.fxml");
+        studyInformationController = new StudyInformationController(contentManager, viewFactory, "fxmlComponents/StudyInformation.fxml");
         setUpNode(studyInformationController);
         studyInformationController.getNode().setManaged(true);
         studyInformationController.getNode().setVisible(true);
         shownInformationNode = studyInformationController.getNode();// set Study information to be shown first default
 
         //SetUp SemesterInformationPane
-        semesterInformationController = new SemesterInformationController(studyManager, viewFactory, "fxmlComponents/SemesterInformation.fxml");
+        semesterInformationController = new SemesterInformationController(contentManager, viewFactory, "fxmlComponents/SemesterInformation.fxml");
         setUpNode(semesterInformationController);
 
         //SetUp SubjectInformationPane
-        subjectInformationController = new SubjectInformationController(studyManager, viewFactory, "fxmlComponents/SubjectInformation.fxml");
+        subjectInformationController = new SubjectInformationController(contentManager, viewFactory, "fxmlComponents/SubjectInformation.fxml");
         setUpNode(subjectInformationController);
     }
 
@@ -157,7 +162,7 @@ public class MainWindowController extends BaseController implements Initializabl
     }
 
     private void setTreeView() {
-        treeView.setRoot(studyManager.getFoldersRoot());
+        treeView.setRoot(contentManager.getFoldersRoot());
         treeView.setShowRoot(false);
         treeView.setOnMouseClicked(e -> {
             BaseTreeItem<String> item = (BaseTreeItem<String>) treeView.getSelectionModel().getSelectedItem();

@@ -1,8 +1,7 @@
 package com.heinsberg.LearningManager.Gui.treeItems;
 
-import com.heinsberg.LearningManager.Gui.view.ViewFactory;
-import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
-import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses.Semester;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.subject.Subject;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
