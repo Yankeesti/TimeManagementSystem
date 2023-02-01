@@ -187,6 +187,8 @@ public class MainWindowController extends BaseController implements Initializabl
             System.out.println("show Study Information");
             studyInformationController.upDateInformation(holdObject);
             nodeToBeShown = studyInformationController.getNode();
+        } else if (holdObject.getClass() == Process.class) {
+            System.out.println("show Project Information");
         }
 
         shownInformationNode.setManaged(false);

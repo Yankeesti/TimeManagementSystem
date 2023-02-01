@@ -98,11 +98,7 @@ public class SubjectInformationController extends BaseInformationComponentContro
         if (subject.gradeIsSet()) { // if grade is set it's not necessery to show learned Information
             learnedInformationPane.setVisible(false);
             learnedInformationPane.setManaged(false);
-            //adjust Anchopane
-            mainPane.setTopAnchor(learningPhaseView,64.0);
         }else{
-            //adjust Anchopane
-            mainPane.setTopAnchor(learningPhaseView,114.0);
             learnedInformationPane.setVisible(true);
             learnedInformationPane.setManaged(true);
             setUpLearned();

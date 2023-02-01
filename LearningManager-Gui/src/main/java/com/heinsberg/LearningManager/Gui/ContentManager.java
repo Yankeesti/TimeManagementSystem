@@ -6,6 +6,7 @@ import com.heinsberg.LearningManager.Gui.treeItems.BaseTreeItem;
 import com.heinsberg.LearningManager.Gui.treeItems.ProjectTreeItem;
 import com.heinsberg.LearningManager.Gui.treeItems.StudyTreeItem;
 import com.heinsberg.LearningManagerProjekt.BackGround.Project.Project;
+import com.heinsberg.LearningManagerProjekt.BackGround.abstractClasses.TimeSpentContainer;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.AddSemesterResult;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.LearningPhaseActionResult;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.Study;
@@ -55,7 +56,7 @@ public class ContentManager {
 
 
     /**
-     * sets up the TreeView object to display the study information.
+     * sets up the TreeView object to display study and Projects in ContentManager
      */
     private void setUpTreeView() {
         //Set up Study root
@@ -190,5 +191,14 @@ public class ContentManager {
     public void deleteSubject(Subject subject) {
         study.deleteSubject(subject);
         System.out.println("deleted");
+    }
+
+    public int getLearnedInCurrentWeek(TimeSpentContainer object) {
+        if(object.getClass() == Subject.class){//show how much was learned in current week for the Subject
+            return study.getLearnedInCurrentWeek((Subject)  object);
+        }else if(object.getClass() == Project.class){//show how much was learned in current weejk for the Project
+            System.out.println("show learned for project");
+        }
+        return 0;
     }
 }
