@@ -4,6 +4,7 @@ import com.heinsberg.LearningManager.Gui.ContentManager;
 import com.heinsberg.LearningManager.Gui.controller.componentController.TimeSpentContainterController.BaseTimeSpentContainerController;
 import com.heinsberg.LearningManager.Gui.view.ViewFactory;
 import com.heinsberg.LearningManagerProjekt.BackGround.Project.Project;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.Listeners.ChangeEnums.SubjectChange;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.subject.Subject;
 
 public class ProjectInformationController extends BaseTimeSpentContainerController {
@@ -12,8 +13,17 @@ public class ProjectInformationController extends BaseTimeSpentContainerControll
     }
 
     @Override
-    protected void TimeSpentContainerSettingsActionCalled() {
+    protected void showChanges(SubjectChange subjectChange) {
+        switch (subjectChange){
+            case EDITED_SUBJECT:
+                upDateInformation(shownObject);
+                break;
+        }
+    }
 
+    @Override
+    protected void TimeSpentContainerSettingsActionCalled() {
+        viewFactory.getDialogViewFactory().showProjectEditor((Project) shownObject);
     }
 
     @Override
@@ -32,7 +42,7 @@ public class ProjectInformationController extends BaseTimeSpentContainerControll
     private void setUpLearned() {
         int learned = ((Project) shownObject).getLearnedInCurrentWeek();
         if (learned == 0) { //when it was not learned for subject yer
-            learnedLabel.setText("Diese Woche wurde noch nicht and " + ((Subject) shownObject).getSubjectName() + " gearbeitet");
+            learnedLabel.setText("Diese Woche wurde noch nicht and " + (shownObject.getName()+ " gearbeitet"));
         } else {
             int[] learnedFormated = getInHoursAndMinutes(learned);
             if (learnedFormated[0] == 0) {

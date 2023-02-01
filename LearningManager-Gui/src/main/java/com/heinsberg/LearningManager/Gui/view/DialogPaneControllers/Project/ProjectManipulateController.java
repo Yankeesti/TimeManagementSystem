@@ -25,6 +25,8 @@ public abstract class ProjectManipulateController extends BaseController{
 
     @FXML
     protected TextField projectNameField;
+    protected SpinnerValueFactory.IntegerSpinnerValueFactory hourViewFactory;
+    protected SpinnerMinuteViewFactory minuteViewFactory;
 
     public ProjectManipulateController(ContentManager contentManager, ViewFactory viewFactory, String fxmlName) {
         super(contentManager, viewFactory, fxmlName);
@@ -35,32 +37,12 @@ public abstract class ProjectManipulateController extends BaseController{
      */
     protected void setUpBasicFunctions(){
         setUpSpinner();
-        setUpNameField();
     }
-
-
-    private void setUpNameField() {
-        projectNameField.setPromptText("ProjectName");
-        checkInput();
-        projectNameField.textProperty().addListener((observable) -> {
-            checkInput(); //when text is edited Check input
-        });
-    }
-
-    private void checkInput() {
-        Button okButton = okButton = (Button) dialogPane.lookupButton(ButtonType.OK);
-        if (!projectNameField.getText().isEmpty()) {
-            okButton.setDisable(false);
-        } else {
-            okButton.setDisable(true);
-        }
-    }
-
     private void setUpSpinner() {
-        SpinnerValueFactory.IntegerSpinnerValueFactory hourViewFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE);
+        hourViewFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE);
         hourChooser.setValueFactory(hourViewFactory);
 
-        SpinnerMinuteViewFactory minuteViewFactory = new SpinnerMinuteViewFactory(hourViewFactory);
+        minuteViewFactory = new SpinnerMinuteViewFactory(hourViewFactory);
         minuteChooser.setValueFactory(minuteViewFactory);
     }
 

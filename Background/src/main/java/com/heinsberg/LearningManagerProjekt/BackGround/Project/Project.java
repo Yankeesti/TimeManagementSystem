@@ -4,6 +4,7 @@ import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase
 import com.heinsberg.LearningManagerProjekt.BackGround.abstractClasses.TimeSpentContainer;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Week;
 import com.heinsberg.LearningManagerProjekt.BackGround.LearningPhaseActionResult;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.Listeners.ChangeEnums.SubjectChange;
 import javafx.collections.ListChangeListener;
 
 import java.util.Date;
@@ -85,5 +86,11 @@ public class Project extends TimeSpentContainer {
             }
         }
         learnedInCurrentWeek /= 60;
+    }
+
+    public void editInformation(String newName, int newWeekGoal) {
+        name = newName;
+        weekGoal = weekGoal;
+        notifyListeners(SubjectChange.EDITED_SUBJECT);
     }
 }

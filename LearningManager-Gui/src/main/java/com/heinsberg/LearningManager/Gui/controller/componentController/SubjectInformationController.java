@@ -3,6 +3,7 @@ package com.heinsberg.LearningManager.Gui.controller.componentController;
 import com.heinsberg.LearningManager.Gui.ContentManager;
 import com.heinsberg.LearningManager.Gui.controller.componentController.TimeSpentContainterController.BaseTimeSpentContainerController;
 import com.heinsberg.LearningManager.Gui.view.ViewFactory;
+import com.heinsberg.LearningManagerProjekt.BackGround.study.Listeners.ChangeEnums.SubjectChange;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.subject.Subject;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,6 +17,11 @@ public class SubjectInformationController extends BaseTimeSpentContainerControll
 
     public SubjectInformationController(ContentManager contentManager, ViewFactory viewFactory, String fxmlName) {
         super(contentManager, viewFactory, fxmlName);
+    }
+
+    @Override
+    protected void showChanges(SubjectChange subjectChange) {
+        upDateInformation(shownObject);
     }
 
 

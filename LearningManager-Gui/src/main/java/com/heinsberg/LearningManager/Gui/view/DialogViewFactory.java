@@ -3,11 +3,13 @@ package com.heinsberg.LearningManager.Gui.view;
 import com.heinsberg.LearningManager.Gui.ContentManager;
 import com.heinsberg.LearningManager.Gui.controller.BaseController;
 import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.Project.ProjectCreateController;
+import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.Project.ProjectEditorController;
 import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.Subject.SubjectChooserController;
 import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.Subject.SubjectCreatorController;
 import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.Subject.SubjectEditController;
 import com.heinsberg.LearningManagerProjekt.BackGround.Project.Project;
 import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase;
+import com.heinsberg.LearningManagerProjekt.BackGround.abstractClasses.TimeSpentContainer;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses.Semester;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.subject.Subject;
 import javafx.collections.ObservableList;
@@ -70,6 +72,18 @@ public class DialogViewFactory {
             controller.submitChanges();
         }else if(buttonClicked.get() == controller.getDeleteButton()){
             deleteSubject(subject);
+        }
+    }
+
+
+    public void showProjectEditor(Project project) {
+        System.out.println("Show Project Editor");
+        ProjectEditorController controller = new ProjectEditorController(contentManager,viewFactory,"dialogBoxes/projectDialogBox",project);
+        Optional<ButtonType> buttonClicked = showDialog(controller, "Edit Subject");
+        if(buttonClicked.get() == ButtonType.OK){
+            controller.submitChanges();
+        }else if(buttonClicked.get() == controller.getDeleteButton()){
+            deleteSubject(project);
         }
     }
     /**
@@ -137,15 +151,20 @@ public class DialogViewFactory {
      * when he selects Ok the Subject gets deleted and main Window shows the Information pane of Study
      * @param subject - subject to be deleted
      */
-    private void deleteSubject(Subject subject){
+    private void deleteSubject(TimeSpentContainer timeSpentContainer){
         Alert deleteSubjectAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        deleteSubjectAlert.setHeaderText("Are you shure you want to delete: "+subject.getSubjectName()+" ?");
-        deleteSubjectAlert.setTitle("DeleteSubject");
+        deleteSubjectAlert.setHeaderText("Are you shure you want to delete: "+timeSpentContainer.getName()+" ?");
+        if(timeSpentContainer instanceof Subject)
+        deleteSubjectAlert.setTitle("Delete Subject");
+        if(timeSpentContainer instanceof Project)
+        deleteSubjectAlert.setTitle("Delete Project");
 
         Optional<ButtonType> result = deleteSubjectAlert.showAndWait();
         if(result.get() == ButtonType.OK){
-            contentManager.deleteSubject(subject);
+            contentManager.deleteTimeSpentContainer(timeSpentContainer);
             viewFactory.getMainWindowController().upDateInformationPane(contentManager.getStudy());//shows study Information Pane
         }
     }
+
+
 }

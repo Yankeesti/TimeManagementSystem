@@ -54,6 +54,22 @@ public abstract class BaseTimeSpentContainerController extends BaseInformationCo
         setUpLearningPhaseTableView();
     }
 
+    /**
+     * sets up a Listener to shown Object
+     * when a change is detected showChanges is calle
+     */
+    private void setUpChangeListener() {
+        shownObject.addListener(new SubjectListener() {
+            @Override
+            public void changed(SubjectChange subjectChange) {
+                Platform.runLater(()->{
+                    showChanges(subjectChange);
+                });
+            }
+        });
+    }
+
+    protected abstract void showChanges(SubjectChange subjectChange);
 
     //Methods to Handle user Input
     @FXML
@@ -77,21 +93,11 @@ public abstract class BaseTimeSpentContainerController extends BaseInformationCo
         if (objectToUpdate instanceof TimeSpentContainer) {
             this.shownObject = (TimeSpentContainer) objectToUpdate;
             this.titleLabel.setText(shownObject.getName());
-//            setWeekGoalLable();
-//            setUpLearned();
+            setUpChangeListener();
             setUpTimeProgressInformation();
             ObservableList<LearningPhase> learningPhases = shownObject.getLearningPhases();
             learningPhaseView.setItems(learningPhases);
             learningPhaseView.setItems(learningPhases);
-            shownObject.addListener(new SubjectListener() {//when Something changes in Subject the information gets Updated
-                @Override
-                public void changed(SubjectChange subjectChange) {
-                    Platform.runLater(() -> {//lets Actions in Lambda Expression run on javaFx Thread
-                        upDateInformation(shownObject);
-                    });
-                }
-            });
-
             //sort learningPhases new when learningphase is added
             learningPhases.addListener(new ListChangeListener<LearningPhase>() {
                 @Override

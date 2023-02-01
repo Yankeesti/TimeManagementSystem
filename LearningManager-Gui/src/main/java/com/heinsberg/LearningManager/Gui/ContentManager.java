@@ -188,11 +188,6 @@ public class ContentManager {
         System.out.println("deleted LearningPhase");
     }
 
-    public void deleteSubject(Subject subject) {
-        study.deleteSubject(subject);
-        System.out.println("deleted");
-    }
-
     public int getLearnedInCurrentWeek(TimeSpentContainer object) {
         if(object.getClass() == Subject.class){//show how much was learned in current week for the Subject
             return study.getLearnedInCurrentWeek((Subject)  object);
@@ -200,5 +195,15 @@ public class ContentManager {
             System.out.println("show learned for project");
         }
         return 0;
+    }
+
+    public void deleteTimeSpentContainer(TimeSpentContainer timeSpentContainer) {
+        if(timeSpentContainer instanceof Subject){
+            study.deleteSubject((Subject) timeSpentContainer);
+            System.out.println("deleted");
+        } else if (timeSpentContainer instanceof Project) {
+            projects.remove(timeSpentContainer);
+            System.out.println("deleted");
+        }
     }
 }
