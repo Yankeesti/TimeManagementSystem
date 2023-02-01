@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<DialogPane fx:id="dialogPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="238.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+    <graphic>
+        <StackPane prefWidth="500.0">
+            <children>
+                <GridPane alignment="CENTER" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="400.0" vgap="10.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="126.49183654785156" minWidth="10.0" prefWidth="85.91847229003906" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="45.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="45.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label text="ProjectName" />
+                        <TextField fx:id="projectNameField" prefHeight="26.0" prefWidth="139.0" GridPane.columnIndex="1" />
+                        <Label text="Wochen Ziel" GridPane.rowIndex="1" />
+                        <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <children>
+                                <VBox>
+                                    <children>
+                                        <Label text="Stunden" />
+                                        <Spinner fx:id="hourChooser" />
+                                    </children>
+                                    <padding>
+                                        <Insets right="10.0" />
+                                    </padding>
+                                </VBox>
+                                <VBox>
+                                    <children>
+                                        <Label text="Minuten" />
+                                        <Spinner fx:id="minuteChooser" />
+                                    </children>
+                                    <padding>
+                                        <Insets left="10.0" />
+                                    </padding>
+                                </VBox>
+                            </children>
+                            <GridPane.margin>
+                                <Insets />
+                            </GridPane.margin>
+                        </HBox>
+                    </children>
+               <StackPane.margin>
+                  <Insets top="30.0" />
+               </StackPane.margin>
+                </GridPane>
+            </children>
+        </StackPane>
+    </graphic>
+    <buttonTypes>
+        <ButtonType fx:constant="CLOSE" />
+        <ButtonType fx:constant="OK" />
+    </buttonTypes>
+</DialogPane>

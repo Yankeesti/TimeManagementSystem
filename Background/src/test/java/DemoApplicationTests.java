@@ -1,9 +1,3 @@
-import com.heinsberg.LearningManagerProjekt.BackGround.Study;
-import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Semester;
-import com.heinsberg.LearningManagerProjekt.BackGround.subject.Subject;
-
-import java.util.Date;
-
 import org.junit.jupiter.api.Test;
 
 public class DemoApplicationTests {
