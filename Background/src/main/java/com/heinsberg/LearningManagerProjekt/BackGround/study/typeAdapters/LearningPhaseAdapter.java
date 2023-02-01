@@ -3,7 +3,7 @@ package com.heinsberg.LearningManagerProjekt.BackGround.study.typeAdapters;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses.LearningPhase;
+import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase;
 
 import java.io.IOException;
 

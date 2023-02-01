@@ -1,5 +1,6 @@
 package com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses;
 
+import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.TimePeriod;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.AddSemesterResult;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.AddSubjectResult;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.Study;

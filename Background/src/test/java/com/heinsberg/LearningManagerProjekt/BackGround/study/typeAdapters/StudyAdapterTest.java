@@ -2,7 +2,7 @@ package com.heinsberg.LearningManagerProjekt.BackGround.study.typeAdapters;
 
 import com.google.gson.GsonBuilder;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.Study;
-import com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses.LearningPhase;
+import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses.Semester;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.subject.Subject;
 import org.junit.jupiter.api.Assertions;

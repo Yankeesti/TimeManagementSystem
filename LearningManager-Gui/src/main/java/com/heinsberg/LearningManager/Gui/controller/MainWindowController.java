@@ -1,14 +1,12 @@
 package com.heinsberg.LearningManager.Gui.controller;
 
 import com.heinsberg.LearningManager.Gui.ContentManager;
-import com.heinsberg.LearningManager.Gui.controller.componentController.BaseInformationComponentController;
-import com.heinsberg.LearningManager.Gui.controller.componentController.SemesterInformationController;
-import com.heinsberg.LearningManager.Gui.controller.componentController.StudyInformationController;
-import com.heinsberg.LearningManager.Gui.controller.componentController.SubjectInformationController;
+import com.heinsberg.LearningManager.Gui.controller.componentController.*;
 import com.heinsberg.LearningManager.Gui.treeItems.BaseTreeItem;
 import com.heinsberg.LearningManager.Gui.view.ViewFactory;
 
-import com.heinsberg.LearningManagerProjekt.BackGround.study.LearningPhaseActionResult;
+import com.heinsberg.LearningManagerProjekt.BackGround.LearningPhaseActionResult;
+import com.heinsberg.LearningManagerProjekt.BackGround.Project.Project;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.Listeners.ChangeEnums.StudyChange;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.Listeners.StudyListener;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.Study;
@@ -50,6 +48,7 @@ public class MainWindowController extends BaseController implements Initializabl
     private StudyInformationController studyInformationController;
     private SemesterInformationController semesterInformationController;
     private SubjectInformationController subjectInformationController;
+    private ProjectInformationController projectInformationController;
 
     public MainWindowController(ContentManager contentManager, ViewFactory viewFactory, String fxmlName) {
         super(contentManager, viewFactory, fxmlName);
@@ -136,8 +135,12 @@ public class MainWindowController extends BaseController implements Initializabl
         setUpNode(semesterInformationController);
 
         //SetUp SubjectInformationPane
-        subjectInformationController = new SubjectInformationController(contentManager, viewFactory, "fxmlComponents/SubjectInformation.fxml");
+        subjectInformationController = new SubjectInformationController(contentManager, viewFactory, "fxmlComponents/TimeSpentContainerInformation.fxml");
         setUpNode(subjectInformationController);
+
+        //SetUp ProjectInformationPane
+        projectInformationController = new ProjectInformationController(contentManager,viewFactory,"fxmlComponents/TimeSpentContainerInformation.fxml");
+        setUpNode(projectInformationController);
     }
 
     private void setUpNode(BaseInformationComponentController informationController) {
@@ -187,8 +190,10 @@ public class MainWindowController extends BaseController implements Initializabl
             System.out.println("show Study Information");
             studyInformationController.upDateInformation(holdObject);
             nodeToBeShown = studyInformationController.getNode();
-        } else if (holdObject.getClass() == Process.class) {
+        } else if (holdObject.getClass() == Project.class) {
             System.out.println("show Project Information");
+            projectInformationController.upDateInformation(holdObject);
+            nodeToBeShown = projectInformationController.getNode();
         }
 
         shownInformationNode.setManaged(false);

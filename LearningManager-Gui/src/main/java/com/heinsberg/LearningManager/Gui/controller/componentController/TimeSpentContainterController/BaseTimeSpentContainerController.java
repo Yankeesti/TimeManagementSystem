@@ -3,12 +3,10 @@ package com.heinsberg.LearningManager.Gui.controller.componentController.TimeSpe
 import com.heinsberg.LearningManager.Gui.ContentManager;
 import com.heinsberg.LearningManager.Gui.controller.componentController.BaseInformationComponentController;
 import com.heinsberg.LearningManager.Gui.view.ViewFactory;
-import com.heinsberg.LearningManagerProjekt.BackGround.Project.Project;
 import com.heinsberg.LearningManagerProjekt.BackGround.abstractClasses.TimeSpentContainer;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.Listeners.ChangeEnums.SubjectChange;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.Listeners.SubjectListener;
-import com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses.LearningPhase;
-import com.heinsberg.LearningManagerProjekt.BackGround.study.subject.Subject;
+import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -16,7 +14,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 
@@ -26,25 +23,26 @@ import java.util.Date;
 public abstract class BaseTimeSpentContainerController extends BaseInformationComponentController {
 
     @FXML
-    private Label titleLabel;
+    protected Label titleLabel;
     @FXML
-    private Label weekGoalLabel, learnedLabel;
+    protected Label weekGoalLabel, learnedLabel;
     @FXML
-    private TableView<LearningPhase> learningPhaseView;
+    protected TableView<LearningPhase> learningPhaseView;
     @FXML
-    private TableColumn<LearningPhase, Date> dateColum;
+    protected TableColumn<LearningPhase, Date> dateColum;
     @FXML
-    private TableColumn<LearningPhase, Long> learnedColum;
+    protected TableColumn<LearningPhase, Long> learnedColum;
     @FXML
-    private TableColumn<LearningPhase, Void> actionCoulumn;
+    protected TableColumn<LearningPhase, Void> actionCoulumn;
     @FXML
-    private GridPane learnedInformationPane;
-    @FXML
-    private AnchorPane mainPane;
+    protected GridPane learnedInformationPane;
+
+
+
 
     protected TimeSpentContainer shownObject;
 
-    public BaseTimeSpentContainerController(ContentManager contentManager, ViewFactory viewFactory, String fxmlName) {
+    protected BaseTimeSpentContainerController(ContentManager contentManager, ViewFactory viewFactory, String fxmlName) {
         super(contentManager, viewFactory, fxmlName);
     }
 
@@ -57,12 +55,16 @@ public abstract class BaseTimeSpentContainerController extends BaseInformationCo
     }
 
 
+    //Methods to Handle user Input
+    @FXML
+    void TimeSpentContainerSettingsAction(){
+        TimeSpentContainerSettingsActionCalled();
+    }
 
     /**
-     * Method to edit the properties of the hold object
+     * Method need to be implemented to handel TimeSpentContainerEdit call
      */
-    @FXML
-    abstract void TimeSpentContainerSettingsAction();
+    protected abstract void TimeSpentContainerSettingsActionCalled();
 
     /**
      * Updates the information to be shown
@@ -75,8 +77,9 @@ public abstract class BaseTimeSpentContainerController extends BaseInformationCo
         if (objectToUpdate instanceof TimeSpentContainer) {
             this.shownObject = (TimeSpentContainer) objectToUpdate;
             this.titleLabel.setText(shownObject.getName());
-            setWeekGoalLable();
-            setUpLearned();
+//            setWeekGoalLable();
+//            setUpLearned();
+            setUpTimeProgressInformation();
             ObservableList<LearningPhase> learningPhases = shownObject.getLearningPhases();
             learningPhaseView.setItems(learningPhases);
             learningPhaseView.setItems(learningPhases);
@@ -107,16 +110,17 @@ public abstract class BaseTimeSpentContainerController extends BaseInformationCo
         }
     }
 
+
     /**
      * needs to implemented by the child class
-     * updates the information customized on weather the shown child shows information on a Subject or a project
+     * updates the information on the Time Progress ( Week Goal and time learned/worked)
      */
-    protected abstract void setUpLearned();
+    protected abstract void setUpTimeProgressInformation();
 
     /**
      * Setes the week Goal label depending on if a week goal is set or not
      */
-    private void setWeekGoalLable() {
+    protected void setWeekGoalLable() {
         int weekGoal = shownObject.getWeekGoal();
         if (weekGoal > 0)//when weekGoal is set show goal
         {

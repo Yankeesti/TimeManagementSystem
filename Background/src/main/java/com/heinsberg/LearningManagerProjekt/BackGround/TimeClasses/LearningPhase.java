@@ -1,7 +1,6 @@
-package com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses;
+package com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses;
 
 import com.heinsberg.LearningManagerProjekt.BackGround.abstractClasses.TimeSpentContainer;
-import com.heinsberg.LearningManagerProjekt.BackGround.study.subject.Subject;
 
 /**
  * Represents a specific period of learning for a subject.

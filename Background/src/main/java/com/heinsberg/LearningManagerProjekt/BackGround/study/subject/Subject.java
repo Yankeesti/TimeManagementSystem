@@ -1,15 +1,9 @@
 package com.heinsberg.LearningManagerProjekt.BackGround.study.subject;
 
+import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase;
 import com.heinsberg.LearningManagerProjekt.BackGround.abstractClasses.TimeSpentContainer;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.Listeners.ChangeEnums.SubjectChange;
-import com.heinsberg.LearningManagerProjekt.BackGround.study.Listeners.SubjectListener;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses.Semester;
-import com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses.Week;
-import com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses.LearningPhase;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
-import java.util.ArrayList;
 
 /**
  * Represents a subject in a study program.
@@ -33,6 +27,10 @@ public class Subject extends TimeSpentContainer {
         super(subjectName);
         this.semester = semester;
         this.ectsPoints = ectsPoints;
+    }
+
+    public LearningPhase startLearningPhase(){
+        return super.startLearningPhaseIntern();
     }
 
     //Getter and Setter

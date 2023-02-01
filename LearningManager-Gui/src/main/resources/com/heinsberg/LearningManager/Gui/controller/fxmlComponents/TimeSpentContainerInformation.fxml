@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainPane" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <children>
       <HBox alignment="CENTER" layoutX="571.0" layoutY="19.0" prefHeight="64.0" prefWidth="1200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -75,7 +75,7 @@
                         </GridPane>
                         <HBox alignment="CENTER" layoutX="8.0" layoutY="-36.0" prefHeight="80.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#subjectSettingsAction" text="Fach &#10;Einstellungen&#10;" textAlignment="CENTER">
+                              <Button mnemonicParsing="false" onAction="#TimeSpentContainerSettingsAction" text="Fach &#10;Einstellungen&#10;" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets left="15.0" />
                                  </HBox.margin>

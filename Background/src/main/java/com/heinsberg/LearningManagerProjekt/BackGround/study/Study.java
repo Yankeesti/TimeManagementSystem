@@ -1,11 +1,12 @@
 package com.heinsberg.LearningManagerProjekt.BackGround.study;
 
+import com.heinsberg.LearningManagerProjekt.BackGround.LearningPhaseActionResult;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.Listeners.ChangeEnums.StudyChange;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.Listeners.StudyListener;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses.Semester;
-import com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses.TimePeriod;
+import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.TimePeriod;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.subject.Subject;
-import com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses.LearningPhase;
+import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

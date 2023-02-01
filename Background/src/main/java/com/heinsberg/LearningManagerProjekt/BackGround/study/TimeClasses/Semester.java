@@ -1,12 +1,15 @@
 package com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses;
 
+import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase;
+import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.TimePeriod;
+import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Week;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.subject.Subject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.Date;
 
-public class Semester extends TimePeriod{
+public class Semester extends TimePeriod {
     int semester;
     ObservableList<Subject> subjects;
     Week weeks[];

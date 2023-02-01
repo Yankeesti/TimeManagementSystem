@@ -1,4 +1,4 @@
-package com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses;
+package com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,10 +26,17 @@ public class Week extends TimePeriod {
         endDate.setTime(this.getTime());
         endDate.setDate(this.getDate() + 7);
         setEndTime(endDate.getTime());
-
-        //setUp
         learningPhases = new ArrayList<LearningPhase>();
         this.numberInSemester = numberInSemester;
+    }
+
+    public Week(Date startDate){
+        super(getMonday(startDate));
+        //set end to Sunday
+        Date endDate = new Date();
+        endDate.setTime(this.getTime());
+        endDate.setDate(this.getDate() + 7);
+        setEndTime(endDate.getTime());
     }
 
     /**

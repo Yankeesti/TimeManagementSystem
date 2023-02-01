@@ -1,4 +1,4 @@
-package com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses;
+package com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses;
 
 import java.time.LocalDateTime;
 import java.util.Date;

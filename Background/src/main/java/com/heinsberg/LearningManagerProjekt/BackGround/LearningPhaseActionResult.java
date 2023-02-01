@@ -1,4 +1,4 @@
-package com.heinsberg.LearningManagerProjekt.BackGround.study;
+package com.heinsberg.LearningManagerProjekt.BackGround;
 
 public enum LearningPhaseActionResult {
     SUCCESS,

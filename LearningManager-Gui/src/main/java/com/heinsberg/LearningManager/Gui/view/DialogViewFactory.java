@@ -7,7 +7,7 @@ import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.Subject.Subj
 import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.Subject.SubjectCreatorController;
 import com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.Subject.SubjectEditController;
 import com.heinsberg.LearningManagerProjekt.BackGround.Project.Project;
-import com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses.LearningPhase;
+import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses.Semester;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.subject.Subject;
 import javafx.collections.ObservableList;

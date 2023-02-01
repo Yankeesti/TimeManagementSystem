@@ -2,8 +2,8 @@ package com.heinsberg.LearningManagerProjekt.BackGround.abstractClasses;
 
 import com.heinsberg.LearningManagerProjekt.BackGround.study.Listeners.ChangeEnums.SubjectChange;
 import com.heinsberg.LearningManagerProjekt.BackGround.study.Listeners.SubjectListener;
-import com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses.LearningPhase;
-import com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses.Week;
+import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.LearningPhase;
+import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.Week;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -28,7 +28,11 @@ public abstract class TimeSpentContainer {
         learningPhases = FXCollections.observableArrayList();
     }
 
-    public LearningPhase startLearningPhase() {
+    /**
+     * Method to start A learnongPhase inside of the Project/Subject
+     * @return
+     */
+    protected LearningPhase startLearningPhaseIntern() {
         LearningPhase learningPhase = new LearningPhase(this);
         learningPhases.add(learningPhase);
         return learningPhase;
@@ -42,6 +46,8 @@ public abstract class TimeSpentContainer {
     public void addLearningPhase(LearningPhase learningPhase) {
         learningPhases.add(learningPhase);
     }
+
+
 
 //Getters And Setters
     //Getters

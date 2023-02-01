@@ -1,5 +1,6 @@
 package com.heinsberg.LearningManagerProjekt.BackGround.study.TimeClasses;
 
+import com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses.TimePeriod;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

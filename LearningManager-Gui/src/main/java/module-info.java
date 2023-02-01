@@ -11,6 +11,7 @@ module com.heinsberg.LearningManager.Gui {
     opens com.heinsberg.LearningManager.Gui.controller.componentController to javafx.fxml;
     opens com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.Subject to javafx.fxml;
     opens com.heinsberg.LearningManager.Gui.view.DialogPaneControllers.Project to javafx.fxml;
+    opens com.heinsberg.LearningManager.Gui.controller.componentController.TimeSpentContainterController to javafx.fxml;
 
     exports com.heinsberg.LearningManager.Gui;
 

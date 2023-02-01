@@ -11,4 +11,6 @@ module com.heinsberg.LearningManagerProjekt.Background {
     exports com.heinsberg.LearningManagerProjekt.BackGround.study;
     exports com.heinsberg.LearningManagerProjekt.BackGround.Project;
     exports com.heinsberg.LearningManagerProjekt.BackGround.abstractClasses;
+    exports com.heinsberg.LearningManagerProjekt.BackGround.TimeClasses;
+    exports com.heinsberg.LearningManagerProjekt.BackGround;
 }
