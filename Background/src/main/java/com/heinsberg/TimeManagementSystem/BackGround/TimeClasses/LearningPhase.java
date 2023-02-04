@@ -28,6 +28,18 @@ public class LearningPhase extends TimePeriod {
      * @param startDate - start date in ms after January 1, 1970, 00:00:00 GMT
      * @param endDate - end date in ms January 1, 1970, 00:00:00 GMT
      */
+    public LearningPhase(long startDate,long endDate ,TimeSpentContainer timeSpentContainer){
+        super(startDate,endDate);
+        this.timeSpentContainer = timeSpentContainer;
+    }
+
+    /**
+     * Constructor for loading from json File
+     * when endDate < 0 no enddate is set (learningPhase didnt endet yet)
+     *
+     * @param startDate - start date in ms after January 1, 1970, 00:00:00 GMT
+     * @param endDate - end date in ms January 1, 1970, 00:00:00 GMT
+     */
     public LearningPhase(long startDate,long endDate){
         super(startDate,endDate);
     }
@@ -69,4 +81,10 @@ public class LearningPhase extends TimePeriod {
         this.timeSpentContainer = timeSpentContainer;
     }
 
+
+    public boolean equals(LearningPhase learningPhase) {
+        if(!((TimePeriod)this).equals((TimePeriod) learningPhase))
+            return false;
+        return timeSpentContainer.getName().equals(learningPhase.getTimeSpentContainer().getName());
+    }
 }

@@ -188,4 +188,12 @@ public abstract class TimePeriod extends Date {
         Monday = new Date(pDay.getYear(), pDay.getMonth(), pDay.getDate() - day);
         return Monday;
     }
+
+    public boolean equals(TimePeriod timePeriod){
+        if(!getStartDate().equals(timePeriod.getStartDate()))
+            return false;
+        if(!getEndDate().equals(timePeriod.getEndDate()))
+            return false;
+        return true;
+    }
 }

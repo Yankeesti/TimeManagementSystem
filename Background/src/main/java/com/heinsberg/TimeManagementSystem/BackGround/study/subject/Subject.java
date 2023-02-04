@@ -1,6 +1,7 @@
 package com.heinsberg.TimeManagementSystem.BackGround.study.subject;
 
 import com.heinsberg.TimeManagementSystem.BackGround.TimeClasses.LearningPhase;
+import com.heinsberg.TimeManagementSystem.BackGround.WeekFactory;
 import com.heinsberg.TimeManagementSystem.BackGround.abstractClasses.TimeSpentContainer;
 import com.heinsberg.TimeManagementSystem.BackGround.study.Listeners.ChangeEnums.SubjectChange;
 import com.heinsberg.TimeManagementSystem.BackGround.study.TimeClasses.Semester;
@@ -23,8 +24,8 @@ public class Subject extends TimeSpentContainer {
      * @param ectsPoints  - The number of ECTS points for this subject.
      */
 
-    public Subject(String subjectName, Semester semester, int ectsPoints) {
-        super(subjectName);
+    public Subject(String subjectName, Semester semester, int ectsPoints, WeekFactory weekFactory) {
+        super(subjectName, weekFactory);
         this.semester = semester;
         this.ectsPoints = ectsPoints;
     }

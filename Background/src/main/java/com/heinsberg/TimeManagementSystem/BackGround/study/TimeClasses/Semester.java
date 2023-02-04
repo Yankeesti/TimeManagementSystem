@@ -13,7 +13,6 @@ public class Semester extends TimePeriod {
     int semester;
     ObservableList<Subject> subjects;
     Week weeks[];
-    private int currentWeekIndex;//current Week index when this Semester does not include the akt Date = -1
 
     /**
      * Creates a new semester with a given start and end date, and a semester number
@@ -31,7 +30,6 @@ public class Semester extends TimePeriod {
             weeks[i] = new Week(startMonday, i);
             startMonday.setDate(startMonday.getDate() + 7);
         }
-        currentWeekIndex = 0;
         subjects = FXCollections.observableArrayList();;
     }
 

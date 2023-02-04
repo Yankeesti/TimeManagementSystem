@@ -1,6 +1,7 @@
 package com.heinsberg.TimeManagementSystem.BackGround.Project;
 
 import com.heinsberg.TimeManagementSystem.BackGround.TimeClasses.LearningPhase;
+import com.heinsberg.TimeManagementSystem.BackGround.WeekFactory;
 import com.heinsberg.TimeManagementSystem.BackGround.abstractClasses.TimeSpentContainer;
 import com.heinsberg.TimeManagementSystem.BackGround.TimeClasses.Week;
 import com.heinsberg.TimeManagementSystem.BackGround.LearningPhaseActionResult;
@@ -18,18 +19,12 @@ public class Project extends TimeSpentContainer {
 
     private LearningPhase currentLearningPhase;
 
-    public Project(String name) {
-        super(name);
+    public Project(String name, WeekFactory weekFactory) {
+        super(name,weekFactory);
     }
 
-    public int getLearnedInCurrentWeek() {
-        return learnedInCurrentWeek;
-    }
-
-
-    
-    
     public LearningPhaseActionResult startLearningPhase(){
+        currentWeek = weekFactory.getCurrentWeek();
         if(currentLearningPhase == null){//no learningPhase was started yet
             currentLearningPhase = super.startLearningPhaseIntern();
             return LearningPhaseActionResult.SUCCESS;

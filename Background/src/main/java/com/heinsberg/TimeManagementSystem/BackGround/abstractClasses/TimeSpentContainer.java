@@ -1,5 +1,6 @@
 package com.heinsberg.TimeManagementSystem.BackGround.abstractClasses;
 
+import com.heinsberg.TimeManagementSystem.BackGround.WeekFactory;
 import com.heinsberg.TimeManagementSystem.BackGround.study.Listeners.ChangeEnums.SubjectChange;
 import com.heinsberg.TimeManagementSystem.BackGround.study.Listeners.SubjectListener;
 import com.heinsberg.TimeManagementSystem.BackGround.TimeClasses.LearningPhase;
@@ -8,12 +9,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Class is used to symbolise the base of a Object that can contain LearnPhases
  * Classes that inherite from ist are Subject and Projekt, a Subject need to have a Semester where it is in because it is in a study
  * while a Projekt dosen't need a Study and can be used alone
- *
+ * <p>
  * This Class handles the Basic information for a Project/Subject
  */
 public abstract class TimeSpentContainer {
@@ -23,18 +25,23 @@ public abstract class TimeSpentContainer {
     protected Week currentWeek;
     protected ArrayList<SubjectListener> listeners = new ArrayList<SubjectListener>();
 
-    public TimeSpentContainer(String name) {
+    protected WeekFactory weekFactory;
+
+    public TimeSpentContainer(String name, WeekFactory weekFactory) {
         this.name = name;
         learningPhases = FXCollections.observableArrayList();
+        this.weekFactory = weekFactory;
     }
 
     /**
-     * Method to start A learnongPhase inside of the Project/Subject
+     * Method to start A learnongPhase inside of the Project/Subject and adds it to the Week the LearningPhase belongs in
+     *
      * @return
      */
     protected LearningPhase startLearningPhaseIntern() {
         LearningPhase learningPhase = new LearningPhase(this);
         learningPhases.add(learningPhase);
+        weekFactory.getWeek(learningPhase).addLearningPhase(learningPhase);
         return learningPhase;
     }
 
@@ -44,12 +51,17 @@ public abstract class TimeSpentContainer {
      * @param learningPhase - The LearningPhase to be added to this subject.
      */
     public void addLearningPhase(LearningPhase learningPhase) {
-        learningPhases.add(learningPhase);
+        if (!learningPhases.contains(learningPhase))
+            learningPhases.add(learningPhase);
+        weekFactory.getWeek(learningPhase).addLearningPhase(learningPhase);
+    }
+
+    public int getLearnedInCurrentWeek() {
+        return weekFactory.getCurrentWeek().getLearnedFor(this);
     }
 
 
-
-//Getters And Setters
+    //Getters And Setters
     //Getters
     public int getWeekGoal() {
         return weekGoal;
@@ -58,25 +70,27 @@ public abstract class TimeSpentContainer {
     /**
      * @return - the Name of the Object
      */
-    public String getName(){
+    public String getName() {
         return name;
     }
 
     public ObservableList<LearningPhase> getLearningPhases() {
         return learningPhases;
     }
+
     //Setters
-    public void setName(String newName){
+    public void setName(String newName) {
         this.name = newName;
         notifyListeners(SubjectChange.CHANGED_NAME);
     }
 
-    public void setWeekGoal(int weekGoal){
+    public void setWeekGoal(int weekGoal) {
         this.weekGoal = weekGoal;
         notifyListeners(SubjectChange.CHANGED_WEEK_GOAL);
     }
 
     //Methods for Listners
+
     /**
      * This method is used to notify all registered listeners that a change has occurred in the subject.
      * The change is passed as a parameter of type SubjectChange.
@@ -118,13 +132,42 @@ public abstract class TimeSpentContainer {
     }
 
     /**
-     * deletes the given LearningPhase
+     * deletes the given LearningPhase in Subject/Project and the week it is in
+     *
      * @param learningPhase
      */
     public void deleteLearningPhase(LearningPhase learningPhase) {
         learningPhases.remove(learningPhase);
+        weekFactory.getWeek(learningPhase).removeLearningPhase(learningPhase);
+    }
+
+    public boolean equals(TimeSpentContainer timeSpentContainer) {
+        if (weekGoal != timeSpentContainer.getWeekGoal())
+            return false;
+        if (!name.equals(timeSpentContainer.getName()))
+            return false;
+
+        timeSpentContainer.sortLearningPhases();
+        sortLearningPhases();
+        ObservableList<LearningPhase> l2 = timeSpentContainer.learningPhases;
+        if (l2.size() != learningPhases.size())
+            return false;
+
+        for (int i = 0; i < l2.size(); i++) {
+            if (!learningPhases.get(i).equals(l2.get(i)))
+                return false;
+        }
+        return true;
+    }
+
+    public void sortLearningPhases() {
+        learningPhases.sort(((o1, o2) -> {
+            return ((Date) o1).compareTo(((Date) o2));
+        }));
     }
 
     @Override
-    public String toString(){return name;}
+    public String toString() {
+        return name;
+    }
 }

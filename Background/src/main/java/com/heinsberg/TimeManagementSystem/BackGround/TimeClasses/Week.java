@@ -3,6 +3,7 @@ package com.heinsberg.TimeManagementSystem.BackGround.TimeClasses;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.heinsberg.TimeManagementSystem.BackGround.abstractClasses.TimeSpentContainer;
 import com.heinsberg.TimeManagementSystem.BackGround.study.subject.Subject;
 
 public class Week extends TimePeriod {
@@ -65,18 +66,19 @@ public class Week extends TimePeriod {
 
 
     public void addLearningPhase(LearningPhase learningPhase) {
+        if(!learningPhases.contains(learningPhase))
         learningPhases.add(learningPhase);
     }
 
     /**
      * Calculates how much was learned for subject in this Week
-     * @param subject
+     * @param timeSpentContainer
      * @return how much was learned for subject in Minutes
      */
-    public int getLearnedFor(Subject subject) {
+    public int getLearnedFor(TimeSpentContainer timeSpentContainer) {
         long learned = 0;
         for(LearningPhase learningPhase:learningPhases){
-            if(learningPhase.getTimeSpentContainer() == subject){
+            if(learningPhase.getTimeSpentContainer() == timeSpentContainer){
                 learned+= learningPhase.getDiffrence()/1000;
             }
         }
@@ -89,6 +91,10 @@ public class Week extends TimePeriod {
      * @param learningPhase
      */
     public void deleteLearningPhase(LearningPhase learningPhase) {
+        learningPhases.remove(learningPhase);
+    }
+
+    public void removeLearningPhase(LearningPhase learningPhase) {
         learningPhases.remove(learningPhase);
     }
 }
