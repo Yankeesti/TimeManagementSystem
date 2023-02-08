@@ -132,8 +132,6 @@ public class MainWindowController extends BaseController implements Initializabl
         //SetUp study Information Pane
         studyInformationController = new StudyInformationController(contentManager, viewFactory, "fxmlComponents/StudyInformation.fxml");
         setUpNode(studyInformationController);
-        studyInformationController.getNode().setManaged(true);
-        studyInformationController.getNode().setVisible(true);
         shownInformationNode = studyInformationController.getNode();// set Study information to be shown first default
 
         //SetUp SemesterInformationPane
