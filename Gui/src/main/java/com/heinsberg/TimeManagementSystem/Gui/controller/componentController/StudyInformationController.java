@@ -31,7 +31,7 @@ public class StudyInformationController extends BaseInformationComponentControll
 
     public StudyInformationController(ContentManager contentManager, ViewFactory viewFactory, String fxmlName) {
         super(contentManager, viewFactory, fxmlName);
-        this.study = contentManager.getStudy();
+        study = contentManager.getStudy().get(0);
     }
 
     /**
@@ -60,7 +60,7 @@ public class StudyInformationController extends BaseInformationComponentControll
     void createSemesterAction() {
         Semester temp = getSemester();
         if(temp != null)
-            contentManager.addNewSemester(temp);
+            contentManager.addNewSemester(study,temp);
     }
 
     /**
@@ -86,9 +86,12 @@ public class StudyInformationController extends BaseInformationComponentControll
     private void upDateCreateSemesterButton() {
     }
 
+    /**
+     * When a study is set the Title of the InformationPane is set to the name of the Study
+     */
     private void setUpStudy() {
-        if (contentManager.getStudy() != null) {
-            titleLabel.setText(contentManager.getStudy().getName());
+        if (study != null) {
+            titleLabel.setText(study.getName());
         }
     }
 

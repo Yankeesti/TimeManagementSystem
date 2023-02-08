@@ -1,6 +1,7 @@
 package com.heinsberg.TimeManagementSystem.BackGround.study;
 
 import com.heinsberg.TimeManagementSystem.BackGround.LearningPhaseActionResult;
+import com.heinsberg.TimeManagementSystem.BackGround.WeekFactory;
 import com.heinsberg.TimeManagementSystem.BackGround.study.Listeners.ChangeEnums.StudyChange;
 import com.heinsberg.TimeManagementSystem.BackGround.study.Listeners.StudyListener;
 import com.heinsberg.TimeManagementSystem.BackGround.study.TimeClasses.Semester;
@@ -26,7 +27,23 @@ public class Study {
 
     private Semester currentSemester; //stores the current Semester
     private ArrayList<StudyListener> listeners;
+    private WeekFactory weekFactory;
 
+
+    public Study(String studyName, WeekFactory weekFactory) {
+
+        subjects = FXCollections.observableArrayList();
+        semesters = FXCollections.observableArrayList();
+        listeners = new ArrayList<StudyListener>();
+        this.weekFactory = weekFactory;
+    }
+
+    /**
+     * This method is used to Load Data from a Json file
+     * Week Factory needs to be set through setWeekFactory Method
+     *
+     * @param studyName
+     */
     public Study(String studyName) {
         this.studyName = studyName;
         subjects = FXCollections.observableArrayList();
@@ -46,7 +63,7 @@ public class Study {
      * and stores it in currentLearningPhase
      *
      * @param subject - Subject to start Learning
-     * @return 0 if a Learning Phase has started 1 when there is allready a started learningPhase -1 when there is no Semester that includes the current date and -2 if the current Semester doesn't include subject
+     * @return started LearningPhase null if a unexpeced Error occurs
      */
     public LearningPhaseActionResult startLearningPhase(Subject subject) {
         if (currentLearningPhase != null)
@@ -57,7 +74,6 @@ public class Study {
             return LearningPhaseActionResult.CURRENT_SEMESTER_DOSENT_INCLUEDE_SUBJECT;
 
         currentLearningPhase = subject.startLearningPhase();
-        currentSemester.addLearningPhase(currentLearningPhase);
         return LearningPhaseActionResult.SUCCESS;
     }
 
@@ -93,6 +109,9 @@ public class Study {
                 return AddSemesterResult.SEMESTER_IN_OTHER_SEMESTER;
             }
         }
+        //set WeekFactory to Studys WeekFactory
+        semesterToAdd.setWeekFactory(weekFactory);
+        semesterToAdd.setStudy(this);
         semesters.add(semesterToAdd);
         semesters.sort((Semester s1, Semester s2) -> s1.getSemester() - s2.getSemester());
         //Add subjects of semester to subjects (used when loading from json)
@@ -110,9 +129,14 @@ public class Study {
         if (!subjectAllreadyExistend(subjectToAdd)) {
             Semester subjectSemester = subjectToAdd.getSemester();
             if (subjectSemester != null) {
-                subjectSemester.addSubject(subjectToAdd);
-                subjects.add(subjectToAdd);
-                return AddSubjectResult.SUCCESS;
+                if (semesters.contains(subjectSemester)) {
+                    subjectSemester.addSubject(subjectToAdd);
+                    subjects.add(subjectToAdd);
+                    subjectToAdd.setWeekFactory(weekFactory);
+                    subjectToAdd.setStudy(this);
+                    return AddSubjectResult.SUCCESS;
+                } else
+                    return AddSubjectResult.SEMESTER_OF_SUBJECT_NOT_IN_STUDY;
             }
             return AddSubjectResult.SUBJECT_IS_NULL;
         }
@@ -135,16 +159,16 @@ public class Study {
     /**
      * Retrieves the Semester with the specified semester number.
      *
-     * @param semesternumber the semester number of the Semester to retrieve
+     * @param semesterNumber the semester number of the Semester to retrieve
      * @return the Semester with the specified semester number, or null if no such Semester exists.
      */
-    public Semester getSemester(int semsterNumber) {
+    public Semester getSemester(int semesterNumber) {
         for (int i = 0; i < semesters.size(); i++) {
             Semester temp = semesters.get(i);
-            if (temp.getSemester() == semsterNumber)
+            if (temp.getSemester() == semesterNumber)
                 //when Semester is found return it
                 return temp;
-            if (temp.getSemester() > semsterNumber)
+            if (temp.getSemester() > semesterNumber)
                 //when temp semester number is higher then semesterNumber ther can't be a Semester with semesterNumber because
                 //semesters is sorted --> return null;
                 return null;
@@ -171,7 +195,7 @@ public class Study {
      *
      * @return true if current semester is updated, false if no semester includes the current date
      */
-    private boolean upDateSemester() {
+    public boolean upDateSemester() {
         Date aktDate = TimePeriod.getAktDate();
         if (currentSemester == null || currentSemester.compareTo(aktDate) != 0) {
             for (int i = 0; i < semesters.size(); i++) {
@@ -236,6 +260,10 @@ public class Study {
         }
     }
 
+    public LearningPhase getCurrentLearningPhase() {
+        return currentLearningPhase;
+    }
+
     /**
      * Calculates how much was learned for subject in the current Week
      *
@@ -245,7 +273,7 @@ public class Study {
     public int getLearnedInCurrentWeek(Subject subject) {
         upDateSemester();
         if (currentSemester == subject.getSemester()) {
-            return currentSemester.getCurrentWeek().getLearnedFor(subject);
+            return weekFactory.getCurrentWeek().getLearnedFor(subject);
         }
         return -1;
     }
@@ -256,8 +284,9 @@ public class Study {
                 notifyListners(StudyChange.CURRENT_LEARNINGPHASE_DELETED);
                 currentLearningPhase = null;
             }
-            ((Subject)learningPhase.getTimeSpentContainer()).getSemester().deleteLearningPhase(learningPhase);
-        }else{
+            learningPhase.getTimeSpentContainer().deleteLearningPhase(learningPhase);
+            notifyListners(StudyChange.DELETED_LEARNINGPHASE);
+        } else {
             System.err.println("The LearningPhase isn't for a Subject");
         }
     }
@@ -281,5 +310,21 @@ public class Study {
     public void deleteSubject(Subject subject) {
         subjects.remove(subject);
         subject.getSemester().deleteSubject(subject);
+    }
+
+    /**
+     * Method used when loading from a Json File
+     * Sets the Week Factory of Study and all its Members to the given WekFactory
+     *
+     * @param weekFactory
+     */
+    public void setWeekFactory(WeekFactory weekFactory) {
+        this.weekFactory = weekFactory;
+        for (Subject subject : subjects) {
+            subject.setWeekFactory(weekFactory);
+        }
+        for (Semester semester : semesters) {
+            semester.setWeekFactory(weekFactory);
+        }
     }
 }

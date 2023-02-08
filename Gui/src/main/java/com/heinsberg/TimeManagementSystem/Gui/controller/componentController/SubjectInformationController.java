@@ -48,7 +48,7 @@ public class SubjectInformationController extends BaseTimeSpentContainerControll
 
 
     protected void setUpLearned() {
-        int learned = contentManager.getStudy().getLearnedInCurrentWeek((Subject) shownObject);
+        int learned = contentManager.getStudy().get(0).getLearnedInCurrentWeek((Subject) shownObject);
         if (learned < 0) {
             learnedLabel.setText("Dieses Fach ist nicht im aktuellen Semster");
             weekGoalLabel.setStyle("-fx-background-color: red;");

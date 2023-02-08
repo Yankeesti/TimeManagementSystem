@@ -1,5 +1,8 @@
 package com.heinsberg.TimeManagementSystem.Gui.controller;
 
+import com.heinsberg.TimeManagementSystem.BackGround.Listeners.ChangeEnums.TimeManagementSystemChange;
+import com.heinsberg.TimeManagementSystem.BackGround.Listeners.TimeManagementSystemListener;
+import com.heinsberg.TimeManagementSystem.BackGround.abstractClasses.TimeSpentContainer;
 import com.heinsberg.TimeManagementSystem.Gui.ContentManager;
 import com.heinsberg.TimeManagementSystem.Gui.controller.componentController.*;
 import com.heinsberg.TimeManagementSystem.Gui.treeItems.BaseTreeItem;
@@ -54,11 +57,16 @@ public class MainWindowController extends BaseController implements Initializabl
         super(contentManager, viewFactory, fxmlName);
     }
 
+    /**
+     * Is called when the startLearningPhase Button is clicked
+     * when a TimeSpentContainer was choosen it starts a LearningPhase for this Button
+     * and makes the start LearningPhase Button invisible when nothing is selected nothing changes
+     */
     @FXML
-    void startLearningPhaseAction(ActionEvent event) {
-        Subject learningPhaseSubject = viewFactory.getDialogViewFactory().showSubjectChooser(contentManager.getStudy().getCurrentSemester().getSubjects());//The selected subjects for wich will be learned
-        if (learningPhaseSubject != null) {
-            LearningPhaseActionResult result = contentManager.startLearningPhase(learningPhaseSubject);
+    void startLearningPhaseAction() {
+        TimeSpentContainer learningPhaseTimeSpentContainer = viewFactory.getDialogViewFactory().showTimeSpentContainerChooser(contentManager.getLearnableTimeSpentContainers());//The selected TimeSpentContainer for which will be learned
+        if (learningPhaseTimeSpentContainer != null) {
+            LearningPhaseActionResult result = contentManager.startLearningPhase(learningPhaseTimeSpentContainer);
             if (result == LearningPhaseActionResult.SUCCESS) {//LearningPhase was started
                 startLearningPhaseButton.setVisible(false);
                 endLearrningPhaseButton.setVisible(true);
@@ -80,7 +88,7 @@ public class MainWindowController extends BaseController implements Initializabl
     @FXML
     void saveAsAction() {
         String[][] filter = {{"Json File", "*.json"}};
-        File file = viewFactory.showFileSaver((Stage) menueBar.getScene().getWindow(), filter, contentManager.getStudy().getName() + " Study Progress");
+        File file = viewFactory.showFileSaver((Stage) menueBar.getScene().getWindow(), filter, "Time Management System");
         System.out.println(contentManager.studyToJson(file));
     }
 
@@ -107,17 +115,16 @@ public class MainWindowController extends BaseController implements Initializabl
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setTreeView();
         setUpInformationPane();
-        setUpStudyListner();
+        setUpTimeManagementSystemListener();
     }
 
-    private void setUpStudyListner() {
-        contentManager.getStudy().addListener(new StudyListener() {
+    private void setUpTimeManagementSystemListener(){
+        contentManager.getTimeManagementSystem().addListener(new TimeManagementSystemListener() {
             @Override
-            public void changed(StudyChange studyChange) {
-                if(studyChange == StudyChange.CURRENT_LEARNINGPHASE_DELETED){
-                    startLearningPhaseButton.setVisible(true);
-                    endLearrningPhaseButton.setVisible(false);
-                }
+            public void changed(TimeManagementSystemChange change) {
+                if(change == TimeManagementSystemChange.CURRENT_LEARNINGPHASE_DELETED);
+                startLearningPhaseButton.setVisible(true);
+                endLearrningPhaseButton.setVisible(false);
             }
         });
     }

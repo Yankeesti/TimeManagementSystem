@@ -4,6 +4,7 @@ import com.heinsberg.TimeManagementSystem.BackGround.TimeClasses.LearningPhase;
 import com.heinsberg.TimeManagementSystem.BackGround.WeekFactory;
 import com.heinsberg.TimeManagementSystem.BackGround.abstractClasses.TimeSpentContainer;
 import com.heinsberg.TimeManagementSystem.BackGround.study.Listeners.ChangeEnums.SubjectChange;
+import com.heinsberg.TimeManagementSystem.BackGround.study.Study;
 import com.heinsberg.TimeManagementSystem.BackGround.study.TimeClasses.Semester;
 
 /**
@@ -15,6 +16,7 @@ public class Subject extends TimeSpentContainer {
     private double finalGrade; //Double maxValue when ungraded and 0 when not graded yet
     private int ectsPoints;
     private Semester semester;
+    private Study study;
 
     /**
      * Creates a new Subject with given name, semester and ects points.
@@ -30,11 +32,19 @@ public class Subject extends TimeSpentContainer {
         this.ectsPoints = ectsPoints;
     }
 
-    public LearningPhase startLearningPhase(){
-        return super.startLearningPhaseIntern();
+    public Subject(String subjectName, Semester semester, int ectsPoints) {
+        super(subjectName);
+        this.semester = semester;
+        this.ectsPoints = ectsPoints;
     }
 
-    //Getter and Setter
+
+
+//Getter and Setter
+
+    public Study getStudy() {
+        return study;
+    }
 
     /**
      * Returns the name of this subject.
@@ -94,5 +104,9 @@ public class Subject extends TimeSpentContainer {
         weekGoal += newWeekGoalMinutes;
         this.finalGrade = grade;
         notifyListeners(SubjectChange.EDITED_SUBJECT);
+    }
+
+    public void setStudy(Study study) {
+        this.study = study;
     }
 }

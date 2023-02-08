@@ -92,9 +92,9 @@ public class DialogViewFactory {
      * @param subjects - subjects to pick from
      * @return picked Subject
      */
-    public Subject showSubjectChooser(ObservableList subjects) {
+    public TimeSpentContainer showTimeSpentContainerChooser(ObservableList<TimeSpentContainer> timeSpentContainers) {
         System.out.println("show Subject Chooser");
-        SubjectChooserController controller = new SubjectChooserController(contentManager, viewFactory, "dialogBoxes/selectSubjectDialogBox",subjects);
+        SubjectChooserController controller = new SubjectChooserController(contentManager, viewFactory, "dialogBoxes/selectSubjectDialogBox",timeSpentContainers);
         Optional<ButtonType> buttonClicked = showDialog(controller, "Select Subject");
         if (buttonClicked.get() == ButtonType.OK) {
             return controller.getSelected();

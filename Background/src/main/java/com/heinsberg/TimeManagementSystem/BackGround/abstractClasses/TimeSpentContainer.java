@@ -33,15 +33,44 @@ public abstract class TimeSpentContainer {
         this.weekFactory = weekFactory;
     }
 
+
+    /**
+     * Constructor only used for loading from Json File, when used WeekFactory needs to be Set after loading
+     *
+     * @param name
+     */
+    public TimeSpentContainer(String name) {
+        this.name = name;
+        learningPhases = FXCollections.observableArrayList();
+    }
+
+    /**
+     * used when loaded from a Json file
+     * sets the weekFactory and loads all LearningPhases in to the Weeks they belong to
+     *
+     * @param weekFactory
+     */
+    public void setWeekFactory(WeekFactory weekFactory) {
+        if (this.weekFactory == null) {
+            this.weekFactory = weekFactory;
+            //load all LearningPhases in to Weeks
+            for (LearningPhase learningPhase : learningPhases) {
+                weekFactory.getWeek(learningPhase).addLearningPhase(learningPhase);
+            }
+        } else
+            System.err.println("Weekfactory is already set TSC");
+
+    }
+
     /**
      * Method to start A learnongPhase inside of the Project/Subject and adds it to the Week the LearningPhase belongs in
      *
      * @return
      */
-    protected LearningPhase startLearningPhaseIntern() {
+    public LearningPhase startLearningPhase() {
         LearningPhase learningPhase = new LearningPhase(this);
         learningPhases.add(learningPhase);
-        weekFactory.getWeek(learningPhase).addLearningPhase(learningPhase);
+        weekFactory.getWeek(learningPhase).addLearningPhase(learningPhase); // add LearningPhase to Week
         return learningPhase;
     }
 
@@ -169,5 +198,15 @@ public abstract class TimeSpentContainer {
     @Override
     public String toString() {
         return name;
+    }
+
+    /**
+     * deletes all LearningPhases that belong to this TimeSpentConainer
+     * also deletes the LearningPhases out of the Week they belong to
+     */
+    public void deleteLearningPhases() {
+        for (LearningPhase learningPhase : learningPhases) {
+            weekFactory.getWeek(learningPhase).removeLearningPhase(learningPhase);
+        }
     }
 }

@@ -17,30 +17,12 @@ public class Project extends TimeSpentContainer {
     int learnedInCurrentWeek = 0; //in Minutes
     private Week currentWeek;
 
-    private LearningPhase currentLearningPhase;
-
     public Project(String name, WeekFactory weekFactory) {
         super(name,weekFactory);
     }
 
-    public LearningPhaseActionResult startLearningPhase(){
-        currentWeek = weekFactory.getCurrentWeek();
-        if(currentLearningPhase == null){//no learningPhase was started yet
-            currentLearningPhase = super.startLearningPhaseIntern();
-            return LearningPhaseActionResult.SUCCESS;
-        }else{
-            return  LearningPhaseActionResult.LEARNINGPHASE_ALREADY_STARTED;
-        }
-    }
-
-    public LearningPhaseActionResult finishLearningPhase(){
-        if(currentLearningPhase != null){
-            currentLearningPhase.endLearningPhase();
-            currentLearningPhase = null;
-            return LearningPhaseActionResult.SUCCESS;
-        }else{
-            return LearningPhaseActionResult.NO_CURRENTLEARNINGPHASE;
-        }
+    public Project(String name){
+        super(name);
     }
 
     /**

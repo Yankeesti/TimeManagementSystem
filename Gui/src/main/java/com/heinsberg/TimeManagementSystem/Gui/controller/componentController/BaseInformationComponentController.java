@@ -8,7 +8,7 @@ import javafx.scene.Node;
 public abstract class BaseInformationComponentController extends BaseController {
 
 
-    protected Node node; //The Node in wich the Information Panel is shown
+    protected Node node; //The Node in which the Information Panel is shown
     public BaseInformationComponentController(ContentManager contentManager, ViewFactory viewFactory, String fxmlName) {
         super(contentManager, viewFactory, fxmlName);
     }

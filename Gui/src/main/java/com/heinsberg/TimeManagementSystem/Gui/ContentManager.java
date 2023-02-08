@@ -1,6 +1,8 @@
 package com.heinsberg.TimeManagementSystem.Gui;
 
 import com.google.gson.GsonBuilder;
+import com.heinsberg.TimeManagementSystem.BackGround.TimeManagementSystem;
+import com.heinsberg.TimeManagementSystem.BackGround.WeekFactory;
 import com.heinsberg.TimeManagementSystem.Gui.controller.FileResult;
 import com.heinsberg.TimeManagementSystem.Gui.treeItems.BaseTreeItem;
 import com.heinsberg.TimeManagementSystem.Gui.treeItems.ProjectTreeItem;
@@ -26,14 +28,10 @@ import java.util.List;
  * The StudyManager class is responsible for creating and managing a Study object and its associated TreeView in the GUI.
  */
 public class ContentManager {
-    private Study study;
-    private ObservableList<Project> projects;
+    private TimeManagementSystem timeManagementSystem;
     private TreeItem<String> foldersRoot = new TreeItem<String>(""); //
     private File currentFile;//saves the File currently editing.
 
-    public ContentManager() {
-        projects = FXCollections.observableArrayList();
-    }
 
     /**
      * Creates a new Study object with the given name and sets up the TreeView object to display the study information.
@@ -41,17 +39,17 @@ public class ContentManager {
      * @param studyName the name of the study.
      */
     public void createStudy(String studyName) {
-        study = new Study(studyName);
+        Study study = new Study(studyName);
+        if(timeManagementSystem == null){
+            timeManagementSystem = new TimeManagementSystem(new WeekFactory());
+        }
+        timeManagementSystem.addStudy(study);
         setUpTreeView();
         System.out.println("study Created");
     }
 
     public void addProject(Project projectToAdd) {
-        if (projectToAdd != null){
-            projects.add(projectToAdd);
-        }
-        else
-            System.err.println("Project was Null");
+        timeManagementSystem.addProject(projectToAdd);
     }
 
 
@@ -59,29 +57,66 @@ public class ContentManager {
      * sets up the TreeView object to display study and Projects in ContentManager
      */
     private void setUpTreeView() {
-        //Set up Study root
-        TreeItem<String> studyTreeItem = new StudyTreeItem(study);
-        foldersRoot.getChildren().add(studyTreeItem);
+
+        ObservableList<Study> studies = timeManagementSystem.getStudies();
+        //SetUp StudyTreeItems
+        for (Study study : studies) { // Add a new Study Tree Item for each Study in the Time Management System
+            foldersRoot.getChildren().add(new StudyTreeItem<>(study));
+        }
+        //Set Up Listener for studies
+        studies.addListener(new ListChangeListener<Study>() {
+                                @Override
+                                public void onChanged(Change<? extends Study> change) {
+                                    change.next();
+                                    if (change.wasAdded()) {
+                                        List<? extends Study> addedList = change.getAddedSubList();
+                                        addSubjectTreeItem(addedList.get(addedList.size() - 1));
+                                    } else if (change.wasRemoved()) {
+                                        List<? extends Study> removedList = change.getRemoved();
+                                        removeStudyTreeItem(removedList.get(removedList.size() - 1));
+                                    }
+                                }
+                            }
+        );
 
         //set Up listner for projects so that new projects get added to the treeview
+        ObservableList<Project> projects = timeManagementSystem.getProjects();
         projects.addListener(new ListChangeListener<Project>() {
             @Override
             public void onChanged(Change<? extends Project> change) {
                 change.next();
-                if(change.wasAdded()){
+                if (change.wasAdded()) {
                     List<? extends Project> addedList = change.getAddedSubList();
-                    addProjectTreeItem(addedList.get(addedList.size()-1));
-                }else if(change.wasRemoved()){
+                    addProjectTreeItem(addedList.get(addedList.size() - 1));
+                } else if (change.wasRemoved()) {
                     List<? extends Project> removedList = change.getRemoved();
-                    removeProjectTreeItem(removedList.get(removedList.size()-1));
+                    removeProjectTreeItem(removedList.get(removedList.size() - 1));
                 }
             }
         });
     }
 
+    /**
+     * Removes the given Study from the View
+     * @param study
+     */
+    private void removeStudyTreeItem(Study study) {
+        for(TreeItem child : foldersRoot.getChildren()){
+            if(((BaseTreeItem)child).getHoldObject() == study){
+                foldersRoot.getChildren().remove(child);
+                break;
+            }
+        }
+    }
+
+    private void addSubjectTreeItem(Study study) {
+        TreeItem<String> studyTreeItem = new StudyTreeItem(study);
+        foldersRoot.getChildren().add(studyTreeItem);
+    }
+
     private void removeProjectTreeItem(Project project) {
-        for(TreeItem child: foldersRoot.getChildren()){
-            if(((BaseTreeItem)child).getHoldObject() == project){
+        for (TreeItem child : foldersRoot.getChildren()) {
+            if (((BaseTreeItem) child).getHoldObject() == project) {
                 foldersRoot.getChildren().remove(child);
                 break;
             }
@@ -103,12 +138,12 @@ public class ContentManager {
     }
 
     /**
-     * Returns the Study object managed by this class.
+     * Returns the List of Studies managed by TimeManagementSystem
      *
      * @return the Study object.
      */
-    public Study getStudy() {
-        return study;
+    public ObservableList<Study> getStudy() {
+        return timeManagementSystem.getStudies();
     }
 
     public FileResult studyToJson(File file) {
@@ -117,7 +152,7 @@ public class ContentManager {
         if (file != null) {
             try {
                 FileWriter writer = new FileWriter(file);
-                writer.write(gsonBuilder.create().toJson(study));
+                writer.write(gsonBuilder.create().toJson(timeManagementSystem.getStudies().get(0))); //Just for short term needs to be rewriten when everything works
                 writer.close();
                 currentFile = file;
                 return FileResult.SUCCESS;
@@ -131,7 +166,7 @@ public class ContentManager {
     }
 
     /**
-     * loads a study from json
+     * loads a study from json and adds it to the given TimeManager, when TimeManager is null a new is created
      *
      * @param file
      * @return true when succes and false when not
@@ -144,7 +179,11 @@ public class ContentManager {
         try {
             FileReader simpleReader = new FileReader(file);
             BufferedReader reader = new BufferedReader(simpleReader);
-            study = gsonBuilder.create().fromJson(reader.readLine(), Study.class);
+            Study study = gsonBuilder.create().fromJson(reader.readLine(), Study.class);
+            if(timeManagementSystem == null){
+                timeManagementSystem = new TimeManagementSystem(new WeekFactory());
+            }
+            timeManagementSystem.addStudy(study);
             setUpTreeView();
             currentFile = file;
             return FileResult.SUCCESS;
@@ -159,17 +198,34 @@ public class ContentManager {
         return currentFile;
     }
 
-    public void addNewSemester(Semester semester) {
-        AddSemesterResult result = study.addSemester(semester);
+    /**
+     * Adds a new Semester to the given Study in TimeManagementSystem
+     *
+     * @param study
+     * @param semester
+     */
+    public void addNewSemester(Study study, Semester semester) {
+        AddSemesterResult result = timeManagementSystem.addSemester(study, semester);
         System.out.println(result);
     }
 
-    public void addNewSubject(Subject subject) {
-        System.out.println(study.addSubject(subject));
+    public void addNewSubject(Study study, Subject subject) {
+        System.out.println(timeManagementSystem.addSubject(study, subject));
     }
 
-    public LearningPhaseActionResult startLearningPhase(Subject subjectToStartLearningPhase) {
-        LearningPhaseActionResult result = study.startLearningPhase(subjectToStartLearningPhase);
+    /**
+     * starts a LearningPhase for the given timeSpentContainer
+     *
+     * @param timeSpentContainer - timeSpent Container to start LearningPhase for
+     * @return result of starting the LearningPhase
+     */
+    public LearningPhaseActionResult startLearningPhase(TimeSpentContainer timeSpentContainer) {
+        LearningPhaseActionResult result = null;
+        if (timeSpentContainer instanceof Subject) { //when learned for a Subject
+            result = timeManagementSystem.startLearningPhase(((Subject) timeSpentContainer).getStudy(), (Subject) timeSpentContainer);
+        } else {
+            result = timeManagementSystem.startLearningPhase((Project) timeSpentContainer);
+        }
         return result;
     }
 
@@ -179,31 +235,38 @@ public class ContentManager {
      * @return the Time Learned when there was no current LearningPhase a number lower than 0
      */
     public long endLearningPhase() {
-        study.finishLearningPhase();
-        return 0;
+        return timeManagementSystem.finishLearningPhase();
     }
 
     public void deleteLearningPhase(LearningPhase learningPhase) {
-        study.deleteLearningPhase(learningPhase);
-        System.out.println("deleted LearningPhase");
+        System.err.println("working on it");
+//        study.deleteLearningPhase(learningPhase);
+//        System.out.println("deleted LearningPhase");
     }
 
+    /**
+     * Calculates how much was learned for the given TimeSpentContainer in the current Week
+     * @param object
+     * @return
+     */
     public int getLearnedInCurrentWeek(TimeSpentContainer object) {
-        if(object.getClass() == Subject.class){//show how much was learned in current week for the Subject
-            return study.getLearnedInCurrentWeek((Subject)  object);
-        }else if(object.getClass() == Project.class){//show how much was learned in current weejk for the Project
-            System.out.println("show learned for project");
-        }
         return 0;
+//        return timeManagementSystem.getLearnedInCurrentWeek(object);
     }
 
     public void deleteTimeSpentContainer(TimeSpentContainer timeSpentContainer) {
-        if(timeSpentContainer instanceof Subject){
-            study.deleteSubject((Subject) timeSpentContainer);
-            System.out.println("deleted");
-        } else if (timeSpentContainer instanceof Project) {
-            projects.remove(timeSpentContainer);
-            System.out.println("deleted");
-        }
+        timeManagementSystem.deleteTimeSpentContainer(timeSpentContainer);
+    }
+
+    public TimeManagementSystem getTimeManagementSystem() {
+        return timeManagementSystem;
+    }
+
+    /**
+     * Returns a List with all TimeSpentContainers that can be learned for currently
+     * @return
+     */
+    public ObservableList getLearnableTimeSpentContainers() {
+        return timeManagementSystem.getLearnableTimeSpentContainers();
     }
 }

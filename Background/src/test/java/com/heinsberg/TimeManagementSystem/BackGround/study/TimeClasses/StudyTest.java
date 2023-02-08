@@ -1,6 +1,7 @@
 package com.heinsberg.TimeManagementSystem.BackGround.study.TimeClasses;
 
 import com.heinsberg.TimeManagementSystem.BackGround.TimeClasses.TimePeriod;
+import com.heinsberg.TimeManagementSystem.BackGround.WeekFactory;
 import com.heinsberg.TimeManagementSystem.BackGround.study.AddSemesterResult;
 import com.heinsberg.TimeManagementSystem.BackGround.study.AddSubjectResult;
 import com.heinsberg.TimeManagementSystem.BackGround.study.Study;
@@ -24,8 +25,9 @@ public class StudyTest {
 
     @Test
     public void testFinishLearningPhase() {
+        WeekFactory weekFactory = new WeekFactory();
         //given
-        underTest = new Study("Test Study");
+        underTest = new Study("Test Study",weekFactory);
         //when
         long outcome = underTest.finishLearningPhase();
         //then
@@ -54,7 +56,7 @@ public class StudyTest {
     @Test
     public void testAddSemesterTest() {
         //given
-        underTest = new Study("Test Study");
+        underTest = new Study("Test Study",new WeekFactory());
         //when
         //first Semester added
         Semester newSemester = new Semester(3, new Date(122, 9, 19), new Date(123, 2, 3));
@@ -90,7 +92,7 @@ public class StudyTest {
     @Test
     public void testAddSubjectTest() {
         //given
-        underTest = new Study("Test Study");
+        underTest = new Study("Test Study",new WeekFactory());
         underTest.addSemester(new Semester(3, new Date(122, 9, 19), new Date(123, 2, 3)));
         underTest.addSemester(new Semester(1, new Date(121, 9, 19), new Date(122, 2, 3)));
 
@@ -120,7 +122,7 @@ public class StudyTest {
     @Test
     public void testGetSemesters(){
         //given
-        underTest = new Study("Test Study");
+        underTest = new Study("Test Study",new WeekFactory());
         //Added unsorted
         underTest.addSemester(new Semester(4, new Date(123, 3, 20), new Date(123, 7, 14)));
         underTest.addSemester(new Semester(5, new Date(123, 9, 25), new Date(124, 2, 9)));

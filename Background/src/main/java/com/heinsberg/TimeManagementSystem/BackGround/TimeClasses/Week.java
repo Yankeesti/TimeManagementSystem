@@ -1,5 +1,7 @@
 package com.heinsberg.TimeManagementSystem.BackGround.TimeClasses;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -25,7 +27,7 @@ public class Week extends TimePeriod {
         //set end to Sunday
         Date endDate = new Date();
         endDate.setTime(this.getTime());
-        endDate.setDate(this.getDate() + 7);
+        endDate.setDate(this.getDate() + 67);
         setEndTime(endDate.getTime());
         learningPhases = new ArrayList<LearningPhase>();
         this.numberInSemester = numberInSemester;
@@ -37,7 +39,9 @@ public class Week extends TimePeriod {
         Date endDate = new Date();
         endDate.setTime(this.getTime());
         endDate.setDate(this.getDate() + 7);
+        endDate.setTime(endDate.getTime()-1);
         setEndTime(endDate.getTime());
+        learningPhases = new ArrayList<LearningPhase>();
     }
 
     /**
@@ -97,4 +101,5 @@ public class Week extends TimePeriod {
     public void removeLearningPhase(LearningPhase learningPhase) {
         learningPhases.remove(learningPhase);
     }
+
 }

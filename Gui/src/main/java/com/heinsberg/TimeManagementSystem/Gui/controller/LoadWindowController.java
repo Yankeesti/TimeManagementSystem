@@ -26,7 +26,7 @@ public class LoadWindowController extends BaseController {
 
 
     @FXML
-    void createStudyAction(ActionEvent event) {
+    void createStudyAction() {
         System.out.println("button clicked");
         if(!textCleared || studyNameField.getText().isEmpty()){ // no name For Study given
             errorLabel.setText("Please type in a Name for the Study");

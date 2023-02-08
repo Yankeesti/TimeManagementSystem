@@ -21,7 +21,7 @@ public class SemesterInformationController extends BaseInformationComponentContr
     void createSubjectAction(){
         Subject newSubject = viewFactory.getDialogViewFactory().showSubjectCreator(semester);
         if(newSubject != null)
-        contentManager.addNewSubject(newSubject);
+        contentManager.addNewSubject(semester.getStudy(),newSubject);
     }
 
     @Override

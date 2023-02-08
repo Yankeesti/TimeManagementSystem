@@ -13,4 +13,6 @@ module com.heinsberg.TimeManagementSystem.Background {
     exports com.heinsberg.TimeManagementSystem.BackGround.abstractClasses;
     exports com.heinsberg.TimeManagementSystem.BackGround.TimeClasses;
     exports com.heinsberg.TimeManagementSystem.BackGround;
+    exports com.heinsberg.TimeManagementSystem.BackGround.Listeners.ChangeEnums;
+    exports com.heinsberg.TimeManagementSystem.BackGround.Listeners;
 }

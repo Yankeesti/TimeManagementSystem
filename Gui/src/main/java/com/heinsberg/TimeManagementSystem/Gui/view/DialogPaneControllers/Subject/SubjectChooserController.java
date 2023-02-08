@@ -1,5 +1,6 @@
 package com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Subject;
 
+import com.heinsberg.TimeManagementSystem.BackGround.abstractClasses.TimeSpentContainer;
 import com.heinsberg.TimeManagementSystem.Gui.ContentManager;
 import com.heinsberg.TimeManagementSystem.Gui.controller.BaseController;
 import com.heinsberg.TimeManagementSystem.Gui.view.ViewFactory;
@@ -20,18 +21,18 @@ public class SubjectChooserController extends BaseController implements Initiali
     private DialogPane subjectChooserDialogPane;
 
     @FXML
-    private ChoiceBox<Subject> subjectChooser;
-    private ObservableList<Subject> subjects;
+    private ChoiceBox<TimeSpentContainer> subjectChooser;
+    private ObservableList<TimeSpentContainer> timeSpentContainers;
 
 
 
-    public SubjectChooserController(ContentManager contentManager, ViewFactory viewFactory, String fxmlName, ObservableList subjects) {
+    public SubjectChooserController(ContentManager contentManager, ViewFactory viewFactory, String fxmlName, ObservableList<TimeSpentContainer> timeSpentContainers) {
         super(contentManager, viewFactory, fxmlName);
-        this.subjects = subjects;
+        this.timeSpentContainers = timeSpentContainers;
     }
 
 
-    public Subject getSelected(){
+    public TimeSpentContainer getSelected(){
         return subjectChooser.getValue();
     }
     @Override
@@ -40,9 +41,9 @@ public class SubjectChooserController extends BaseController implements Initiali
     }
 
     private void setUpSubjectChooser() {
-        subjectChooser.setItems(subjects);
-        if(!subjects.isEmpty())
-        subjectChooser.setValue(subjects.get(0));
+        subjectChooser.setItems(timeSpentContainers);
+        if(!timeSpentContainers.isEmpty())
+        subjectChooser.setValue(timeSpentContainers.get(0));
     }
     public DialogPane getSubjectChooserDialogPane() {
         return subjectChooserDialogPane;

@@ -97,7 +97,6 @@ public abstract class BaseTimeSpentContainerController extends BaseInformationCo
             setUpTimeProgressInformation();
             ObservableList<LearningPhase> learningPhases = shownObject.getLearningPhases();
             learningPhaseView.setItems(learningPhases);
-            learningPhaseView.setItems(learningPhases);
             //sort learningPhases new when learningphase is added
             learningPhases.addListener(new ListChangeListener<LearningPhase>() {
                 @Override
