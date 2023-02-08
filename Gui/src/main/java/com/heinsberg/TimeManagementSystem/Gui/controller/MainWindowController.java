@@ -54,6 +54,13 @@ public class MainWindowController extends BaseController implements Initializabl
         super(contentManager, viewFactory, fxmlName);
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        setTreeView();
+        setUpInformationPane();
+        setUpTimeManagementSystemListener();
+    }
+
     /**
      * Is called when the startLearningPhase Button is clicked
      * when a TimeSpentContainer was choosen it starts a LearningPhase for this Button
@@ -108,12 +115,7 @@ public class MainWindowController extends BaseController implements Initializabl
         contentManager.addProject(viewFactory.getDialogViewFactory().showProjectCreator());
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        setTreeView();
-        setUpInformationPane();
-        setUpTimeManagementSystemListener();
-    }
+
 
     private void setUpTimeManagementSystemListener(){
         contentManager.getTimeManagementSystem().addListener(new TimeManagementSystemListener() {

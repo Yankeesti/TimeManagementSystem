@@ -1,5 +1,6 @@
 package com.heinsberg.TimeManagementSystem.BackGround;
 
+import com.heinsberg.TimeManagementSystem.BackGround.Listeners.ChangeEnums.TimeManagementSystemChange;
 import com.heinsberg.TimeManagementSystem.BackGround.Listeners.TimeManagementSystemListener;
 import com.heinsberg.TimeManagementSystem.BackGround.Project.Project;
 import com.heinsberg.TimeManagementSystem.BackGround.TimeClasses.LearningPhase;
@@ -45,6 +46,22 @@ public class TimeManagementSystem {
             toDelete.deleteLearningPhases();
         }
     }
+
+    /**
+     * Delets a Learning Phase and all references from this LearningPhase
+     *
+     * @param learningPhase
+     */
+    public void deleteLearningPhase(LearningPhase learningPhase) {
+        if (currentLearningPhase == learningPhase) {
+            currentLearningPhase = null;
+            learningPhase.deleteLearningPhase();
+            notifyListeners(TimeManagementSystemChange.CURRENT_LEARNINGPHASE_DELETED);
+        }else{
+            learningPhase.deleteLearningPhase();
+        }
+    }
+
 
     //Study Control
 
@@ -216,18 +233,30 @@ public class TimeManagementSystem {
     public ObservableList<TimeSpentContainer> getLearnableTimeSpentContainers() {
         ObservableList<TimeSpentContainer> outPut = FXCollections.observableArrayList();
         outPut.addAll(projects);
-        for(Study study: studies){
+        for (Study study : studies) {
             outPut.addAll(study.getCurrentSemester().getSubjects());
         }
         return outPut;
     }
 
     //Methods for Listener Management
-    public void addListener(TimeManagementSystemListener listener){
+    public void addListener(TimeManagementSystemListener listener) {
         listeners.add(listener);
     }
 
-    public void removeListener(TimeManagementSystemListener listener){
+    public void removeListener(TimeManagementSystemListener listener) {
         listeners.remove(listener);
+    }
+
+
+    /**
+     * Notifies all Listeners taht something has changed in The timeManagementSystem
+     *
+     * @param change
+     */
+    private void notifyListeners(TimeManagementSystemChange change) {
+        for (TimeManagementSystemListener listener : listeners) {
+            listener.notifyListener(change);
+        }
     }
 }

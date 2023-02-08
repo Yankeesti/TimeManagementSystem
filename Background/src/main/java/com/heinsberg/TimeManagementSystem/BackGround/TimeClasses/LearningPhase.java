@@ -87,4 +87,11 @@ public class LearningPhase extends TimePeriod {
             return false;
         return timeSpentContainer.getName().equals(learningPhase.getTimeSpentContainer().getName());
     }
+
+    /**
+     * Deletes this LearningPhase
+     */
+    public void deleteLearningPhase() {
+        timeSpentContainer.deleteLearningPhase(this);
+    }
 }

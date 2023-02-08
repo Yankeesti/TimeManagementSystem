@@ -239,9 +239,7 @@ public class ContentManager {
     }
 
     public void deleteLearningPhase(LearningPhase learningPhase) {
-        System.err.println("working on it");
-//        study.deleteLearningPhase(learningPhase);
-//        System.out.println("deleted LearningPhase");
+        timeManagementSystem.deleteLearningPhase(learningPhase);
     }
 
     /**
