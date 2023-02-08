@@ -82,6 +82,7 @@ public abstract class TimeSpentContainer {
     public void addLearningPhase(LearningPhase learningPhase) {
         if (!learningPhases.contains(learningPhase))
             learningPhases.add(learningPhase);
+        if(weekFactory != null)//Week Factory is not set when  a project is loadded From a Json File in this case the learninPhases will be loaded when set WeekFactory is called
         weekFactory.getWeek(learningPhase).addLearningPhase(learningPhase);
     }
 

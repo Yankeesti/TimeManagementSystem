@@ -2,6 +2,7 @@ package com.heinsberg.TimeManagementSystem.Gui;
 
 import com.google.gson.GsonBuilder;
 import com.heinsberg.TimeManagementSystem.BackGround.TimeManagementSystem;
+import com.heinsberg.TimeManagementSystem.BackGround.TypeAdapter.TimeManagementSystemTypeAdapter;
 import com.heinsberg.TimeManagementSystem.BackGround.WeekFactory;
 import com.heinsberg.TimeManagementSystem.Gui.controller.FileResult;
 import com.heinsberg.TimeManagementSystem.Gui.treeItems.BaseTreeItem;
@@ -16,7 +17,6 @@ import com.heinsberg.TimeManagementSystem.BackGround.TimeClasses.LearningPhase;
 import com.heinsberg.TimeManagementSystem.BackGround.study.TimeClasses.Semester;
 import com.heinsberg.TimeManagementSystem.BackGround.study.subject.Subject;
 import com.heinsberg.TimeManagementSystem.BackGround.study.typeAdapters.StudyTypeAdapter;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
@@ -81,6 +81,10 @@ public class ContentManager {
 
         //set Up listner for projects so that new projects get added to the treeview
         ObservableList<Project> projects = timeManagementSystem.getProjects();
+
+        for(Project project:projects){
+            foldersRoot.getChildren().add((new ProjectTreeItem<>(project)));
+        }
         projects.addListener(new ListChangeListener<Project>() {
             @Override
             public void onChanged(Change<? extends Project> change) {
@@ -146,13 +150,13 @@ public class ContentManager {
         return timeManagementSystem.getStudies();
     }
 
-    public FileResult studyToJson(File file) {
-        GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapter(Study.class, new StudyTypeAdapter());
+    public FileResult timeManagementSystemToJson(File file) {
+        GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapter(TimeManagementSystem.class, new TimeManagementSystemTypeAdapter());
         //Write in File
         if (file != null) {
             try {
                 FileWriter writer = new FileWriter(file);
-                writer.write(gsonBuilder.create().toJson(timeManagementSystem.getStudies().get(0))); //Just for short term needs to be rewriten when everything works
+                writer.write(gsonBuilder.create().toJson(timeManagementSystem)); //Just for short term needs to be rewriten when everything works
                 writer.close();
                 currentFile = file;
                 return FileResult.SUCCESS;
@@ -171,19 +175,15 @@ public class ContentManager {
      * @param file
      * @return true when succes and false when not
      */
-    public FileResult studyFromJson(File file) {
-        GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapter(Study.class, new StudyTypeAdapter());
+    public FileResult timeManagementSystemFromJson(File file) {
+        GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapter(TimeManagementSystem.class, new TimeManagementSystemTypeAdapter());
         if (file == null) {
             return FileResult.FILE_NOT_FOUND;
         }
         try {
             FileReader simpleReader = new FileReader(file);
             BufferedReader reader = new BufferedReader(simpleReader);
-            Study study = gsonBuilder.create().fromJson(reader.readLine(), Study.class);
-            if(timeManagementSystem == null){
-                timeManagementSystem = new TimeManagementSystem(new WeekFactory());
-            }
-            timeManagementSystem.addStudy(study);
+            timeManagementSystem = gsonBuilder.create().fromJson(reader.readLine(), TimeManagementSystem.class);
             setUpTreeView();
             currentFile = file;
             return FileResult.SUCCESS;

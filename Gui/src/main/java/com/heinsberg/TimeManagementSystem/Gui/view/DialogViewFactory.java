@@ -162,7 +162,8 @@ public class DialogViewFactory {
         Optional<ButtonType> result = deleteSubjectAlert.showAndWait();
         if(result.get() == ButtonType.OK){
             contentManager.deleteTimeSpentContainer(timeSpentContainer);
-            viewFactory.getMainWindowController().upDateInformationPane(contentManager.getStudy());//shows study Information Pane
+            //Specifie wih node should be shown when closed
+            viewFactory.getMainWindowController().upDateInformationPane(contentManager.getStudy().get(0));//shows study Information Pane
         }
     }
 

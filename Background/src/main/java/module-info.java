@@ -15,4 +15,5 @@ module com.heinsberg.TimeManagementSystem.Background {
     exports com.heinsberg.TimeManagementSystem.BackGround;
     exports com.heinsberg.TimeManagementSystem.BackGround.Listeners.ChangeEnums;
     exports com.heinsberg.TimeManagementSystem.BackGround.Listeners;
+    exports com.heinsberg.TimeManagementSystem.BackGround.TypeAdapter;
 }

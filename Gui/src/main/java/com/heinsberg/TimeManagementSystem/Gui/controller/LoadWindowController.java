@@ -2,7 +2,6 @@ package com.heinsberg.TimeManagementSystem.Gui.controller;
 
 import com.heinsberg.TimeManagementSystem.Gui.ContentManager;
 import com.heinsberg.TimeManagementSystem.Gui.view.ViewFactory;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -47,7 +46,7 @@ public class LoadWindowController extends BaseController {
     @FXML
     void loadFromFileAction(){
         File file = viewFactory.showFileOpener((Stage)studyNameField.getScene().getWindow(),new String[][]{{"JSon File", "*.json"}});
-        if(contentManager.studyFromJson(file) == FileResult.SUCCESS)//succesfull loaded
+        if(contentManager.timeManagementSystemFromJson(file) == FileResult.SUCCESS)//succesfull loaded
         {
             viewFactory.showMainWindow();
             closeStage();

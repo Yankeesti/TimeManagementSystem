@@ -79,7 +79,7 @@ public class TimeManagementSystemTypeAdapter extends TypeAdapter<TimeManagementS
         TimeManagementSystem outPut = new TimeManagementSystem(new WeekFactory());
         outPut.loadStudies(studies);
         outPut.loadProjects(projects);
-        return null;
+        return outPut;
     }
 
     private ArrayList<Project> readProjects(JsonReader jsonReader) {

@@ -10,12 +10,9 @@ import com.heinsberg.TimeManagementSystem.Gui.view.ViewFactory;
 
 import com.heinsberg.TimeManagementSystem.BackGround.LearningPhaseActionResult;
 import com.heinsberg.TimeManagementSystem.BackGround.Project.Project;
-import com.heinsberg.TimeManagementSystem.BackGround.study.Listeners.ChangeEnums.StudyChange;
-import com.heinsberg.TimeManagementSystem.BackGround.study.Listeners.StudyListener;
 import com.heinsberg.TimeManagementSystem.BackGround.study.Study;
 import com.heinsberg.TimeManagementSystem.BackGround.study.TimeClasses.Semester;
 import com.heinsberg.TimeManagementSystem.BackGround.study.subject.Subject;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -89,7 +86,7 @@ public class MainWindowController extends BaseController implements Initializabl
     void saveAsAction() {
         String[][] filter = {{"Json File", "*.json"}};
         File file = viewFactory.showFileSaver((Stage) menueBar.getScene().getWindow(), filter, "Time Management System");
-        System.out.println(contentManager.studyToJson(file));
+        System.out.println(contentManager.timeManagementSystemToJson(file));
     }
 
     /**
@@ -102,7 +99,7 @@ public class MainWindowController extends BaseController implements Initializabl
         if (currentFile == null) {//there is now current file --> save as new File
             saveAsAction();
         } else {
-            System.out.println(contentManager.studyToJson(currentFile));
+            System.out.println(contentManager.timeManagementSystemToJson(currentFile));
         }
     }
 
