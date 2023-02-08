@@ -3,17 +3,26 @@ package com.heinsberg.TimeManagementSystem.Gui.controller;
 import com.heinsberg.TimeManagementSystem.Gui.ContentManager;
 import com.heinsberg.TimeManagementSystem.Gui.view.ViewFactory;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class LoadWindowController extends BaseController {
+public class LoadWindowController extends BaseController implements Initializable {
 
     @FXML
     private TextField studyNameField;
-    private boolean textCleared = false;
+    @FXML
+    private TextField projectNameField;
+    @FXML
+    private Button createProjectButton;
+    @FXML
+    private Button createStudyButton;
 
     @FXML
     private Label errorLabel;
@@ -23,24 +32,25 @@ public class LoadWindowController extends BaseController {
         super(contentManager, viewFactory,fxmlName);
     }
 
+    @FXML
+    void createProjectAction(){
+        System.out.println("Create Project");
+        if(!projectNameField.getText().isEmpty()){
+            contentManager.createProject(projectNameField.getText());
+            viewFactory.showMainWindow();
+            closeStage();
+        }
+    }
 
     @FXML
     void createStudyAction() {
-        System.out.println("button clicked");
-        if(!textCleared || studyNameField.getText().isEmpty()){ // no name For Study given
-            errorLabel.setText("Please type in a Name for the Study");
-        }else{
+        System.out.println("Create Study");
+        if(!studyNameField.getText().isEmpty()){ // no name For Study given
             contentManager.createStudy(studyNameField.getText());
             viewFactory.showMainWindow();
             closeStage();
         }
 
-    }
-    @FXML
-    void clickedInStudyNameFieldAction(){
-        if(!textCleared){
-        studyNameField.clear();
-        textCleared = true;}
     }
 
     @FXML
@@ -57,4 +67,36 @@ public class LoadWindowController extends BaseController {
         viewFactory.closeStage((Stage)studyNameField.getScene().getWindow());
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        setUpButtons();
+    }
+
+    /**
+     * makes Buttons unclickable when no Name is given
+     */
+    private void setUpButtons() {
+        projectNameField.textProperty().addListener((observable,oldValue,newValue)->{
+            checkInputProject(newValue);
+        });
+        studyNameField.textProperty().addListener((observable,oldValue,newValue)-> {
+            checkInputStudy(newValue);
+        });
+    }
+
+    private void checkInputStudy(String newValue) {
+        if(newValue.isEmpty()){
+            createStudyButton.setDisable(true);
+        }else{
+            createStudyButton.setDisable(false);
+        }
+    }
+
+    private void checkInputProject(String newValue) {
+        if(newValue.isEmpty()){
+            createProjectButton.setDisable(true);
+        }else{
+            createProjectButton.setDisable(false);
+        }
+    }
 }

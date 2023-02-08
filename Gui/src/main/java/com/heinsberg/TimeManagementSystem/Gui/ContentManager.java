@@ -19,6 +19,7 @@ import com.heinsberg.TimeManagementSystem.BackGround.study.subject.Subject;
 import com.heinsberg.TimeManagementSystem.BackGround.study.typeAdapters.StudyTypeAdapter;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 
 import java.io.*;
@@ -266,5 +267,17 @@ public class ContentManager {
      */
     public ObservableList getLearnableTimeSpentContainers() {
         return timeManagementSystem.getLearnableTimeSpentContainers();
+    }
+
+    /**
+     * Creates a new Time Management System and adds a Project with the given Name to is
+     *
+     * @param projectName - projectName
+     */
+    public void createProject(String projectName) {
+        Project newProject = new Project(projectName);
+        timeManagementSystem = new TimeManagementSystem(new WeekFactory());
+        timeManagementSystem.addProject(newProject);
+        setUpTreeView();
     }
 }

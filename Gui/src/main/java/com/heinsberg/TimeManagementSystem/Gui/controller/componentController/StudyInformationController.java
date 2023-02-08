@@ -31,7 +31,6 @@ public class StudyInformationController extends BaseInformationComponentControll
 
     public StudyInformationController(ContentManager contentManager, ViewFactory viewFactory, String fxmlName) {
         super(contentManager, viewFactory, fxmlName);
-        study = contentManager.getStudy().get(0);
     }
 
     /**
@@ -44,6 +43,7 @@ public class StudyInformationController extends BaseInformationComponentControll
         if (study.getClass() == Study.class) {
             this.study = (Study) study;
             titleLabel.setText(((Study) study).getName());
+            setUpSpinner();
         } else {
             throw new ClassCastException("Object must be from type Study");
         }
@@ -51,7 +51,6 @@ public class StudyInformationController extends BaseInformationComponentControll
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        setUpSpinner();
         setUpStudy();
         setUpDatePicker();
     }

@@ -8,8 +8,8 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button layoutX="250.0" layoutY="134.0" mnemonicParsing="false" onAction="#createStudyAction" prefHeight="26.0" prefWidth="120.0" text="Create new Study" AnchorPane.rightAnchor="40.0" />
-      <TextField fx:id="studyNameField" layoutX="55.0" layoutY="134.0" onMouseClicked="#clickedInStudyNameFieldAction" promptText="Study Name" AnchorPane.leftAnchor="40.0" />
+      <Button fx:id="createStudyButton" disable="true" layoutX="250.0" layoutY="134.0" mnemonicParsing="false" onAction="#createStudyAction" prefHeight="26.0" prefWidth="120.0" text="Create new Study" AnchorPane.rightAnchor="40.0" />
+      <TextField fx:id="studyNameField" layoutX="55.0" layoutY="134.0" promptText="Study Name" AnchorPane.leftAnchor="40.0" />
       <Label layoutX="162.0" layoutY="21.0" text="Loader">
          <font>
             <Font size="36.0" />
@@ -17,6 +17,6 @@
       </Label>
       <Button layoutX="168.0" layoutY="190.0" mnemonicParsing="false" onAction="#loadFromFileAction" text="Load from File" />
       <TextField fx:id="projectNameField" layoutX="55.0" layoutY="93.0" promptText="Project Name" AnchorPane.leftAnchor="40.0" />
-      <Button layoutX="250.0" layoutY="93.0" mnemonicParsing="false" onAction="#createProjectAction" text="Create new Project" AnchorPane.rightAnchor="40.0" />
+      <Button fx:id="createProjectButton" disable="true" layoutX="250.0" layoutY="93.0" mnemonicParsing="false" onAction="#createProjectAction" text="Create new Project" AnchorPane.rightAnchor="40.0" />
    </children>
 </AnchorPane>
