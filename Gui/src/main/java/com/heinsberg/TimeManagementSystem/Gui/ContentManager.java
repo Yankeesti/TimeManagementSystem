@@ -280,4 +280,10 @@ public class ContentManager {
         timeManagementSystem.addProject(newProject);
         setUpTreeView();
     }
+
+    public void deleteSemester(Semester semesterToDelete) {
+    }
+
+    public void deleteStudy(Study studyToDelete) {
+    }
 }

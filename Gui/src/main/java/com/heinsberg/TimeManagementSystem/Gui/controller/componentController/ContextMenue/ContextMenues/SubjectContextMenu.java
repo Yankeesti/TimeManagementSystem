@@ -1,5 +1,7 @@
 package com.heinsberg.TimeManagementSystem.Gui.controller.componentController.ContextMenue.ContextMenues;
 
+import com.heinsberg.TimeManagementSystem.BackGround.abstractClasses.TimeSpentContainer;
+import com.heinsberg.TimeManagementSystem.BackGround.study.Study;
 import com.heinsberg.TimeManagementSystem.BackGround.study.subject.Subject;
 import com.heinsberg.TimeManagementSystem.Gui.ContentManager;
 import com.heinsberg.TimeManagementSystem.Gui.controller.componentController.ContextMenue.ContextMenueManager;
@@ -12,7 +14,7 @@ public class SubjectContextMenu extends BaseContextMenu{
 
     @Override
     public void deleteObject() {
-
+        viewFactory.getDialogViewFactory().deleteTimeSpentContainer((TimeSpentContainer) holdObject);
     }
 
     @Override

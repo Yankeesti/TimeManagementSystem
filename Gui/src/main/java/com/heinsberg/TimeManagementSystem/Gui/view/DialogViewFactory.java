@@ -1,5 +1,7 @@
 package com.heinsberg.TimeManagementSystem.Gui.view;
 
+import com.heinsberg.TimeManagementSystem.BackGround.TimeManagementSystemObjects;
+import com.heinsberg.TimeManagementSystem.BackGround.study.Study;
 import com.heinsberg.TimeManagementSystem.Gui.ContentManager;
 import com.heinsberg.TimeManagementSystem.Gui.controller.BaseController;
 import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Project.ProjectCreateController;
@@ -36,24 +38,24 @@ public class DialogViewFactory {
         this.viewFactory = viewFactory;
     }
 
-    public Subject showSubjectCreator(Semester semester){
+    public Subject showSubjectCreator(Semester semester) {
         System.out.println("show Subject Creator");
-        SubjectCreatorController controller = new SubjectCreatorController(contentManager,viewFactory,"dialogBoxes/subjectDialogBox",semester);
-        Optional<ButtonType> buttonClicked = showDialog(controller,"Erstelle Fach im "+semester.getSemester()+". Semester");
-        if(buttonClicked.get() == ButtonType.OK){
-            return  controller.getSelectedStudy();
-        }else{
+        SubjectCreatorController controller = new SubjectCreatorController(contentManager, viewFactory, "dialogBoxes/subjectDialogBox", semester);
+        Optional<ButtonType> buttonClicked = showDialog(controller, "Erstelle Fach im " + semester.getSemester() + ". Semester");
+        if (buttonClicked.get() == ButtonType.OK) {
+            return controller.getSelectedStudy();
+        } else {
             return null;
         }
     }
 
-    public Project showProjectCreator(){
+    public Project showProjectCreator() {
         System.out.println("Show Project Creator");
-        ProjectCreateController controller = new ProjectCreateController(contentManager,viewFactory,"dialogBoxes/projectDialogBox");
-        Optional<ButtonType> buttonClicked = showDialog(controller,"Erstelle Project");
-        if(buttonClicked.get() == ButtonType.OK){
+        ProjectCreateController controller = new ProjectCreateController(contentManager, viewFactory, "dialogBoxes/projectDialogBox");
+        Optional<ButtonType> buttonClicked = showDialog(controller, "Erstelle Project");
+        if (buttonClicked.get() == ButtonType.OK) {
             return controller.getCreatedProject();
-        }else{
+        } else {
             return null;
         }
     }
@@ -62,30 +64,32 @@ public class DialogViewFactory {
     /**
      * Shows a Dialog Pane where the user can edit the properties of subject
      * or delete it
+     *
      * @param subject
      */
-    public void showSubjectEditor(Subject subject){
+    public void showSubjectEditor(Subject subject) {
         System.out.println("show Subject Editor");
-        SubjectEditController controller = new SubjectEditController(contentManager,viewFactory,"dialogBoxes/subjectDialogBox",subject);
+        SubjectEditController controller = new SubjectEditController(contentManager, viewFactory, "dialogBoxes/subjectDialogBox", subject);
         Optional<ButtonType> buttonClicked = showDialog(controller, "Edit Subject");
-        if(buttonClicked.get() == ButtonType.OK){
+        if (buttonClicked.get() == ButtonType.OK) {
             controller.submitChanges();
-        }else if(buttonClicked.get() == controller.getDeleteButton()){
-            deleteSubject(subject);
+        } else if (buttonClicked.get() == controller.getDeleteButton()) {
+            deleteTimeSpentContainer(subject);
         }
     }
 
 
     public void showProjectEditor(Project project) {
         System.out.println("Show Project Editor");
-        ProjectEditorController controller = new ProjectEditorController(contentManager,viewFactory,"dialogBoxes/projectDialogBox",project);
+        ProjectEditorController controller = new ProjectEditorController(contentManager, viewFactory, "dialogBoxes/projectDialogBox", project);
         Optional<ButtonType> buttonClicked = showDialog(controller, "Edit Subject");
-        if(buttonClicked.get() == ButtonType.OK){
+        if (buttonClicked.get() == ButtonType.OK) {
             controller.submitChanges();
-        }else if(buttonClicked.get() == controller.getDeleteButton()){
-            deleteSubject(project);
+        } else if (buttonClicked.get() == controller.getDeleteButton()) {
+            deleteTimeSpentContainer(project);
         }
     }
+
     /**
      * Opens a Dialog Window where a subject from subjects can be picked
      *
@@ -94,7 +98,7 @@ public class DialogViewFactory {
      */
     public TimeSpentContainer showTimeSpentContainerChooser(ObservableList<TimeSpentContainer> timeSpentContainers) {
         System.out.println("show Subject Chooser");
-        SubjectChooserController controller = new SubjectChooserController(contentManager, viewFactory, "dialogBoxes/selectSubjectDialogBox",timeSpentContainers);
+        SubjectChooserController controller = new SubjectChooserController(contentManager, viewFactory, "dialogBoxes/selectSubjectDialogBox", timeSpentContainers);
         Optional<ButtonType> buttonClicked = showDialog(controller, "Select Subject");
         if (buttonClicked.get() == ButtonType.OK) {
             return controller.getSelected();
@@ -140,30 +144,89 @@ public class DialogViewFactory {
 
 
         Optional<ButtonType> result = learningPhaseDeleteAlert.showAndWait();
-        if(result.get() == ButtonType.OK){
+        if (result.get() == ButtonType.OK) {
             contentManager.deleteLearningPhase(learningPhase);
+        }
+    }
+
+
+    /**
+     * Opens the Delete Dialog when the user selects ok the object get Deleted and Main Window shows the standard Information
+     * @param objectToDelete
+     */
+    public void deleteObject(Object objectToDelete) {
+        //What object should be deleted out of TimeManagements System
+        if (objectToDelete instanceof Subject || objectToDelete instanceof Project)
+            deleteTimeSpentContainer((TimeSpentContainer) objectToDelete);
+        else if (objectToDelete instanceof Semester) {
+            deleteSemester((Semester) objectToDelete);
+        } else if (objectToDelete instanceof Study) {
+            deleteStudy((Study) objectToDelete);
         }
     }
 
     /**
      * Opens a new Dialog pane where the user is asked
-     * if he really wants to delete the subject
-     * when he selects Ok the Subject gets deleted and main Window shows the Information pane of Study
-     * @param subject - subject to be deleted
+     * if he really wants to delete the Study
+     * when he selects Ok the Study gets deleted and main Window shows the Standard Informationpane
+     * @param studyToDelete - object tp be deleted
      */
-    public void deleteSubject(TimeSpentContainer timeSpentContainer){
-        Alert deleteSubjectAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        deleteSubjectAlert.setHeaderText("Are you shure you want to delete: "+timeSpentContainer.getName()+" ?");
-        if(timeSpentContainer instanceof Subject)
-        deleteSubjectAlert.setTitle("Delete Subject");
-        if(timeSpentContainer instanceof Project)
-        deleteSubjectAlert.setTitle("Delete Project");
+    public void deleteStudy(Study studyToDelete) {
+        Alert deletObjectAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        TimeManagementSystemObjects sortOfObject;
+        deletObjectAlert.setTitle(("Delete Study"));
+        deletObjectAlert.setHeaderText("Are you sure you want to delete " + ((Study) studyToDelete).getName() + " and all its Smesters and Subjects?");
+        Optional<ButtonType> result = deletObjectAlert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            contentManager.deleteStudy(studyToDelete);
+            //Specifie wih node should be shown when closed
+            viewFactory.getMainWindowController().showStandardInformation();//shows study Information Pane
+        }
+    }
 
-        Optional<ButtonType> result = deleteSubjectAlert.showAndWait();
-        if(result.get() == ButtonType.OK){
+    /**
+     * Opens a new Dialog pane where the user is asked
+     * if he really wants to delete the Semester
+     * when he selects Ok the Semester gets deleted and main Window shows the Standard Informationpane
+     *
+     * @param semesterToDelete - object tp be deleted
+     */
+    public void deleteSemester(Semester semesterToDelete) {
+        Alert deletObjectAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        TimeManagementSystemObjects sortOfObject;
+        deletObjectAlert.setTitle("Delete Semester");
+        deletObjectAlert.setHeaderText("Are you sure you want to delete the " + ((Semester) semesterToDelete).getSemester() + ". Semester and all its Subjects ?");
+        Optional<ButtonType> result = deletObjectAlert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            contentManager.deleteSemester(semesterToDelete);
+            //Specifie wih node should be shown when closed
+            viewFactory.getMainWindowController().showStandardInformation();//shows study Information Pane
+        }
+    }
+
+    /**
+     * Opens a new Dialog pane where the user is asked
+     * if he really wants to delete the Subject/Project
+     * when he selects Ok the Subject gets deleted and main Window shows the Standard Informationpane
+     *
+     * @param timeSpentContainer - object tp be deleted
+     */
+    public void deleteTimeSpentContainer(TimeSpentContainer timeSpentContainer) {
+        Alert deletObjectAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        TimeManagementSystemObjects sortOfObject;
+        if (timeSpentContainer instanceof Subject) {
+            deletObjectAlert.setTitle("Delete Subject");
+            deletObjectAlert.setHeaderText("Are you sure you want to delete: " + ((Subject) timeSpentContainer).getName() + " ?");
+        } else if (timeSpentContainer instanceof Project) {
+            deletObjectAlert.setTitle("Delete Project");
+            deletObjectAlert.setHeaderText("Are you sure you want to delete: " + ((Project) timeSpentContainer).getName() + " ?");
+        }
+        Optional<ButtonType> result = deletObjectAlert.showAndWait();
+        if (result.get() == ButtonType.OK) {
             contentManager.deleteTimeSpentContainer(timeSpentContainer);
             //Specifie wih node should be shown when closed
-            viewFactory.getMainWindowController().upDateInformationPane(contentManager.getStudy().get(0));//shows study Information Pane
+            viewFactory.getMainWindowController().showStandardInformation();//shows study Information Pane
+
         }
     }
 

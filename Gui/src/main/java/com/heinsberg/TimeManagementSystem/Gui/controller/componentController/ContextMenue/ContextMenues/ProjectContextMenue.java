@@ -18,7 +18,7 @@ public class ProjectContextMenue extends BaseContextMenu {
 
     @Override
     public void deleteObject() {
-        viewFactory.getDialogViewFactory().deleteSubject((TimeSpentContainer) holdObject);
+        viewFactory.getDialogViewFactory().deleteTimeSpentContainer((TimeSpentContainer) holdObject);
     }
 
     @Override

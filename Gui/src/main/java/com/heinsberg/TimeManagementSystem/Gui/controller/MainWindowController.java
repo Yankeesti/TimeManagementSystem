@@ -181,13 +181,11 @@ public class MainWindowController extends BaseController implements Initializabl
             if (item != null) {
                 if (e.getButton() == MouseButton.PRIMARY) {
                     upDateInformationPane(item.getHoldObject());
-                    treeView.getSelectionModel().select(null);
                     contextMenueManager.closeMenu();
                 } else if (e.getButton() == MouseButton.SECONDARY) {
                     contextMenueManager.showMenue((BaseTreeItem) treeView.getSelectionModel().getSelectedItem(), e.getScreenX(), e.getScreenY());
-                    treeView.getSelectionModel().select(null);
                 }
-            }else // when TreeView is clicked and not with Secondary click the menue gets closed
+            }else // when TreeView is clicked and not with Secondary click the menu gets closed
             contextMenueManager.closeMenu();
 
         });
@@ -241,5 +239,9 @@ public class MainWindowController extends BaseController implements Initializabl
     }
 
 
+    public void showStandardInformation() {
+        shownInformationNode.setManaged(false);
+        shownInformationNode.setVisible(false);
+    }
 }
 
