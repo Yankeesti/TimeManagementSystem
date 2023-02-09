@@ -67,7 +67,7 @@ public class Project extends TimeSpentContainer {
 
     public void editInformation(String newName, int newWeekGoal) {
         name = newName;
-        weekGoal = weekGoal;
+        weekGoal = newWeekGoal;
         notifyListeners(SubjectChange.EDITED_SUBJECT);
     }
 }

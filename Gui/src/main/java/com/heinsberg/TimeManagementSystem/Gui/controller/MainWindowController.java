@@ -5,6 +5,8 @@ import com.heinsberg.TimeManagementSystem.BackGround.Listeners.TimeManagementSys
 import com.heinsberg.TimeManagementSystem.BackGround.abstractClasses.TimeSpentContainer;
 import com.heinsberg.TimeManagementSystem.Gui.ContentManager;
 import com.heinsberg.TimeManagementSystem.Gui.controller.componentController.*;
+import com.heinsberg.TimeManagementSystem.Gui.controller.componentController.ContextMenue.ContextMenues.BaseContextMenu;
+import com.heinsberg.TimeManagementSystem.Gui.controller.componentController.ContextMenue.ContextMenueManager;
 import com.heinsberg.TimeManagementSystem.Gui.treeItems.BaseTreeItem;
 import com.heinsberg.TimeManagementSystem.Gui.view.ViewFactory;
 
@@ -20,6 +22,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -49,9 +52,11 @@ public class MainWindowController extends BaseController implements Initializabl
     private SemesterInformationController semesterInformationController;
     private SubjectInformationController subjectInformationController;
     private ProjectInformationController projectInformationController;
+    private ContextMenueManager contextMenueManager;
 
     public MainWindowController(ContentManager contentManager, ViewFactory viewFactory, String fxmlName) {
         super(contentManager, viewFactory, fxmlName);
+
     }
 
     @Override
@@ -59,6 +64,7 @@ public class MainWindowController extends BaseController implements Initializabl
         setTreeView();
         setUpInformationPane();
         setUpTimeManagementSystemListener();
+        contextMenueManager = new ContextMenueManager(contentManager, viewFactory, treeView);
     }
 
     /**
@@ -76,7 +82,7 @@ public class MainWindowController extends BaseController implements Initializabl
                 endLearrningPhaseButton.setVisible(true);
             }
             System.out.println(result);
-        }else{
+        } else {
             System.out.println("No Subject selected");
         }
     }
@@ -111,17 +117,16 @@ public class MainWindowController extends BaseController implements Initializabl
     }
 
     @FXML
-    void createNewProjectAction(){
+    void createNewProjectAction() {
         contentManager.addProject(viewFactory.getDialogViewFactory().showProjectCreator());
     }
 
 
-
-    private void setUpTimeManagementSystemListener(){
+    private void setUpTimeManagementSystemListener() {
         contentManager.getTimeManagementSystem().addListener(new TimeManagementSystemListener() {
             @Override
             public void changed(TimeManagementSystemChange change) {
-                if(change == TimeManagementSystemChange.CURRENT_LEARNINGPHASE_DELETED);
+                if (change == TimeManagementSystemChange.CURRENT_LEARNINGPHASE_DELETED) ;
                 startLearningPhaseButton.setVisible(true);
                 endLearrningPhaseButton.setVisible(false);
             }
@@ -143,7 +148,7 @@ public class MainWindowController extends BaseController implements Initializabl
         setUpNode(subjectInformationController);
 
         //SetUp ProjectInformationPane
-        projectInformationController = new ProjectInformationController(contentManager,viewFactory,"fxmlComponents/TimeSpentContainerInformation.fxml");
+        projectInformationController = new ProjectInformationController(contentManager, viewFactory, "fxmlComponents/TimeSpentContainerInformation.fxml");
         setUpNode(projectInformationController);
     }
 
@@ -174,9 +179,19 @@ public class MainWindowController extends BaseController implements Initializabl
         treeView.setOnMouseClicked(e -> {
             BaseTreeItem<String> item = (BaseTreeItem<String>) treeView.getSelectionModel().getSelectedItem();
             if (item != null) {
-                upDateInformationPane(item.getHoldObject());
-            }
+                if (e.getButton() == MouseButton.PRIMARY) {
+                    upDateInformationPane(item.getHoldObject());
+                    treeView.getSelectionModel().select(null);
+                    contextMenueManager.closeMenu();
+                } else if (e.getButton() == MouseButton.SECONDARY) {
+                    contextMenueManager.showMenue((BaseTreeItem) treeView.getSelectionModel().getSelectedItem(), e.getScreenX(), e.getScreenY());
+                    treeView.getSelectionModel().select(null);
+                }
+            }else // when TreeView is clicked and not with Secondary click the menue gets closed
+            contextMenueManager.closeMenu();
+
         });
+
     }
 
 

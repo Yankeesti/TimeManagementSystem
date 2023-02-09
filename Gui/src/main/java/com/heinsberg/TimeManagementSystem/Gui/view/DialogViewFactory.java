@@ -151,7 +151,7 @@ public class DialogViewFactory {
      * when he selects Ok the Subject gets deleted and main Window shows the Information pane of Study
      * @param subject - subject to be deleted
      */
-    private void deleteSubject(TimeSpentContainer timeSpentContainer){
+    public void deleteSubject(TimeSpentContainer timeSpentContainer){
         Alert deleteSubjectAlert = new Alert(Alert.AlertType.CONFIRMATION);
         deleteSubjectAlert.setHeaderText("Are you shure you want to delete: "+timeSpentContainer.getName()+" ?");
         if(timeSpentContainer instanceof Subject)

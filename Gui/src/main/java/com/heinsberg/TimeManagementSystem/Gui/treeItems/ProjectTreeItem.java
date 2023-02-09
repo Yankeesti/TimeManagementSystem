@@ -20,6 +20,7 @@ public class ProjectTreeItem<String> extends BaseTreeItem<String>{
                 }
             }
         });
+
     }
 
     @Override
