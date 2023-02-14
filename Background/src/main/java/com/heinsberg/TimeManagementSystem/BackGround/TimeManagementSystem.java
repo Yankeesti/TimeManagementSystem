@@ -54,10 +54,9 @@ public class TimeManagementSystem {
      */
     public void deleteLearningPhase(LearningPhase learningPhase) {
         if (currentLearningPhase == learningPhase) {
-            currentLearningPhase = null;
+            deleteCurrentLearningPhase();
             learningPhase.deleteLearningPhase();
-            notifyListeners(TimeManagementSystemChange.CURRENT_LEARNINGPHASE_DELETED);
-        }else{
+        } else {
             learningPhase.deleteLearningPhase();
         }
     }
@@ -258,5 +257,29 @@ public class TimeManagementSystem {
         for (TimeManagementSystemListener listener : listeners) {
             listener.notifyListener(change);
         }
+    }
+
+    /**
+     * Deletes the Semester and all it's Subjetcts and LearningPhases
+     *
+     * @param semesterToDelete
+     */
+    public void deleteSemester(Semester semesterToDelete) {
+        if (currentLearningPhase != null)
+            if (semesterToDelete.includesSubject((Subject) currentLearningPhase.getTimeSpentContainer())) {// delete the current learningPhase
+                deleteCurrentLearningPhase();
+            }
+        semesterToDelete.getStudy().deleteSemester(semesterToDelete);
+    }
+
+    public void deleteStudy(Study studyToDelete) {
+    }
+
+    /**
+     * Deletes the current LearningPhase and notifyes the Listners
+     */
+    private void deleteCurrentLearningPhase() {
+        currentLearningPhase = null;
+        notifyListeners(TimeManagementSystemChange.CURRENT_LEARNINGPHASE_DELETED);
     }
 }

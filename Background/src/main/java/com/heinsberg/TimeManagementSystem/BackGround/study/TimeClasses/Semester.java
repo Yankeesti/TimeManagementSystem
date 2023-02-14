@@ -182,4 +182,14 @@ public class Semester extends TimePeriod {
     public Study getStudy() {
         return study;
     }
+
+    /**
+     * Deletes all Subjects of this Semester and the LearningPhases that belong to it
+     */
+    public void delete() {
+        for(Subject subject : subjects){//delete all LearningPhases of all subjects
+            subject.deleteLearningPhases();
+        }
+        subjects.clear();
+    }
 }

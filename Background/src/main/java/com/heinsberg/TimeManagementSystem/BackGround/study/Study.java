@@ -327,4 +327,20 @@ public class Study {
             semester.setWeekFactory(weekFactory);
         }
     }
+
+    /**
+     * Deletes the given semester, all its Subjects and LearningPhases that belong to the Subjects in the given Semester
+     *
+     * @param semesterToDelete
+     */
+    public void deleteSemester(Semester semesterToDelete) {
+        if (currentLearningPhase != null)
+            if (semesterToDelete.includesSubject((Subject) currentLearningPhase.getTimeSpentContainer())) {
+                currentLearningPhase = null;
+                notifyListners(StudyChange.CURRENT_LEARNINGPHASE_DELETED);
+            }
+        semesters.remove(semesterToDelete);
+        semesterToDelete.delete();
+        notifyListners(StudyChange.DELETED_SEMESTER);
+    }
 }

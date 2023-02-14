@@ -281,9 +281,16 @@ public class ContentManager {
         setUpTreeView();
     }
 
+    /**
+     * Deletes the Semester out of the study
+     * @param semesterToDelete
+     */
     public void deleteSemester(Semester semesterToDelete) {
+        timeManagementSystem.deleteSemester(semesterToDelete);
+        System.out.println("Semester Deleted");
     }
 
     public void deleteStudy(Study studyToDelete) {
+        timeManagementSystem.deleteStudy(studyToDelete);
     }
 }
