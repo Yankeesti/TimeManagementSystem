@@ -273,6 +273,8 @@ public class TimeManagementSystem {
     }
 
     public void deleteStudy(Study studyToDelete) {
+        studies.remove(studyToDelete);
+        studyToDelete.delete();
     }
 
     /**

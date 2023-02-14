@@ -343,4 +343,16 @@ public class Study {
         semesterToDelete.delete();
         notifyListners(StudyChange.DELETED_SEMESTER);
     }
+
+    /**
+     * Deletes all Semesters and Subjects of this Study
+     */
+    public void delete() {
+        for(Semester semester:semesters){
+            semester.delete();
+        }
+        semesters.clear();
+        subjects.clear();
+        notifyListners(StudyChange.STUDY_DELETED);
+    }
 }
