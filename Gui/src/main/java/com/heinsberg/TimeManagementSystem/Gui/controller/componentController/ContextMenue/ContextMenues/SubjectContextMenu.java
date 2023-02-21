@@ -13,12 +13,17 @@ public class SubjectContextMenu extends BaseContextMenu{
     }
 
     @Override
+    protected void setUpItems() {
+
+    }
+
+    @Override
     public void deleteObject() {
         viewFactory.getDialogViewFactory().deleteTimeSpentContainer((TimeSpentContainer) holdObject);
     }
 
     @Override
     public void editObject() {
-
+        viewFactory.getDialogViewFactory().showSubjectEditor((Subject) holdObject);
     }
 }

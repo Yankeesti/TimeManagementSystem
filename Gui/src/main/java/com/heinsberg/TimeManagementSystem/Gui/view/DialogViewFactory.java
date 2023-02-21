@@ -82,7 +82,7 @@ public class DialogViewFactory {
     public void showProjectEditor(Project project) {
         System.out.println("Show Project Editor");
         ProjectEditorController controller = new ProjectEditorController(contentManager, viewFactory, "dialogBoxes/projectDialogBox", project);
-        Optional<ButtonType> buttonClicked = showDialog(controller, "Edit Subject");
+        Optional<ButtonType> buttonClicked = showDialog(controller, "Edit Project");
         if (buttonClicked.get() == ButtonType.OK) {
             controller.submitChanges();
         } else if (buttonClicked.get() == controller.getDeleteButton()) {

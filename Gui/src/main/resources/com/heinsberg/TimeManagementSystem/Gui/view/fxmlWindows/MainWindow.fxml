@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
@@ -32,13 +33,21 @@
           </Menu>
         </menus>
       </MenuBar>
-      <TreeView fx:id="treeView" layoutY="27.0" prefHeight="573.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="27.0" />
-      <AnchorPane fx:id="informationMainPane" layoutX="200.0" layoutY="97.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="97.0" />
-      <StackPane layoutX="200.0" layoutY="27.0" prefHeight="70.0" prefWidth="600.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0">
-         <children>
-            <Button fx:id="startLearningPhaseButton" mnemonicParsing="false" onAction="#startLearningPhaseAction" text="Start Lern Phase" />
-            <Button fx:id="endLearrningPhaseButton" mnemonicParsing="false" onAction="#endLearningPhaseAction" text="Lern Phase Beenden" visible="false" />
-         </children>
-      </StackPane>
+      <SplitPane dividerPositions="0.1373873873873874" layoutY="27.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0">
+         <items>
+            <TreeView fx:id="treeView" maxWidth="1.7976931348623157E308" />
+            <AnchorPane>
+               <children>
+                  <StackPane prefHeight="70.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Button fx:id="startLearningPhaseButton" mnemonicParsing="false" onAction="#startLearningPhaseAction" text="Start Lern Phase" />
+                        <Button fx:id="endLearrningPhaseButton" mnemonicParsing="false" onAction="#endLearningPhaseAction" text="Lern Phase Beenden" visible="false" />
+                     </children>
+                  </StackPane>
+                  <AnchorPane fx:id="informationMainPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0" />
+               </children>
+            </AnchorPane>
+         </items>
+      </SplitPane>
    </children>
 </AnchorPane>

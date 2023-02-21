@@ -23,7 +23,14 @@ public abstract class BaseContextMenu extends ContextMenu {
         this.viewFactory = viewFactory;
         this.contextMenueManager = contextMenueManager;
         setUpMenus();
+        setUpItems();
     }
+
+    /**
+     * A Method that every child needs to Implement
+     * thi method should setUp all additional Items and is called when BaseContextMenu is created
+     */
+    protected abstract void setUpItems();
 
     public void upDateObject(Object newObject){
         holdObject = newObject;

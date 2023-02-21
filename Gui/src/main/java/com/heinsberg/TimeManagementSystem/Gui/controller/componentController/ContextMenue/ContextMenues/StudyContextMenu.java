@@ -11,6 +11,11 @@ public class StudyContextMenu extends BaseContextMenu{
     }
 
     @Override
+    protected void setUpItems() {
+
+    }
+
+    @Override
     public void deleteObject() {
         viewFactory.getDialogViewFactory().deleteStudy((Study) holdObject);
     }
