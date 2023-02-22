@@ -11,6 +11,7 @@ module com.heinsberg.TimeManagementSystem.Gui {
     opens com.heinsberg.TimeManagementSystem.Gui.controller.componentController to javafx.fxml;
     opens com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Subject to javafx.fxml;
     opens com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Project to javafx.fxml;
+    opens com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Semester to javafx.fxml;
     opens com.heinsberg.TimeManagementSystem.Gui.controller.componentController.TimeSpentContainterController to javafx.fxml;
 
     exports com.heinsberg.TimeManagementSystem.Gui;

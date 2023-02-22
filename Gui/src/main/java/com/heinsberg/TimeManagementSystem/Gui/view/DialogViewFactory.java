@@ -6,6 +6,7 @@ import com.heinsberg.TimeManagementSystem.Gui.ContentManager;
 import com.heinsberg.TimeManagementSystem.Gui.controller.BaseController;
 import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Project.ProjectCreateController;
 import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Project.ProjectEditorController;
+import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Semester.SemesterCreateController;
 import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Subject.SubjectChooserController;
 import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Subject.SubjectCreatorController;
 import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Subject.SubjectEditController;
@@ -55,6 +56,17 @@ public class DialogViewFactory {
         Optional<ButtonType> buttonClicked = showDialog(controller, "Erstelle Project");
         if (buttonClicked.get() == ButtonType.OK) {
             return controller.getCreatedProject();
+        } else {
+            return null;
+        }
+    }
+
+    public Semester showSemesterCreator(Study study){
+        System.out.println("Show Semester Creator");
+        SemesterCreateController controller = new SemesterCreateController(contentManager,viewFactory,"dialogBoxes/semesterDialogBox",study);
+        Optional<ButtonType> buttonClicked = showDialog(controller, "Erstelle Semester");
+        if (buttonClicked.get() == ButtonType.OK) {
+            return controller.getCreatedSemester();
         } else {
             return null;
         }

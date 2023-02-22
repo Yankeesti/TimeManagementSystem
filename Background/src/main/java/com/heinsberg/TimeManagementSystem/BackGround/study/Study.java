@@ -12,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -186,7 +187,20 @@ public class Study {
         return studyName;
     }
 
-    ;
+    /**
+     * Creates a Array with all taken Semester Values
+     * @return Sorted Array of all taken Semester Values
+     */
+    public int[] getTakenSemester(){
+        int[] outPut = new int[semesters.size()];
+        for(int i = 0; i< outPut.length;i++){
+            outPut[i] = semesters.get(i).getSemester();
+        }
+        Arrays.sort(outPut);
+        return outPut;
+    }
+
+
 
     //private Methodes
 
