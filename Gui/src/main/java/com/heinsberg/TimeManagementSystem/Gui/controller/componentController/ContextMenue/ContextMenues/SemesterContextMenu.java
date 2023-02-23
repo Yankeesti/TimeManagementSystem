@@ -37,7 +37,7 @@ public class SemesterContextMenu extends BaseContextMenu {
 
     @Override
     public void editObject() {
-
+        viewFactory.getDialogViewFactory().showSemesterEditor((Semester) holdObject);
     }
 
     /**

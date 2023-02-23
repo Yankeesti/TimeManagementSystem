@@ -1,26 +1,17 @@
 package com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.SpinnerViewFactorys;
 
-import com.heinsberg.TimeManagementSystem.BackGround.study.Study;
+import com.heinsberg.TimeManagementSystem.BackGround.study.TimeClasses.Semester;
 import javafx.scene.control.SpinnerValueFactory;
 
 import java.util.Arrays;
 
-/**
- * Controlles the view of a Semester Spinner makes it only possible to choose Semester Numbers that are not taken yet
- */
-public class SpinnerSemesterViewFactory extends SpinnerValueFactory.IntegerSpinnerValueFactory {
-
-    Study study;
-
+public class SpinnerSemesterEditValueFactory extends SpinnerValueFactory.IntegerSpinnerValueFactory{
+    Semester toEdit;
     int[] takenSemesterNumbers;
-    int currentSemester; // is set when a Semester is edited shows the Semester Number of the edited Semester, this number can be set
-
-    // when it is -1 it means there is no semester to edit
-    public SpinnerSemesterViewFactory(Study study) {
+    public SpinnerSemesterEditValueFactory(Semester toEdit) {
         super(1, 50);
-        this.study = study;
-        takenSemesterNumbers = study.getTakenSemester();
-        int currentSemester = -1;
+        this.toEdit = toEdit;
+        takenSemesterNumbers = toEdit.getStudy().getTakenSemester();
     }
 
     /**
@@ -32,7 +23,7 @@ public class SpinnerSemesterViewFactory extends SpinnerValueFactory.IntegerSpinn
     @Override
     public void decrement(int i) {
         int takenIndex = Arrays.binarySearch(takenSemesterNumbers, getValue() - i); //The index where value-i is in the takenSemesterNumbers Array
-        if(takenIndex < 0){
+        if(takenIndex < 0 || getValue()-i == toEdit.getSemester()){
             setValue(getValue()-i);
         }else {
             //look for the next possible Value
@@ -45,6 +36,10 @@ public class SpinnerSemesterViewFactory extends SpinnerValueFactory.IntegerSpinn
                     setValue(newValue);
                     break;
                 }else{
+                    if(newValue == toEdit.getSemester()){
+                        setValue(newValue);
+                        break;
+                    }
                     takenIndex--;
                 }
             }
@@ -67,10 +62,13 @@ public class SpinnerSemesterViewFactory extends SpinnerValueFactory.IntegerSpinn
                     setValue(newValue);
                     break;
                 }else{
+                    if(newValue == toEdit.getSemester()){
+                        setValue(newValue);
+                        break;
+                    }
                     takenIndex++;
                 }
             }
         }
     }
-
 }

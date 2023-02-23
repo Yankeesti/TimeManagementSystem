@@ -1,5 +1,7 @@
 package com.heinsberg.TimeManagementSystem.Gui.treeItems;
 
+import com.heinsberg.TimeManagementSystem.BackGround.study.Listeners.ChangeEnums.StudyChange;
+import com.heinsberg.TimeManagementSystem.BackGround.study.Listeners.StudyListener;
 import com.heinsberg.TimeManagementSystem.BackGround.study.Study;
 import com.heinsberg.TimeManagementSystem.BackGround.study.TimeClasses.Semester;
 import javafx.collections.ListChangeListener;
@@ -36,6 +38,19 @@ public class StudyTreeItem<String> extends BaseTreeItem<String> {
         });
         setUpSemesters();
         setExpanded(true);
+        setUpStudyListener();
+    }
+
+
+    private void setUpStudyListener() {
+        study.addListener(new StudyListener() {
+            @Override
+            public void changed(StudyChange studyChange) {
+                if(studyChange == StudyChange.SEMESTERS_REORDERD){
+                    getChildren().sort((TreeItem t1, TreeItem t2) -> ((Semester)((SemesterTreeItem)t1).getHoldObject()).getSemester() - ((Semester)((SemesterTreeItem)t2).getHoldObject()).getSemester());
+                }
+            }
+        });
     }
 
     /**

@@ -3,6 +3,7 @@ package com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Semest
 import com.heinsberg.TimeManagementSystem.BackGround.study.Study;
 import com.heinsberg.TimeManagementSystem.BackGround.study.TimeClasses.Semester;
 import com.heinsberg.TimeManagementSystem.Gui.ContentManager;
+import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.SpinnerViewFactorys.SpinnerSemesterCreateValueFactory;
 import com.heinsberg.TimeManagementSystem.Gui.view.ViewFactory;
 import javafx.fxml.Initializable;
 import javafx.scene.control.DateCell;
@@ -44,40 +45,25 @@ public class SemesterCreateController extends SemesterManipulateController imple
         return outPut;
     }
 
-    /**
-     * Updates the End Date Pickers selectable Dates
-     */
-    protected void upDateEndDatePicker() {
 
-        endDatePicker.dayCellFactoryProperty().set(datePicker -> new DateCell() {
-            public void updateItem(LocalDate date, boolean empty) {
-                super.updateItem(date, empty);
 
-                if (startDatePicker.getValue() != null) {
-                    if (startDatePicker.getValue().isAfter(date))
-                        setDisable(true);//start Date would be before end Date
-                }
-                if (!(possibleDates[0].isBefore(date) && possibleDates[1].isAfter(date)))
-                    setDisable(true);
-            }
-        });
-    }
+
 
     /**
-     * Updates the Start Date Pickers selectable Dates
+     * Sets up the Spinner the predefinded Value needs to be set in the child of this class
      */
-    protected void upDateStartDatePicker() {
-        startDatePicker.dayCellFactoryProperty().set(datePicker -> new DateCell() {
-            public void updateItem(LocalDate date, boolean empty) {
-                super.updateItem(date, empty);
+    protected void setUpSpinner() {
+        semesterViewFactory = new SpinnerSemesterCreateValueFactory(study);
+        semesterChooser.setValueFactory(semesterViewFactory);
+        semesterViewFactory.increment(1);
 
-                if (endDatePicker.getValue() != null) {
-                    if (endDatePicker.getValue().isBefore(date))
-                        setDisable(true);//start Date would be before end Date
-                }
-                if (!(possibleDates[0].isBefore(date) && possibleDates[1].isAfter(date)))
-                    setDisable(true);
-            }
+        //add Listener to Value Spinner
+        semesterViewFactory.valueProperty().addListener(e -> {
+            upDatePossibleDates();
+            upDateStartDatePicker();
+            upDateEndDatePicker();
+            startDatePicker.setValue(null);
+            endDatePicker.setValue(null);
         });
     }
 }

@@ -7,6 +7,7 @@ import com.heinsberg.TimeManagementSystem.Gui.controller.BaseController;
 import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Project.ProjectCreateController;
 import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Project.ProjectEditorController;
 import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Semester.SemesterCreateController;
+import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Semester.SemesterEditController;
 import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Subject.SubjectChooserController;
 import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Subject.SubjectCreatorController;
 import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Subject.SubjectEditController;
@@ -71,6 +72,18 @@ public class DialogViewFactory {
         Optional<ButtonType> buttonClicked = showDialog(controller, "Erstelle Semester");
         if (buttonClicked.get() == ButtonType.OK) {
             contentManager.addNewSemester(study,controller.getCreatedSemester());
+        }
+    }
+
+    /**
+     * Shows the Smester Edit Dialog for the given Semester
+     */
+    public void showSemesterEditor(Semester semester){
+        System.out.println("Show Semester Editor");
+        SemesterEditController controller = new SemesterEditController(contentManager,viewFactory,"dialogBoxes/semesterDialogBox",semester);
+        Optional<ButtonType> buttonClicked = showDialog(controller, "Semester bearbeiten");
+        if(buttonClicked.get() == ButtonType.OK){
+            controller.submitChanges();
         }
     }
 

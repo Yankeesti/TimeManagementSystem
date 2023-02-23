@@ -389,4 +389,16 @@ public class Study {
         }
         return outPut;
     }
+
+    /**
+     * Submits the Changes to the given Semester and re sorts the semesters
+     * @param semesterToEdit
+     * @param startDate
+     * @param endDate
+     */
+    public void submitChanges(Semester semesterToEdit, int semester,Date startDate, Date endDate) {
+        semesterToEdit.submitChanges(semester,startDate,endDate);
+        semesters.sort((Semester s1, Semester s2) -> s1.getSemester() - s2.getSemester());
+        notifyListners(StudyChange.SEMESTERS_REORDERD);
+    }
 }

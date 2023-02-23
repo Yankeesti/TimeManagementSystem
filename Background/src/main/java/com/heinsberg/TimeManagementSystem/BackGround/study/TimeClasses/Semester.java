@@ -4,11 +4,14 @@ import com.heinsberg.TimeManagementSystem.BackGround.TimeClasses.LearningPhase;
 import com.heinsberg.TimeManagementSystem.BackGround.TimeClasses.TimePeriod;
 import com.heinsberg.TimeManagementSystem.BackGround.TimeClasses.Week;
 import com.heinsberg.TimeManagementSystem.BackGround.WeekFactory;
+import com.heinsberg.TimeManagementSystem.BackGround.study.Listeners.ChangeEnums.SemesterChange;
+import com.heinsberg.TimeManagementSystem.BackGround.study.Listeners.SemesterListener;
 import com.heinsberg.TimeManagementSystem.BackGround.study.Study;
 import com.heinsberg.TimeManagementSystem.BackGround.study.subject.Subject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Semester extends TimePeriod {
@@ -20,6 +23,8 @@ public class Semester extends TimePeriod {
     private WeekFactory weekFactory;
     private Study study; //The study Semester belongs to
 
+    private ArrayList<SemesterListener> listeners;
+
     /**
      * Creates a new semester with a given start and end date, and a semester number
      *
@@ -29,6 +34,7 @@ public class Semester extends TimePeriod {
      */
     public Semester(int semester, Date semesterStart, Date semesterEnd, WeekFactory weekFactory) {
         super(semesterStart, semesterEnd);
+        listeners = new ArrayList<SemesterListener>();
         this.semester = semester;
         this.weekFactory = weekFactory;
         Date startMonday = getMonday(semesterStart);
@@ -38,7 +44,6 @@ public class Semester extends TimePeriod {
             startMonday.setDate(startMonday.getDate() + 7);
         }
         subjects = FXCollections.observableArrayList();
-        ;
     }
 
     /**
@@ -53,7 +58,7 @@ public class Semester extends TimePeriod {
         super(semesterStart, semesterEnd);
         this.semester = semester;
         subjects = FXCollections.observableArrayList();
-        ;
+        listeners = new ArrayList<SemesterListener>();
     }
     //Control Methods
 
@@ -191,5 +196,33 @@ public class Semester extends TimePeriod {
             subject.deleteLearningPhases();
         }
         subjects.clear();
+    }
+
+    /**
+     * Submits the changes to the Semester
+     * @param semester
+     * @param startDate
+     * @param endDate
+     */
+    public void submitChanges(int semester, Date startDate, Date endDate) {
+        this.semester = semester;
+        setTime(startDate.getTime());
+        this.endDate = endDate;
+        notifyListeners(SemesterChange.INFORMATION_UPDATED);
+    }
+
+    //Listener Methods
+    public void addListener(SemesterListener listener){
+        listeners.add(listener);
+    }
+
+    public void removeListener(SemesterListener listener){
+        listeners.remove(listener);
+    }
+
+    public void notifyListeners(SemesterChange change){
+        for(SemesterListener listener:listeners){
+            listener.notifyListener(change);
+        }
     }
 }

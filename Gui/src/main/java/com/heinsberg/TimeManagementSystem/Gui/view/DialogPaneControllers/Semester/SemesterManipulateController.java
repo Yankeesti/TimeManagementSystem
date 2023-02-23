@@ -4,7 +4,7 @@ import com.heinsberg.TimeManagementSystem.BackGround.study.Study;
 import com.heinsberg.TimeManagementSystem.BackGround.study.TimeClasses.Semester;
 import com.heinsberg.TimeManagementSystem.Gui.ContentManager;
 import com.heinsberg.TimeManagementSystem.Gui.controller.BaseController;
-import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.SpinnerViewFactorys.SpinnerSemesterViewFactory;
+import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.SpinnerViewFactorys.SpinnerSemesterCreateValueFactory;
 import com.heinsberg.TimeManagementSystem.Gui.view.ViewFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -26,7 +26,7 @@ public abstract class SemesterManipulateController extends BaseController {
     @FXML
     protected Label errorLabel;
 
-    protected SpinnerSemesterViewFactory semesterViewFactory;
+    protected SpinnerValueFactory.IntegerSpinnerValueFactory semesterViewFactory;
 
     protected Study study;
 
@@ -55,7 +55,7 @@ public abstract class SemesterManipulateController extends BaseController {
     /**
      * Updates the Possible Date to choose in Date Picker
      */
-    private void upDatePossibleDates() {
+    protected void upDatePossibleDates() {
         Semester[] surroundingSemesters = study.getSurroundingSemesters(semesterChooser.getValue());
         possibleDates = new LocalDate[2]; //holds the start and the end of all possible Dates
 
@@ -95,29 +95,45 @@ public abstract class SemesterManipulateController extends BaseController {
     /**
      * Sets up the Spinner the predefinded Value needs to be set in the child of this class
      */
-    private void setUpSpinner() {
-        semesterViewFactory = new SpinnerSemesterViewFactory(study);
-        semesterChooser.setValueFactory(semesterViewFactory);
-        semesterViewFactory.increment(1);
-
-        //add Listener to Value Spinner
-        semesterViewFactory.valueProperty().addListener(e -> {
-            upDatePossibleDates();
-            upDateStartDatePicker();
-            upDateEndDatePicker();
-        });
-    }
+    protected abstract void setUpSpinner();
 
 
     /**
      * Updates the End Date Pickers selectable Dates
      */
-    protected abstract void upDateEndDatePicker();
+    protected void upDateEndDatePicker() {
+
+        endDatePicker.dayCellFactoryProperty().set(datePicker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+
+                if (startDatePicker.getValue() != null) {
+                    if (startDatePicker.getValue().isAfter(date))
+                        setDisable(true);//start Date would be before end Date
+                }
+                if (!(possibleDates[0].isBefore(date) && possibleDates[1].isAfter(date)))
+                    setDisable(true);
+            }
+        });
+    }
 
     /**
      * Updates the Start Date Pickers selectable Dates
      */
-    protected abstract void upDateStartDatePicker();
+    protected void upDateStartDatePicker() {
+        startDatePicker.dayCellFactoryProperty().set(datePicker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+
+                if (endDatePicker.getValue() != null) {
+                    if (endDatePicker.getValue().isBefore(date))
+                        setDisable(true);//start Date would be before end Date
+                }
+                if (!(possibleDates[0].isBefore(date) && possibleDates[1].isAfter(date)))
+                    setDisable(true);
+            }
+        });
+    }
 
 
 }

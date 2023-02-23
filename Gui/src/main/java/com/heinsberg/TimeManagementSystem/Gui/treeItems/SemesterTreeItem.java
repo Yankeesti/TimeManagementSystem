@@ -1,5 +1,7 @@
 package com.heinsberg.TimeManagementSystem.Gui.treeItems;
 
+import com.heinsberg.TimeManagementSystem.BackGround.study.Listeners.ChangeEnums.SemesterChange;
+import com.heinsberg.TimeManagementSystem.BackGround.study.Listeners.SemesterListener;
 import com.heinsberg.TimeManagementSystem.BackGround.study.TimeClasses.Semester;
 import com.heinsberg.TimeManagementSystem.BackGround.study.subject.Subject;
 import javafx.collections.ListChangeListener;
@@ -18,6 +20,18 @@ public class SemesterTreeItem<String> extends BaseTreeItem<String> implements Co
         this.semester = semester;
         setUpSubjects();
         setExpanded(true);
+        setUpSemesterListener();
+    }
+
+    private void setUpSemesterListener() {
+        semester.addListener(new SemesterListener() {
+            @Override
+            public void changed(SemesterChange change) {
+                if(change == SemesterChange.INFORMATION_UPDATED){
+                    setValue((String) (semester.getSemester()+". Semester"));
+                }
+            }
+        });
     }
 
     /**
