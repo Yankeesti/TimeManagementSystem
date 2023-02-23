@@ -61,14 +61,16 @@ public class DialogViewFactory {
         }
     }
 
-    public Semester showSemesterCreator(Study study){
+    /**
+     * Opens a Semester Create Dialog when Ok Button is Clicked the Semester is added to its study
+     * @param study
+     */
+    public void showSemesterCreator(Study study){
         System.out.println("Show Semester Creator");
         SemesterCreateController controller = new SemesterCreateController(contentManager,viewFactory,"dialogBoxes/semesterDialogBox",study);
         Optional<ButtonType> buttonClicked = showDialog(controller, "Erstelle Semester");
         if (buttonClicked.get() == ButtonType.OK) {
-            return controller.getCreatedSemester();
-        } else {
-            return null;
+            contentManager.addNewSemester(study,controller.getCreatedSemester());
         }
     }
 

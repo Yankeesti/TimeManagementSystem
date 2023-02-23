@@ -22,7 +22,7 @@ import java.util.Date;
 public class Study {
     private String studyName;
 
-    private ObservableList<Semester> semesters;//Semesters that are ended
+    private ObservableList<Semester> semesters;//sorted List of all Semesters
     private ObservableList<Subject> subjects;
     private LearningPhase currentLearningPhase;
 
@@ -189,17 +189,17 @@ public class Study {
 
     /**
      * Creates a Array with all taken Semester Values
+     *
      * @return Sorted Array of all taken Semester Values
      */
-    public int[] getTakenSemester(){
+    public int[] getTakenSemester() {
         int[] outPut = new int[semesters.size()];
-        for(int i = 0; i< outPut.length;i++){
+        for (int i = 0; i < outPut.length; i++) {
             outPut[i] = semesters.get(i).getSemester();
         }
         Arrays.sort(outPut);
         return outPut;
     }
-
 
 
     //private Methodes
@@ -362,11 +362,31 @@ public class Study {
      * Deletes all Semesters and Subjects of this Study
      */
     public void delete() {
-        for(Semester semester:semesters){
+        for (Semester semester : semesters) {
             semester.delete();
         }
         semesters.clear();
         subjects.clear();
         notifyListners(StudyChange.STUDY_DELETED);
+    }
+
+    /**
+     * Returns the SourundingSemesters of semester
+     * @param semester
+     * @return [0] = semester before semester [1] = Semester after semester null in one of thos if there is no semester before or after it
+     */
+    public Semester[] getSurroundingSemesters(int semester) {
+        int takenSemesters[] = getTakenSemester();
+        Semester[] outPut = new Semester[2];
+        for(int i = 0; i<takenSemesters.length;i++){
+            if(takenSemesters[i] < semester){
+                outPut[0] = getSemester(takenSemesters[i]);
+            }
+            if(takenSemesters[i] > semester){
+                outPut[1] = getSemester(takenSemesters[i]);
+                return outPut;
+            }
+        }
+        return outPut;
     }
 }
