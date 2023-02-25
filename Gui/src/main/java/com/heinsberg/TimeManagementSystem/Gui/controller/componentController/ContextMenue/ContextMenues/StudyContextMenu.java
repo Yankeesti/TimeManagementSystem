@@ -31,6 +31,6 @@ public class StudyContextMenu extends BaseContextMenu{
 
     @Override
     public void editObject() {
-
+        viewFactory.getDialogViewFactory().showStudyEditor((Study) holdObject);
     }
 }

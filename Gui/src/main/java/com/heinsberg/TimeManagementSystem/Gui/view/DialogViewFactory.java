@@ -8,6 +8,7 @@ import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Project
 import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Project.ProjectEditorController;
 import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Semester.SemesterCreateController;
 import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Semester.SemesterEditController;
+import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Study.StudyEditController;
 import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Subject.SubjectChooserController;
 import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Subject.SubjectCreatorController;
 import com.heinsberg.TimeManagementSystem.Gui.view.DialogPaneControllers.Subject.SubjectEditController;
@@ -133,6 +134,15 @@ public class DialogViewFactory {
             return null;
         }
         return null;
+    }
+
+    public void showStudyEditor(Study study){
+        System.out.println("show Study Editor");
+        StudyEditController controller = new StudyEditController(contentManager,viewFactory,"dialogBoxes/studyDialog",study);
+        Optional<ButtonType> buttonClicked = showDialog(controller, "Select Subject");
+        if (buttonClicked.get() == ButtonType.OK) {
+            controller.submitChanges();
+        }
     }
 
     /**

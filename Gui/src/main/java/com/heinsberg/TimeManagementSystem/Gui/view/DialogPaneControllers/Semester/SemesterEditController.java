@@ -60,6 +60,6 @@ public class SemesterEditController extends SemesterManipulateController impleme
     }
 
     private void setUpOkButton(){
-        okButton.setText("Speicher");
+        okButton.setText("Speichern");
     }
 }

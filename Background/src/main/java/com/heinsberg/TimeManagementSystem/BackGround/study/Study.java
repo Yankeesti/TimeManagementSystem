@@ -401,4 +401,13 @@ public class Study {
         semesters.sort((Semester s1, Semester s2) -> s1.getSemester() - s2.getSemester());
         notifyListners(StudyChange.SEMESTERS_REORDERD);
     }
+
+    /**
+     * changes the Name of the Study
+     * @param newName
+     */
+    public void changeName(String newName) {
+        studyName = newName;
+        notifyListners(StudyChange.NAME_CHANGED);
+    }
 }

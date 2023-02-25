@@ -46,8 +46,13 @@ public class StudyTreeItem<String> extends BaseTreeItem<String> {
         study.addListener(new StudyListener() {
             @Override
             public void changed(StudyChange studyChange) {
-                if(studyChange == StudyChange.SEMESTERS_REORDERD){
-                    getChildren().sort((TreeItem t1, TreeItem t2) -> ((Semester)((SemesterTreeItem)t1).getHoldObject()).getSemester() - ((Semester)((SemesterTreeItem)t2).getHoldObject()).getSemester());
+                switch (studyChange){
+                    case SEMESTERS_REORDERD:
+                        getChildren().sort((TreeItem t1, TreeItem t2) -> ((Semester)((SemesterTreeItem)t1).getHoldObject()).getSemester() - ((Semester)((SemesterTreeItem)t2).getHoldObject()).getSemester());
+                        break;
+                    case NAME_CHANGED:
+                        setValue((String) study.getName());
+                        break;
                 }
             }
         });
