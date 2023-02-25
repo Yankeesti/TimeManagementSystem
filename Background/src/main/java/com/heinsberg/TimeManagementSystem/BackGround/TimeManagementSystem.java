@@ -284,4 +284,9 @@ public class TimeManagementSystem {
         currentLearningPhase = null;
         notifyListeners(TimeManagementSystemChange.CURRENT_LEARNINGPHASE_DELETED);
     }
+
+    public void addNewStudy(String text) {
+        Study newStudy = new Study(text,weekFactory);
+        studies.add(newStudy);
+    }
 }

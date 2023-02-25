@@ -23,38 +23,15 @@ public class StudyEditController extends StudyManipulateController implements In
         setUpNameField();
     }
 
-    public void submitChanges(){
-        studyToEdit.changeName(studyNameField.getText());
-    }
-
     /**
      * Sets up the Study Name Field with Study Name
-     * and adds a Listener
      */
     private void setUpNameField() {
         studyNameField.setText(studyToEdit.getName());
-        setUpNameFieldListener();
     }
 
-    /**
-     * Sets up a Listener to the Text Field so when no name is given
-     * the ok Button gets Disabled
-     */
-    private void setUpNameFieldListener() {
-        studyNameField.textProperty().addListener((observable -> {
-            checkInput();
-        }));
-    }
-
-    /**
-     * Checks weather the Name Field is Empty or not and disables/enables the save Button
-     */
-    private void checkInput() {
-        if(studyNameField.getText().isEmpty()){
-            okButton.setDisable(true);
-        }else{
-            okButton.setDisable(false);
-        }
+    public void submitChanges(){
+        studyToEdit.changeName(studyNameField.getText());
     }
 
     /**

@@ -94,6 +94,14 @@ public class MainWindowController extends BaseController implements Initializabl
         endLearrningPhaseButton.setVisible(false);
     }
 
+    /**
+     * Opens a Create Study Dialog
+     */
+    @FXML
+    void createNewStudyAction(){
+        viewFactory.getDialogViewFactory().showStudyCreator();
+    }
+
 
     @FXML
     void saveAsAction() {

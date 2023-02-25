@@ -16,10 +16,8 @@ import com.heinsberg.TimeManagementSystem.BackGround.study.Study;
 import com.heinsberg.TimeManagementSystem.BackGround.TimeClasses.LearningPhase;
 import com.heinsberg.TimeManagementSystem.BackGround.study.TimeClasses.Semester;
 import com.heinsberg.TimeManagementSystem.BackGround.study.subject.Subject;
-import com.heinsberg.TimeManagementSystem.BackGround.study.typeAdapters.StudyTypeAdapter;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 
 import java.io.*;
@@ -71,7 +69,7 @@ public class ContentManager {
                                     change.next();
                                     if (change.wasAdded()) {
                                         List<? extends Study> addedList = change.getAddedSubList();
-                                        addSubjectTreeItem(addedList.get(addedList.size() - 1));
+                                        addStudyTreeItem(addedList.get(addedList.size() - 1));
                                     } else if (change.wasRemoved()) {
                                         List<? extends Study> removedList = change.getRemoved();
                                         removeStudyTreeItem(removedList.get(removedList.size() - 1));
@@ -114,7 +112,7 @@ public class ContentManager {
         }
     }
 
-    private void addSubjectTreeItem(Study study) {
+    private void addStudyTreeItem(Study study) {
         TreeItem<String> studyTreeItem = new StudyTreeItem(study);
         foldersRoot.getChildren().add(studyTreeItem);
     }
@@ -292,5 +290,12 @@ public class ContentManager {
 
     public void deleteStudy(Study studyToDelete) {
         timeManagementSystem.deleteStudy(studyToDelete);
+    }
+
+    /**
+     * Adds a new Study with the given Name to the Time Management System
+     */
+    public void addNewStudy(String text) {
+        timeManagementSystem.addNewStudy(text);
     }
 }

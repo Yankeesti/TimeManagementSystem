@@ -32,7 +32,7 @@ public class Study {
 
 
     public Study(String studyName, WeekFactory weekFactory) {
-
+        this.studyName = studyName;
         subjects = FXCollections.observableArrayList();
         semesters = FXCollections.observableArrayList();
         listeners = new ArrayList<StudyListener>();
