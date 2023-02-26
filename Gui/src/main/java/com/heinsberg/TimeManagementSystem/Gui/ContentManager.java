@@ -21,6 +21,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 
 import java.io.*;
+import java.time.temporal.Temporal;
 import java.util.List;
 
 /**
@@ -28,8 +29,11 @@ import java.util.List;
  */
 public class ContentManager {
     private TimeManagementSystem timeManagementSystem;
-    private TreeItem<String> foldersRoot = new TreeItem<String>(""); //
+    private TreeItem<String> foldersRoot = new TreeItem<String>(""); //[0] = studies [1] = project
+    private TreeItem<String> studiesRoot = new TreeItem<String>("Studien");
+    private TreeItem<String> projectsRoot = new TreeItem<String>("Projekte");
     private File currentFile;//saves the File currently editing.
+
 
 
     /**
@@ -60,7 +64,7 @@ public class ContentManager {
         ObservableList<Study> studies = timeManagementSystem.getStudies();
         //SetUp StudyTreeItems
         for (Study study : studies) { // Add a new Study Tree Item for each Study in the Time Management System
-            foldersRoot.getChildren().add(new StudyTreeItem<>(study));
+            studiesRoot.getChildren().add(new StudyTreeItem<>(study));
         }
         //Set Up Listener for studies
         studies.addListener(new ListChangeListener<Study>() {
@@ -77,12 +81,14 @@ public class ContentManager {
                                 }
                             }
         );
+        studiesRoot.setExpanded(true);
+        foldersRoot.getChildren().add(studiesRoot);
 
         //set Up listner for projects so that new projects get added to the treeview
         ObservableList<Project> projects = timeManagementSystem.getProjects();
 
         for(Project project:projects){
-            foldersRoot.getChildren().add((new ProjectTreeItem<>(project)));
+            projectsRoot.getChildren().add((new ProjectTreeItem<>(project)));
         }
         projects.addListener(new ListChangeListener<Project>() {
             @Override
@@ -97,6 +103,8 @@ public class ContentManager {
                 }
             }
         });
+        projectsRoot.setExpanded(true);
+        foldersRoot.getChildren().add(projectsRoot);
     }
 
     /**
@@ -104,9 +112,9 @@ public class ContentManager {
      * @param study
      */
     private void removeStudyTreeItem(Study study) {
-        for(TreeItem child : foldersRoot.getChildren()){
+        for(TreeItem child : studiesRoot.getChildren()){
             if(((BaseTreeItem)child).getHoldObject() == study){
-                foldersRoot.getChildren().remove(child);
+                studiesRoot.getChildren().remove(child);
                 break;
             }
         }
@@ -114,13 +122,13 @@ public class ContentManager {
 
     private void addStudyTreeItem(Study study) {
         TreeItem<String> studyTreeItem = new StudyTreeItem(study);
-        foldersRoot.getChildren().add(studyTreeItem);
+        studiesRoot.getChildren().add(studyTreeItem);
     }
 
     private void removeProjectTreeItem(Project project) {
-        for (TreeItem child : foldersRoot.getChildren()) {
+        for (TreeItem child : projectsRoot.getChildren()) {
             if (((BaseTreeItem) child).getHoldObject() == project) {
-                foldersRoot.getChildren().remove(child);
+                projectsRoot.getChildren().remove(child);
                 break;
             }
         }
@@ -128,7 +136,7 @@ public class ContentManager {
 
     private void addProjectTreeItem(Project project) {
         TreeItem<String> projectTreeItem = new ProjectTreeItem<>(project);
-        foldersRoot.getChildren().add(projectTreeItem);
+        projectsRoot.getChildren().add(projectTreeItem);
     }
 
     /**

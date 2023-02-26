@@ -21,6 +21,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
@@ -185,10 +186,10 @@ public class MainWindowController extends BaseController implements Initializabl
         treeView.setRoot(contentManager.getFoldersRoot());
         treeView.setShowRoot(false);
         treeView.setOnMouseClicked(e -> {
-            BaseTreeItem<String> item = (BaseTreeItem<String>) treeView.getSelectionModel().getSelectedItem();
-            if (item != null) {
-                if (e.getButton() == MouseButton.PRIMARY) {
-                    upDateInformationPane(item.getHoldObject());
+            TreeItem<String> item = treeView.getSelectionModel().getSelectedItem();
+            if (item != null && item instanceof  BaseTreeItem) {
+                if (e.getButton() == MouseButton.PRIMARY ) {
+                    upDateInformationPane(((BaseTreeItem)item).getHoldObject());
                     contextMenueManager.closeMenu();
                 } else if (e.getButton() == MouseButton.SECONDARY) {
                     contextMenueManager.showMenue((BaseTreeItem) treeView.getSelectionModel().getSelectedItem(), e.getScreenX(), e.getScreenY());
