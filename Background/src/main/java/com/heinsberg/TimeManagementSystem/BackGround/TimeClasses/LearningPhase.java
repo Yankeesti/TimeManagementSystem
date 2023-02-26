@@ -31,6 +31,7 @@ public class LearningPhase extends TimePeriod {
     public LearningPhase(long startDate,long endDate ,TimeSpentContainer timeSpentContainer){
         super(startDate,endDate);
         this.timeSpentContainer = timeSpentContainer;
+        timeLearned = getDifference()/1000;
     }
 
     /**
@@ -42,6 +43,7 @@ public class LearningPhase extends TimePeriod {
      */
     public LearningPhase(long startDate,long endDate){
         super(startDate,endDate);
+        timeLearned = getDifference()/1000;
     }
 
     /**
@@ -51,7 +53,7 @@ public class LearningPhase extends TimePeriod {
      */
     public long endLearningPhase() {
         setEndTime(getAktDate().getTime());
-        timeLearned = getDiffrence() / 1000;
+        timeLearned = getDifference() / 1000;
         return timeLearned;
     }
 
@@ -71,11 +73,14 @@ public class LearningPhase extends TimePeriod {
     public void setEndTime(long time){
         if(time >= 0){
             super.setEndTime(time);
-            timeLearned = getDiffrence()/1000;
+            timeLearned = getDifference()/1000;
         }
     }
     public long getTimeLearned(){
-        return timeLearned;}
+        if(timeLearned <= 0)
+            timeLearned = getDifference()/1000;
+        return timeLearned;
+    }
 
     public void setTimeSpentContainer(TimeSpentContainer timeSpentContainer) {
         this.timeSpentContainer = timeSpentContainer;

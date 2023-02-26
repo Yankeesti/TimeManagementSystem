@@ -1,7 +1,5 @@
 package com.heinsberg.TimeManagementSystem.BackGround.TimeClasses;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -83,7 +81,7 @@ public class Week extends TimePeriod {
         long learned = 0;
         for(LearningPhase learningPhase:learningPhases){
             if(learningPhase.getTimeSpentContainer() == timeSpentContainer){
-                learned+= learningPhase.getDiffrence()/1000;
+                learned+= learningPhase.getDifference()/1000;
             }
         }
         return (int) (learned/60);

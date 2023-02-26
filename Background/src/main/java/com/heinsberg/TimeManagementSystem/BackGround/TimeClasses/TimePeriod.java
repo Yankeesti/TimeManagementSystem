@@ -162,7 +162,7 @@ public abstract class TimePeriod extends Date {
      *
      * @return the difference in milliseconds between the start date and end date of this time period.
      */
-    public long getDiffrence() {
+    public long getDifference() {
         if (endDate != null)
             return endDate.getTime() - getTime();
         return getAktDate().getTime() - getTime();

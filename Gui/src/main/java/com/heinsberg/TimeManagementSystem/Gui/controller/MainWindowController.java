@@ -196,7 +196,6 @@ public class MainWindowController extends BaseController implements Initializabl
                 }
             }else // when TreeView is clicked and not with Secondary click the menu gets closed
             contextMenueManager.closeMenu();
-
         });
 
     }

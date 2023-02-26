@@ -4,7 +4,6 @@ import com.heinsberg.TimeManagementSystem.BackGround.TimeClasses.LearningPhase;
 import com.heinsberg.TimeManagementSystem.BackGround.WeekFactory;
 import com.heinsberg.TimeManagementSystem.BackGround.abstractClasses.TimeSpentContainer;
 import com.heinsberg.TimeManagementSystem.BackGround.TimeClasses.Week;
-import com.heinsberg.TimeManagementSystem.BackGround.LearningPhaseActionResult;
 import com.heinsberg.TimeManagementSystem.BackGround.study.Listeners.ChangeEnums.SubjectChange;
 import javafx.collections.ListChangeListener;
 
@@ -59,7 +58,7 @@ public class Project extends TimeSpentContainer {
         learnedInCurrentWeek = 0;
         for (LearningPhase learningPhase : learningPhases) {
             if (currentWeek.compareTo((Date) learningPhase) == 0) {
-                learnedInCurrentWeek += learningPhase.getDiffrence() / 1000;
+                learnedInCurrentWeek += learningPhase.getDifference() / 1000;
             }
         }
         learnedInCurrentWeek /= 60;
