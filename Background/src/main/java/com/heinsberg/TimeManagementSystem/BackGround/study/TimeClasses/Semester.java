@@ -25,6 +25,8 @@ public class Semester extends TimePeriod {
 
     private ArrayList<SemesterListener> listeners;
 
+    private ObservableList<LearningPhase> learningPhases;
+
     /**
      * Creates a new semester with a given start and end date, and a semester number
      *
@@ -44,6 +46,7 @@ public class Semester extends TimePeriod {
             startMonday.setDate(startMonday.getDate() + 7);
         }
         subjects = FXCollections.observableArrayList();
+        learningPhases = FXCollections.observableArrayList();
     }
 
     /**
@@ -59,6 +62,7 @@ public class Semester extends TimePeriod {
         this.semester = semester;
         subjects = FXCollections.observableArrayList();
         listeners = new ArrayList<SemesterListener>();
+        learningPhases = FXCollections.observableArrayList();
     }
     //Control Methods
 
@@ -159,8 +163,6 @@ public class Semester extends TimePeriod {
     }
 
     public void setWeekFactory(WeekFactory weekFactory) {
-
-
         if (this.weekFactory == null) {
             System.err.println("Week Factory is already set Semester");
         } else {
@@ -192,7 +194,7 @@ public class Semester extends TimePeriod {
      * Deletes all Subjects of this Semester and the LearningPhases that belong to it
      */
     public void delete() {
-        for(Subject subject : subjects){//delete all LearningPhases of all subjects
+        for (Subject subject : subjects) {//delete all LearningPhases of all subjects
             subject.deleteLearningPhases();
         }
         subjects.clear();
@@ -200,6 +202,7 @@ public class Semester extends TimePeriod {
 
     /**
      * Submits the changes to the Semester
+     *
      * @param semester
      * @param startDate
      * @param endDate
@@ -212,16 +215,16 @@ public class Semester extends TimePeriod {
     }
 
     //Listener Methods
-    public void addListener(SemesterListener listener){
+    public void addListener(SemesterListener listener) {
         listeners.add(listener);
     }
 
-    public void removeListener(SemesterListener listener){
+    public void removeListener(SemesterListener listener) {
         listeners.remove(listener);
     }
 
-    public void notifyListeners(SemesterChange change){
-        for(SemesterListener listener:listeners){
+    public void notifyListeners(SemesterChange change) {
+        for (SemesterListener listener : listeners) {
             listener.notifyListener(change);
         }
     }
