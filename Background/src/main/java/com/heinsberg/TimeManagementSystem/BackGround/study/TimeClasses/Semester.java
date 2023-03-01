@@ -8,11 +8,13 @@ import com.heinsberg.TimeManagementSystem.BackGround.study.Listeners.ChangeEnums
 import com.heinsberg.TimeManagementSystem.BackGround.study.Listeners.SemesterListener;
 import com.heinsberg.TimeManagementSystem.BackGround.study.Study;
 import com.heinsberg.TimeManagementSystem.BackGround.study.subject.Subject;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Semester extends TimePeriod {
     int semester;
@@ -163,8 +165,8 @@ public class Semester extends TimePeriod {
     }
 
     public void setWeekFactory(WeekFactory weekFactory) {
-        if (this.weekFactory == null) {
-            System.err.println("Week Factory is already set Semester");
+        if (weekFactory == null) {
+            System.err.println("Week Factory is null");
         } else {
             this.weekFactory = weekFactory;
             Date startMonday = getMonday(this);
@@ -176,6 +178,7 @@ public class Semester extends TimePeriod {
             for (Subject subject : subjects) {
                 subject.setWeekFactory(weekFactory);
             }
+            learningPhases = weekFactory.getLearningPhases(this);
         }
     }
 
@@ -227,5 +230,22 @@ public class Semester extends TimePeriod {
         for (SemesterListener listener : listeners) {
             listener.notifyListener(change);
         }
+    }
+
+    public ObservableList<LearningPhase> getLearningPhases() {
+        return learningPhases;
+    }
+
+    /**
+     * Adds the new LearningPhase that was started in A Subject to the List
+     *
+     * @param outPut
+     */
+    public void addNewLearningPhase(LearningPhase outPut) {
+        learningPhases.add(outPut);
+    }
+
+    public void removeLearningPhase(LearningPhase learningPhase) {
+        learningPhases.remove(learningPhase);
     }
 }

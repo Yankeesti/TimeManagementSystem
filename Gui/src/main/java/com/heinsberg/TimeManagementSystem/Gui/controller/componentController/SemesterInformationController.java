@@ -1,11 +1,13 @@
 package com.heinsberg.TimeManagementSystem.Gui.controller.componentController;
 
+import com.heinsberg.TimeManagementSystem.BackGround.TimeClasses.LearningPhase;
 import com.heinsberg.TimeManagementSystem.Gui.ContentManager;
 import com.heinsberg.TimeManagementSystem.Gui.controller.BaseController;
 import com.heinsberg.TimeManagementSystem.Gui.controller.componentController.subComponents.LearningPhaseTableViewController;
 import com.heinsberg.TimeManagementSystem.Gui.view.ViewFactory;
 import com.heinsberg.TimeManagementSystem.BackGround.study.TimeClasses.Semester;
 import com.heinsberg.TimeManagementSystem.BackGround.study.subject.Subject;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -34,6 +36,7 @@ public class SemesterInformationController extends BaseInformationComponentContr
         if(semester.getClass() == Semester.class){
             this.semester = (Semester) semester;
             titleLabel.setText(this.semester.getSemester()+". Semester");
+            learningPhaseTableViewController.displayLearningPhases(((Semester) semester).getLearningPhases());
         }
         else{
             throw new ClassCastException("Object must be from type Semester");
@@ -51,27 +54,14 @@ public class SemesterInformationController extends BaseInformationComponentContr
     }
 
     private void setUpTableView() {
-        learningPhaseTableViewController = new LearningPhaseTableViewController(contentManager,viewFactory,"/com/heinsberg/TimeManagementSystem/Gui/controller/subComponents/TableView");
-        Node tableView = getNode(learningPhaseTableViewController);
+        learningPhaseTableViewController = new LearningPhaseTableViewController(contentManager,viewFactory);
+        learningPhaseTableViewController.showSubjectColumn(true);
+        Node tableView = learningPhaseTableViewController.getNode();
         learningPhaseAnchorPane.getChildren().add(tableView);
         learningPhaseAnchorPane.setTopAnchor(tableView,0.0);
         learningPhaseAnchorPane.setBottomAnchor(tableView, 0.0);
         learningPhaseAnchorPane.setRightAnchor(tableView, 0.0);
         learningPhaseAnchorPane.setLeftAnchor(tableView, 0.0);
 
-    }
-
-    private Node getNode(BaseController controller) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(controller.getFxmlName() + ".fxml"));
-        fxmlLoader.setController(controller);
-        Node node;
-        try {
-            node = fxmlLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        return node;
     }
 }

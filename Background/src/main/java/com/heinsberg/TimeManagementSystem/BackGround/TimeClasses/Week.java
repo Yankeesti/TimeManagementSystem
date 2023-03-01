@@ -1,9 +1,11 @@
 package com.heinsberg.TimeManagementSystem.BackGround.TimeClasses;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import com.heinsberg.TimeManagementSystem.BackGround.abstractClasses.TimeSpentContainer;
+import com.heinsberg.TimeManagementSystem.BackGround.study.TimeClasses.Semester;
 import com.heinsberg.TimeManagementSystem.BackGround.study.subject.Subject;
 
 public class Week extends TimePeriod {
@@ -100,4 +102,21 @@ public class Week extends TimePeriod {
         learningPhases.remove(learningPhase);
     }
 
+    /**
+     * Returns all LearningPhases that belong to Subjects in Semester
+     * @param semester
+     * @return
+     */
+    public ArrayList<LearningPhase> getLearningPhases(Semester semester) {
+        ArrayList<LearningPhase> outPut = new ArrayList<LearningPhase>();
+        for(LearningPhase learningPhase:learningPhases){
+            if(learningPhase.getTimeSpentContainer() instanceof Subject && ((Subject)learningPhase.getTimeSpentContainer()).getSemester() == semester){
+                outPut.add(learningPhase);
+            }
+        }
+        outPut.sort((Date l1, Date l2) ->{
+            return l1.compareTo(l2);
+        });
+        return outPut;
+    }
 }

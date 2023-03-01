@@ -6,6 +6,7 @@ import com.heinsberg.TimeManagementSystem.BackGround.abstractClasses.TimeSpentCo
 import com.heinsberg.TimeManagementSystem.BackGround.study.Listeners.ChangeEnums.SubjectChange;
 import com.heinsberg.TimeManagementSystem.BackGround.study.Study;
 import com.heinsberg.TimeManagementSystem.BackGround.study.TimeClasses.Semester;
+import javafx.collections.ListChangeListener;
 
 /**
  * Represents a subject in a study program.
@@ -38,7 +39,12 @@ public class Subject extends TimeSpentContainer {
         this.ectsPoints = ectsPoints;
     }
 
-
+    @Override
+    public LearningPhase startLearningPhase() {
+        LearningPhase outPut = super.startLearningPhase();
+        semester.addNewLearningPhase(outPut);
+        return outPut;
+    }
 
 //Getter and Setter
 

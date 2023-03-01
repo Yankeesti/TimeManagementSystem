@@ -4,9 +4,13 @@ import com.heinsberg.TimeManagementSystem.BackGround.TimeClasses.LearningPhase;
 import com.heinsberg.TimeManagementSystem.Gui.ContentManager;
 import com.heinsberg.TimeManagementSystem.Gui.controller.BaseController;
 import com.heinsberg.TimeManagementSystem.Gui.view.ViewFactory;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -15,6 +19,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.Callback;
 
+import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,27 +30,45 @@ public class LearningPhaseTableViewController extends BaseController implements 
     @FXML
     protected TableView<LearningPhase> learningPhaseView;
     @FXML
-    protected TableColumn<LearningPhase, Date> dateColum;
+    protected TableColumn<LearningPhase, Date> dateColumn;
     @FXML
-    protected TableColumn<LearningPhase, Long> learnedColum;
+    protected TableColumn<LearningPhase, Long> learnedColumn;
     @FXML
-    protected TableColumn<LearningPhase, Void> actionCoulumn;
+    protected TableColumn<LearningPhase, Void> actionColumn;
 
-    public LearningPhaseTableViewController(ContentManager contentManager, ViewFactory viewFactory, String fxmlName) {
-        super(contentManager, viewFactory, fxmlName);
+    @FXML
+    protected TableColumn<LearningPhase,String> subjectColumn;
+
+    public LearningPhaseTableViewController(ContentManager contentManager, ViewFactory viewFactory) {
+        super(contentManager, viewFactory, "/com/heinsberg/TimeManagementSystem/Gui/controller/subComponents/TableView");
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setUpDateColumn();
         setUpLearnedColumn();
-        setUpActionColum();
+        setUpActionColumn();
+        setUpSubjectColumn();
+    }
+
+    public void showSubjectColumn(boolean p){
+        //subjectColumn.setVisible(p);
+    }
+
+    /**
+     * Sets up the Subject column
+     */
+    private void setUpSubjectColumn() {
+        subjectColumn.setCellValueFactory(cellData ->{
+            LearningPhase learningPhase = cellData.getValue();
+            return new SimpleStringProperty(learningPhase.getTimeSpentContainer().getName());
+        });
     }
 
     /**
      * Sets up the Action Column where a Item can be deleted
      */
-    private void setUpActionColum(){
+    private void setUpActionColumn(){
         Callback<TableColumn<LearningPhase, Void>, TableCell<LearningPhase, Void>> cellFactory = new Callback<TableColumn<LearningPhase, Void>, TableCell<LearningPhase, Void>>() { // new Cell Factory that is called when a new Cell needs to be created
             @Override
             public TableCell<LearningPhase, Void> call(TableColumn<LearningPhase, Void> learningPhaseVoidTableColumn) {//is called to create a Table cell for the column learningPhaseVoidTableColumn
@@ -73,8 +96,8 @@ public class LearningPhaseTableViewController extends BaseController implements 
             }
         };
 
-        actionCoulumn.setCellFactory(cellFactory);
-        actionCoulumn.setSortable(false);
+        actionColumn.setCellFactory(cellFactory);
+        actionColumn.setSortable(false);
     }
 
     /**
@@ -82,8 +105,8 @@ public class LearningPhaseTableViewController extends BaseController implements 
      */
     private void setUpLearnedColumn(){
         //set up Learned Column
-        learnedColum.setCellValueFactory(new PropertyValueFactory<>("timeLearned"));
-        learnedColum.setCellFactory(column -> new TableCell<LearningPhase, Long>() { //Formats the showing of time learned to "... Minuten"
+        learnedColumn.setCellValueFactory(new PropertyValueFactory<>("timeLearned"));
+        learnedColumn.setCellFactory(column -> new TableCell<LearningPhase, Long>() { //Formats the showing of time learned to "... Minuten"
             @Override
             protected void updateItem(Long learned, boolean empty) {
                 super.updateItem(learned, empty);
@@ -95,16 +118,19 @@ public class LearningPhaseTableViewController extends BaseController implements 
                 }
             }
         });
-        learnedColum.setSortable(false);
+        learnedColumn.setSortable(false);
     }
+
+
+
 
     /**
      * Sets up the Date Column
      */
     private void setUpDateColumn(){
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy 'um' HH:mm 'Uhr'");
-        dateColum.setCellValueFactory(new PropertyValueFactory<>("startDate"));
-        dateColum.setCellFactory(column -> new TextFieldTableCell<LearningPhase, Date>() {//is called to format the cell
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        dateColumn.setCellFactory(column -> new TextFieldTableCell<LearningPhase, Date>() {//is called to format the cell
             @Override
             public void updateItem(Date date, boolean empty) {//when item is updated this method is called
                 super.updateItem(date, empty);
@@ -115,7 +141,7 @@ public class LearningPhaseTableViewController extends BaseController implements 
                 }
             }
         });
-        dateColum.setSortType(TableColumn.SortType.DESCENDING);
+        dateColumn.setSortType(TableColumn.SortType.DESCENDING);
     }
 
     /**
@@ -124,5 +150,35 @@ public class LearningPhaseTableViewController extends BaseController implements 
      */
     public void displayLearningPhases(ObservableList<LearningPhase> learningPhases){
         learningPhaseView.setItems(learningPhases);
+        learningPhases.addListener(new ListChangeListener<LearningPhase>() {
+            @Override
+            public void onChanged(Change<? extends LearningPhase> change) {
+                while (change.next()) {
+                    if (change.wasAdded()) {
+                        learningPhaseView.getSortOrder().clear();
+                        learningPhaseView.getSortOrder().add(dateColumn);
+                        learningPhaseView.sort();
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     *
+     * @return the Node of the Table view
+     */
+    public Node getNode() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlName + ".fxml"));
+        fxmlLoader.setController(this);
+        Node node;
+        try {
+            node = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return node;
     }
 }

@@ -1,6 +1,7 @@
 package com.heinsberg.TimeManagementSystem.BackGround.TimeClasses;
 
 import com.heinsberg.TimeManagementSystem.BackGround.abstractClasses.TimeSpentContainer;
+import com.heinsberg.TimeManagementSystem.BackGround.study.subject.Subject;
 
 /**
  * Represents a specific period of learning for a subject.
@@ -98,5 +99,8 @@ public class LearningPhase extends TimePeriod {
      */
     public void deleteLearningPhase() {
         timeSpentContainer.deleteLearningPhase(this);
+        if(timeSpentContainer instanceof Subject){
+            ((Subject)timeSpentContainer).getSemester().removeLearningPhase(this);
+        }
     }
 }

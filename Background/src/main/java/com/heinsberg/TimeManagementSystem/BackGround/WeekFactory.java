@@ -1,6 +1,10 @@
 package com.heinsberg.TimeManagementSystem.BackGround;
 
+import com.heinsberg.TimeManagementSystem.BackGround.TimeClasses.LearningPhase;
 import com.heinsberg.TimeManagementSystem.BackGround.TimeClasses.Week;
+import com.heinsberg.TimeManagementSystem.BackGround.study.TimeClasses.Semester;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -118,6 +122,17 @@ public class WeekFactory {
         outPut.setMinutes(now.getMinute());
         outPut.setSeconds(now.getSecond());
 
+        return outPut;
+    }
+
+    public ObservableList<LearningPhase> getLearningPhases(Semester semester) {
+        ObservableList<LearningPhase> outPut = FXCollections.observableArrayList();
+        for(Week week: weeks){
+            outPut.addAll(week.getLearningPhases(semester));
+        }
+        outPut.sort((Date l1, Date l2) ->{
+            return l1.compareTo(l2);
+        });
         return outPut;
     }
 }
