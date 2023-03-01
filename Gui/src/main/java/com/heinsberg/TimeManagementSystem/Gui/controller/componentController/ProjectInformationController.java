@@ -16,6 +16,7 @@ public class ProjectInformationController extends BaseTimeSpentContainerControll
         super(contentManager, viewFactory, fxmlName);
     }
 
+
     @Override
     protected void showChanges(SubjectChange subjectChange) {
         switch (subjectChange){

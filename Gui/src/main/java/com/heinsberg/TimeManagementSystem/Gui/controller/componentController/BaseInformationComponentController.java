@@ -20,4 +20,6 @@ public abstract class BaseInformationComponentController extends BaseController 
     public abstract void upDateInformation(Object object);
 
     public Node getNode(){return node;}
+
+    public abstract void refresh();
 }

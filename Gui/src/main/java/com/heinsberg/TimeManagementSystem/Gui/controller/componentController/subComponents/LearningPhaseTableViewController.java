@@ -25,6 +25,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+/**
+ * The LearningPhaseTableViewController is a controller class responsible for managing the GUI components of the
+ * learning phase table view. It extends the {@code BaseController} class and implements the {@code Initializable} interface.
+ * The controller class provides methods to display and manage learning phases in the table view.
+ */
 public class LearningPhaseTableViewController extends BaseController implements Initializable {
 
     @FXML
@@ -37,7 +42,7 @@ public class LearningPhaseTableViewController extends BaseController implements 
     protected TableColumn<LearningPhase, Void> actionColumn;
 
     @FXML
-    protected TableColumn<LearningPhase,String> subjectColumn;
+    protected TableColumn<LearningPhase, String> subjectColumn;
 
     public LearningPhaseTableViewController(ContentManager contentManager, ViewFactory viewFactory) {
         super(contentManager, viewFactory, "/com/heinsberg/TimeManagementSystem/Gui/controller/subComponents/TableView");
@@ -51,15 +56,20 @@ public class LearningPhaseTableViewController extends BaseController implements 
         setUpSubjectColumn();
     }
 
-    public void showSubjectColumn(boolean p){
-        //subjectColumn.setVisible(p);
+    /**
+     * Sets the visibility of the "Subject" column in the TableView.
+     *
+     * @param p specifies whether the column should be displayed (true) or not (false)
+     */
+    public void showSubjectColumn(boolean p) {
+        subjectColumn.setVisible(p);
     }
 
     /**
      * Sets up the Subject column
      */
     private void setUpSubjectColumn() {
-        subjectColumn.setCellValueFactory(cellData ->{
+        subjectColumn.setCellValueFactory(cellData -> {
             LearningPhase learningPhase = cellData.getValue();
             return new SimpleStringProperty(learningPhase.getTimeSpentContainer().getName());
         });
@@ -68,7 +78,7 @@ public class LearningPhaseTableViewController extends BaseController implements 
     /**
      * Sets up the Action Column where a Item can be deleted
      */
-    private void setUpActionColumn(){
+    private void setUpActionColumn() {
         Callback<TableColumn<LearningPhase, Void>, TableCell<LearningPhase, Void>> cellFactory = new Callback<TableColumn<LearningPhase, Void>, TableCell<LearningPhase, Void>>() { // new Cell Factory that is called when a new Cell needs to be created
             @Override
             public TableCell<LearningPhase, Void> call(TableColumn<LearningPhase, Void> learningPhaseVoidTableColumn) {//is called to create a Table cell for the column learningPhaseVoidTableColumn
@@ -103,7 +113,7 @@ public class LearningPhaseTableViewController extends BaseController implements 
     /**
      * sets up the learned Column
      */
-    private void setUpLearnedColumn(){
+    private void setUpLearnedColumn() {
         //set up Learned Column
         learnedColumn.setCellValueFactory(new PropertyValueFactory<>("timeLearned"));
         learnedColumn.setCellFactory(column -> new TableCell<LearningPhase, Long>() { //Formats the showing of time learned to "... Minuten"
@@ -122,12 +132,10 @@ public class LearningPhaseTableViewController extends BaseController implements 
     }
 
 
-
-
     /**
      * Sets up the Date Column
      */
-    private void setUpDateColumn(){
+    private void setUpDateColumn() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy 'um' HH:mm 'Uhr'");
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         dateColumn.setCellFactory(column -> new TextFieldTableCell<LearningPhase, Date>() {//is called to format the cell
@@ -146,9 +154,10 @@ public class LearningPhaseTableViewController extends BaseController implements 
 
     /**
      * Displays the given LearningPhases in the Table View
+     *
      * @param learningPhases - LearningPhases to show
      */
-    public void displayLearningPhases(ObservableList<LearningPhase> learningPhases){
+    public void displayLearningPhases(ObservableList<LearningPhase> learningPhases) {
         learningPhaseView.setItems(learningPhases);
         learningPhases.addListener(new ListChangeListener<LearningPhase>() {
             @Override
@@ -165,7 +174,6 @@ public class LearningPhaseTableViewController extends BaseController implements 
     }
 
     /**
-     *
      * @return the Node of the Table view
      */
     public Node getNode() {
@@ -180,5 +188,9 @@ public class LearningPhaseTableViewController extends BaseController implements 
         }
 
         return node;
+    }
+
+    public void refresh(){
+        learningPhaseView.refresh();
     }
 }

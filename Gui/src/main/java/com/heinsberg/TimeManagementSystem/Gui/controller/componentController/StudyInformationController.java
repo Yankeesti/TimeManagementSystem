@@ -50,6 +50,11 @@ public class StudyInformationController extends BaseInformationComponentControll
     }
 
     @Override
+    public void refresh() {
+
+    }
+
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setUpStudy();
         setUpDatePicker();

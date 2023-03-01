@@ -43,6 +43,11 @@ public class SemesterInformationController extends BaseInformationComponentContr
         }
     }
 
+    @Override
+    public void refresh() {
+        learningPhaseTableViewController.refresh();
+    }
+
     public void setSemester(Semester semester){
         this.semester = semester;
         titleLabel.setText(semester.getSemester() +". Semester");
@@ -55,13 +60,11 @@ public class SemesterInformationController extends BaseInformationComponentContr
 
     private void setUpTableView() {
         learningPhaseTableViewController = new LearningPhaseTableViewController(contentManager,viewFactory);
-        learningPhaseTableViewController.showSubjectColumn(true);
         Node tableView = learningPhaseTableViewController.getNode();
         learningPhaseAnchorPane.getChildren().add(tableView);
         learningPhaseAnchorPane.setTopAnchor(tableView,0.0);
         learningPhaseAnchorPane.setBottomAnchor(tableView, 0.0);
         learningPhaseAnchorPane.setRightAnchor(tableView, 0.0);
         learningPhaseAnchorPane.setLeftAnchor(tableView, 0.0);
-
     }
 }

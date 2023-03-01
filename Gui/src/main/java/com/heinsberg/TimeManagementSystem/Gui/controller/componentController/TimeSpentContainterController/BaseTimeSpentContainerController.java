@@ -2,6 +2,7 @@ package com.heinsberg.TimeManagementSystem.Gui.controller.componentController.Ti
 
 import com.heinsberg.TimeManagementSystem.Gui.ContentManager;
 import com.heinsberg.TimeManagementSystem.Gui.controller.componentController.BaseInformationComponentController;
+import com.heinsberg.TimeManagementSystem.Gui.controller.componentController.subComponents.LearningPhaseTableViewController;
 import com.heinsberg.TimeManagementSystem.Gui.view.ViewFactory;
 import com.heinsberg.TimeManagementSystem.BackGround.abstractClasses.TimeSpentContainer;
 import com.heinsberg.TimeManagementSystem.BackGround.study.Listeners.ChangeEnums.SubjectChange;
@@ -11,9 +12,11 @@ import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 
@@ -27,16 +30,11 @@ public abstract class BaseTimeSpentContainerController extends BaseInformationCo
     @FXML
     protected Label weekGoalLabel, learnedLabel;
     @FXML
-    protected TableView<LearningPhase> learningPhaseView;
-    @FXML
-    protected TableColumn<LearningPhase, Date> dateColum;
-    @FXML
-    protected TableColumn<LearningPhase, Long> learnedColum;
-    @FXML
-    protected TableColumn<LearningPhase, Void> actionCoulumn;
-    @FXML
     protected GridPane learnedInformationPane;
+    @FXML
+    protected AnchorPane learningPhaseAnchorPane;
 
+    protected LearningPhaseTableViewController learningPhaseTableView;
 
 
 
@@ -96,20 +94,7 @@ public abstract class BaseTimeSpentContainerController extends BaseInformationCo
             setUpChangeListener();
             setUpTimeProgressInformation();
             ObservableList<LearningPhase> learningPhases = shownObject.getLearningPhases();
-            learningPhaseView.setItems(learningPhases);
-            //sort learningPhases new when learningphase is added
-            learningPhases.addListener(new ListChangeListener<LearningPhase>() {
-                @Override
-                public void onChanged(Change<? extends LearningPhase> change) {
-                    while (change.next()) {
-                        if (change.wasAdded()) {
-                            learningPhaseView.getSortOrder().clear();
-                            learningPhaseView.getSortOrder().add(dateColum);
-                            learningPhaseView.sort();
-                        }
-                    }
-                }
-            });
+            learningPhaseTableView.displayLearningPhases(learningPhases);
         } else {
             throw new ClassCastException("Object must be from type Subject");
         }
@@ -143,85 +128,14 @@ public abstract class BaseTimeSpentContainerController extends BaseInformationCo
      * Sets up the TableView
      */
     private void setUpLearningPhaseTableView() {
-        setUpDateColumn();
-        setUpLearnedColumn();
-        setUpActionColum();
-    }
-
-    /**
-     * Sets up the Action Column where a Item can be deleted
-     */
-    private void setUpActionColum(){
-        Callback<TableColumn<LearningPhase, Void>, TableCell<LearningPhase, Void>> cellFactory = new Callback<TableColumn<LearningPhase, Void>, TableCell<LearningPhase, Void>>() { // new Cell Factory that is called when a new Cell needs to be created
-            @Override
-            public TableCell<LearningPhase, Void> call(TableColumn<LearningPhase, Void> learningPhaseVoidTableColumn) {//is called to create a Table cell for the column learningPhaseVoidTableColumn
-                final TableCell<LearningPhase, Void> outPut = new TableCell<LearningPhase, Void>() {
-                    private final Button deleteButton = new Button("Delete");
-
-                    {//is called when instance of class is created ( everytime a new cell is "Renderd
-                        deleteButton.setOnAction(e -> {
-                            LearningPhase data = getTableView().getItems().get(getIndex());
-                            viewFactory.getDialogViewFactory().showDeleteLearningPhaseDialog(data);
-                        });
-                    }
-
-                    @Override
-                    public void updateItem(Void item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            setGraphic(deleteButton);
-                        }
-                    }
-                };
-                return outPut;
-            }
-        };
-
-        actionCoulumn.setCellFactory(cellFactory);
-        actionCoulumn.setSortable(false);
-    }
-
-    /**
-     * sets up the learned Column
-     */
-    private void setUpLearnedColumn(){
-        //set up Learned Column
-        learnedColum.setCellValueFactory(new PropertyValueFactory<>("timeLearned"));
-        learnedColum.setCellFactory(column -> new TableCell<LearningPhase, Long>() { //Formats the showing of time learned to "... Minuten"
-            @Override
-            protected void updateItem(Long learned, boolean empty) {
-                super.updateItem(learned, empty);
-                if (learned == null || empty) {
-                    setText(null);
-                } else {
-                    learned /= 60;//time learned in Minutes
-                    setText(learned + " Minuten");
-                }
-            }
-        });
-        learnedColum.setSortable(false);
-    }
-
-    /**
-     * Sets up the Date Column
-     */
-    private void setUpDateColumn(){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy 'um' HH:mm 'Uhr'");
-        dateColum.setCellValueFactory(new PropertyValueFactory<>("startDate"));
-        dateColum.setCellFactory(column -> new TextFieldTableCell<LearningPhase, Date>() {//is called to format the cell
-            @Override
-            public void updateItem(Date date, boolean empty) {//when item is updated this method is called
-                super.updateItem(date, empty);
-                if (date == null || empty) {
-                    setText(null);
-                } else {
-                    setText(dateFormat.format(date));
-                }
-            }
-        });
-        dateColum.setSortType(TableColumn.SortType.DESCENDING);
+        learningPhaseTableView = new LearningPhaseTableViewController(contentManager,viewFactory);
+        Node tableView = learningPhaseTableView.getNode();
+        learningPhaseAnchorPane.getChildren().add(tableView);
+        learningPhaseTableView.showSubjectColumn(false);
+        learningPhaseAnchorPane.setTopAnchor(tableView,0.0);
+        learningPhaseAnchorPane.setBottomAnchor(tableView, 0.0);
+        learningPhaseAnchorPane.setRightAnchor(tableView, 0.0);
+        learningPhaseAnchorPane.setLeftAnchor(tableView, 0.0);
     }
 
     /**
@@ -232,6 +146,11 @@ public abstract class BaseTimeSpentContainerController extends BaseInformationCo
      */
     protected int[] getInHoursAndMinutes(int minutes) {
         return new int[]{minutes / 60, minutes % 60};
+    }
+
+    @Override
+    public void refresh(){
+        learningPhaseTableView.refresh();
     }
 
 }

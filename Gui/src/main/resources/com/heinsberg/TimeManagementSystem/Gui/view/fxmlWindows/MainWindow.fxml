@@ -11,7 +11,7 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="2000.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <MenuBar fx:id="menueBar" layoutY="1.0" prefHeight="27.0" prefWidth="800.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <MenuBar fx:id="menueBar" layoutY="1.0" prefHeight="28.0" prefWidth="1969.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="0.0">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
@@ -50,5 +50,6 @@
             </AnchorPane>
          </items>
       </SplitPane>
+      <Button fx:id="refreshButton" layoutX="1959.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#refresh" prefHeight="28.0" prefWidth="28.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>
 </AnchorPane>

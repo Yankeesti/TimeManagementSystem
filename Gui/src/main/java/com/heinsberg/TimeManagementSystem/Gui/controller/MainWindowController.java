@@ -5,7 +5,6 @@ import com.heinsberg.TimeManagementSystem.BackGround.Listeners.TimeManagementSys
 import com.heinsberg.TimeManagementSystem.BackGround.abstractClasses.TimeSpentContainer;
 import com.heinsberg.TimeManagementSystem.Gui.ContentManager;
 import com.heinsberg.TimeManagementSystem.Gui.controller.componentController.*;
-import com.heinsberg.TimeManagementSystem.Gui.controller.componentController.ContextMenue.ContextMenues.BaseContextMenu;
 import com.heinsberg.TimeManagementSystem.Gui.controller.componentController.ContextMenue.ContextMenueManager;
 import com.heinsberg.TimeManagementSystem.Gui.treeItems.BaseTreeItem;
 import com.heinsberg.TimeManagementSystem.Gui.view.ViewFactory;
@@ -23,12 +22,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -46,7 +48,10 @@ public class MainWindowController extends BaseController implements Initializabl
 
     @FXML
     private AnchorPane informationMainPane;//pane in which other information nodes take place
+    @FXML
+    private Button refreshButton;
     private Node shownInformationNode;//the currently shown information Node
+    private BaseInformationComponentController lastShownController,shownController;
 
     //InformationControllers
     private StudyInformationController studyInformationController;
@@ -54,6 +59,7 @@ public class MainWindowController extends BaseController implements Initializabl
     private SubjectInformationController subjectInformationController;
     private ProjectInformationController projectInformationController;
     private ContextMenueManager contextMenueManager;
+
 
     public MainWindowController(ContentManager contentManager, ViewFactory viewFactory, String fxmlName) {
         super(contentManager, viewFactory, fxmlName);
@@ -65,7 +71,30 @@ public class MainWindowController extends BaseController implements Initializabl
         setTreeView();
         setUpInformationPane();
         setUpTimeManagementSystemListener();
+        setUpRefreshButton();
         contextMenueManager = new ContextMenueManager(contentManager, viewFactory, treeView);
+    }
+
+    private void setUpRefreshButton() {
+        Image refreshImage = null;
+        try {
+            refreshImage = new Image(getClass().getResource("/com/heinsberg/TimeManagementSystem/Gui/Icons/refresh-page-option.png").toURI().toString());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        ImageView refreshIcon = new ImageView(refreshImage);
+        refreshIcon.setFitHeight(20);
+        refreshIcon.setFitWidth(20);
+        refreshButton.setGraphic(refreshIcon);
+    }
+
+    @FXML
+    void refresh() {
+        if(lastShownController != null)
+            lastShownController.refresh();
+        if(shownController != null){
+           shownController.refresh();
+        }
     }
 
     /**
@@ -99,7 +128,7 @@ public class MainWindowController extends BaseController implements Initializabl
      * Opens a Create Study Dialog
      */
     @FXML
-    void createNewStudyAction(){
+    void createNewStudyAction() {
         viewFactory.getDialogViewFactory().showStudyCreator();
     }
 
@@ -147,6 +176,7 @@ public class MainWindowController extends BaseController implements Initializabl
         studyInformationController = new StudyInformationController(contentManager, viewFactory, "fxmlComponents/StudyInformation.fxml");
         setUpNode(studyInformationController);
         shownInformationNode = studyInformationController.getNode();// set Study information to be shown first default
+        shownController = studyInformationController;
 
         //SetUp SemesterInformationPane
         semesterInformationController = new SemesterInformationController(contentManager, viewFactory, "fxmlComponents/SemesterInformation.fxml");
@@ -187,42 +217,48 @@ public class MainWindowController extends BaseController implements Initializabl
         treeView.setShowRoot(false);
         treeView.setOnMouseClicked(e -> {
             TreeItem<String> item = treeView.getSelectionModel().getSelectedItem();
-            if (item != null && item instanceof  BaseTreeItem) {
-                if (e.getButton() == MouseButton.PRIMARY ) {
-                    upDateInformationPane(((BaseTreeItem)item).getHoldObject());
+            if (item != null && item instanceof BaseTreeItem) {
+                if (e.getButton() == MouseButton.PRIMARY) {
+                    upDateInformationPane(((BaseTreeItem) item).getHoldObject());
                     contextMenueManager.closeMenu();
                 } else if (e.getButton() == MouseButton.SECONDARY) {
                     contextMenueManager.showMenue((BaseTreeItem) treeView.getSelectionModel().getSelectedItem(), e.getScreenX(), e.getScreenY());
                 }
-            }else // when TreeView is clicked and not with Secondary click the menu gets closed
-            contextMenueManager.closeMenu();
+            } else // when TreeView is clicked and not with Secondary click the menu gets closed
+                contextMenueManager.closeMenu();
         });
 
     }
 
 
     public void upDateInformationPane(Object holdObject) {
+        lastShownController = shownController;
         Node nodeToBeShown = null;
         if (holdObject.getClass() == Semester.class) {
             System.out.println("show Semester Information");
             semesterInformationController.upDateInformation(holdObject);
             nodeToBeShown = semesterInformationController.getNode();
+            shownController = semesterInformationController;
         } else if (holdObject.getClass() == Subject.class) {
             System.out.println("show Subject Information");
             subjectInformationController.upDateInformation(holdObject);
             nodeToBeShown = subjectInformationController.getNode();
+            shownController = subjectInformationController;
         } else if (holdObject.getClass() == Study.class) {
             System.out.println("show Study Information");
             studyInformationController.upDateInformation(holdObject);
             nodeToBeShown = studyInformationController.getNode();
+            shownController = studyInformationController;
         } else if (holdObject.getClass() == Project.class) {
             System.out.println("show Project Information");
             projectInformationController.upDateInformation(holdObject);
             nodeToBeShown = projectInformationController.getNode();
+            shownController = projectInformationController;
         }
 
         shownInformationNode.setManaged(false);
         shownInformationNode.setVisible(false);
+
         nodeToBeShown.setManaged(true);
         nodeToBeShown.setVisible(true);
         shownInformationNode = nodeToBeShown;

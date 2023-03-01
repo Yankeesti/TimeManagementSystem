@@ -6,6 +6,7 @@ module com.heinsberg.TimeManagementSystem.Gui {
     requires java.sql;
 
 
+    opens com.heinsberg.TimeManagementSystem.Gui.Icons to javafx.graphics;
     opens com.heinsberg.TimeManagementSystem.Gui to javafx.fxml;
     opens com.heinsberg.TimeManagementSystem.Gui.controller to javafx.fxml;
     opens com.heinsberg.TimeManagementSystem.Gui.controller.componentController to javafx.fxml;
