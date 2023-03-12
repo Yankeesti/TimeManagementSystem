@@ -2,6 +2,7 @@ package com.heinsberg.TimeManagementSystem.Gui.controller.componentController.Ti
 
 import com.heinsberg.TimeManagementSystem.Gui.ContentManager;
 import com.heinsberg.TimeManagementSystem.Gui.controller.componentController.BaseInformationComponentController;
+import com.heinsberg.TimeManagementSystem.Gui.controller.componentController.subComponents.charts.LearnProgressBarChartController;
 import com.heinsberg.TimeManagementSystem.Gui.controller.componentController.subComponents.LearningPhaseTableViewController;
 import com.heinsberg.TimeManagementSystem.Gui.view.ViewFactory;
 import com.heinsberg.TimeManagementSystem.BackGround.abstractClasses.TimeSpentContainer;
@@ -9,19 +10,12 @@ import com.heinsberg.TimeManagementSystem.BackGround.study.Listeners.ChangeEnums
 import com.heinsberg.TimeManagementSystem.BackGround.study.Listeners.SubjectListener;
 import com.heinsberg.TimeManagementSystem.BackGround.TimeClasses.LearningPhase;
 import javafx.application.Platform;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.util.Callback;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public abstract class BaseTimeSpentContainerController extends BaseInformationComponentController {
 
@@ -34,10 +28,10 @@ public abstract class BaseTimeSpentContainerController extends BaseInformationCo
     @FXML
     protected AnchorPane learningPhaseAnchorPane;
 
+    @FXML
+    protected AnchorPane mainPanelAnchorPane;
     protected LearningPhaseTableViewController learningPhaseTableView;
-
-
-
+    protected LearnProgressBarChartController learnProgressBarChartController;
     protected TimeSpentContainer shownObject;
 
     protected BaseTimeSpentContainerController(ContentManager contentManager, ViewFactory viewFactory, String fxmlName) {
@@ -50,6 +44,21 @@ public abstract class BaseTimeSpentContainerController extends BaseInformationCo
      */
     public void setUpBase() {
         setUpLearningPhaseTableView();
+        setUpLearningPhaseProgressChart();
+    }
+
+    /**
+     * Sets up the LearningPhase Progress Bar Chart
+     */
+    private void setUpLearningPhaseProgressChart() {
+        learnProgressBarChartController = new LearnProgressBarChartController(contentManager,viewFactory);
+        Node barChart = learnProgressBarChartController.getNode();
+        mainPanelAnchorPane.getChildren().add(barChart);
+        mainPanelAnchorPane.setTopAnchor(barChart, 80.0);
+        mainPanelAnchorPane.setBottomAnchor(barChart, 0.0);
+        mainPanelAnchorPane.setRightAnchor(barChart, 0.0);
+        mainPanelAnchorPane.setLeftAnchor(barChart, 0.0);
+
     }
 
     /**
@@ -60,7 +69,7 @@ public abstract class BaseTimeSpentContainerController extends BaseInformationCo
         shownObject.addListener(new SubjectListener() {
             @Override
             public void changed(SubjectChange subjectChange) {
-                Platform.runLater(()->{
+                Platform.runLater(() -> {
                     showChanges(subjectChange);
                 });
             }
@@ -70,15 +79,7 @@ public abstract class BaseTimeSpentContainerController extends BaseInformationCo
     protected abstract void showChanges(SubjectChange subjectChange);
 
     //Methods to Handle user Input
-    @FXML
-    void TimeSpentContainerSettingsAction(){
-        TimeSpentContainerSettingsActionCalled();
-    }
 
-    /**
-     * Method need to be implemented to handel TimeSpentContainerEdit call
-     */
-    protected abstract void TimeSpentContainerSettingsActionCalled();
 
     /**
      * Updates the information to be shown
@@ -95,9 +96,14 @@ public abstract class BaseTimeSpentContainerController extends BaseInformationCo
             setUpTimeProgressInformation();
             ObservableList<LearningPhase> learningPhases = shownObject.getLearningPhases();
             learningPhaseTableView.displayLearningPhases(learningPhases);
+            upDateBarChart();
         } else {
             throw new ClassCastException("Object must be from type Subject");
         }
+    }
+
+    private void upDateBarChart() {
+        learnProgressBarChartController.showInformation(shownObject);
     }
 
 
@@ -128,11 +134,11 @@ public abstract class BaseTimeSpentContainerController extends BaseInformationCo
      * Sets up the TableView
      */
     private void setUpLearningPhaseTableView() {
-        learningPhaseTableView = new LearningPhaseTableViewController(contentManager,viewFactory);
+        learningPhaseTableView = new LearningPhaseTableViewController(contentManager, viewFactory);
         Node tableView = learningPhaseTableView.getNode();
         learningPhaseAnchorPane.getChildren().add(tableView);
         learningPhaseTableView.showSubjectColumn(false);
-        learningPhaseAnchorPane.setTopAnchor(tableView,0.0);
+        learningPhaseAnchorPane.setTopAnchor(tableView, 0.0);
         learningPhaseAnchorPane.setBottomAnchor(tableView, 0.0);
         learningPhaseAnchorPane.setRightAnchor(tableView, 0.0);
         learningPhaseAnchorPane.setLeftAnchor(tableView, 0.0);
@@ -149,7 +155,7 @@ public abstract class BaseTimeSpentContainerController extends BaseInformationCo
     }
 
     @Override
-    public void refresh(){
+    public void refresh() {
         learningPhaseTableView.refresh();
     }
 

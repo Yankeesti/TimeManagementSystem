@@ -2,12 +2,15 @@ package com.heinsberg.TimeManagementSystem.Gui.controller.componentController;
 
 import com.heinsberg.TimeManagementSystem.Gui.ContentManager;
 import com.heinsberg.TimeManagementSystem.Gui.controller.componentController.studyInformationControlls.SemesterSpinnerValueFactory;
+import com.heinsberg.TimeManagementSystem.Gui.controller.componentController.subComponents.LearningPhaseTableViewController;
 import com.heinsberg.TimeManagementSystem.Gui.view.ViewFactory;
 import com.heinsberg.TimeManagementSystem.BackGround.study.Study;
 import com.heinsberg.TimeManagementSystem.BackGround.study.TimeClasses.Semester;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
 import java.util.Date;
@@ -19,14 +22,9 @@ public class StudyInformationController extends BaseInformationComponentControll
     @FXML
     private Label titleLabel;
     @FXML
-    private Spinner<Integer> semesterChooserSpinner;
-    @FXML
-    private Button createSemesterButton;
-    @FXML
-    private DatePicker startDatePicker;
-    @FXML
-    private DatePicker endDatePicker;
+    private AnchorPane learningPhaseAnchorPane;
 
+    private LearningPhaseTableViewController learningPhaseTableViewController;
     private Study study;
 
     public StudyInformationController(ContentManager contentManager, ViewFactory viewFactory, String fxmlName) {
@@ -43,7 +41,7 @@ public class StudyInformationController extends BaseInformationComponentControll
         if (study.getClass() == Study.class) {
             this.study = (Study) study;
             titleLabel.setText(((Study) study).getName());
-            setUpSpinner();
+            learningPhaseTableViewController.displayLearningPhases(this.study.getLearningPhases());
         } else {
             throw new ClassCastException("Object must be from type Study");
         }
@@ -51,43 +49,24 @@ public class StudyInformationController extends BaseInformationComponentControll
 
     @Override
     public void refresh() {
-
+        learningPhaseTableViewController.refresh();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setUpStudy();
-        setUpDatePicker();
+        setUpLearningPhaseTableView();
     }
 
-    @FXML
-    void createSemesterAction() {
-        Semester temp = getSemester();
-        if(temp != null)
-            contentManager.addNewSemester(study,temp);
-    }
+    private void setUpLearningPhaseTableView() {
+        learningPhaseTableViewController = new LearningPhaseTableViewController(contentManager,viewFactory);
+        Node tableView = learningPhaseTableViewController.getNode();
+        learningPhaseAnchorPane.getChildren().add(tableView);
+        learningPhaseAnchorPane.setTopAnchor(tableView,0.0);
+        learningPhaseAnchorPane.setBottomAnchor(tableView, 0.0);
+        learningPhaseAnchorPane.setRightAnchor(tableView, 0.0);
+        learningPhaseAnchorPane.setLeftAnchor(tableView, 0.0);
 
-    /**
-     * Creates a new Semester with the given data from startDatePicker, endDate Picker and semesterChooserSpinner
-     *
-     * @return new Semester or 0 when Date was false
-     */
-    private Semester getSemester() {
-        if (startDatePicker.getValue() != null && endDatePicker.getValue() != null && semesterChooserSpinner.getValue() != null) {
-            Date startDate = java.sql.Date.valueOf(startDatePicker.getValue());
-            Date endDate = java.sql.Date.valueOf(endDatePicker.getValue());
-
-            return new Semester(semesterChooserSpinner.getValue(),startDate,endDate);
-        }else{
-            System.out.println("Data for new Semester missing!");
-            return null;}
-    }
-
-    private void setUpDatePicker() {
-
-    }
-
-    private void upDateCreateSemesterButton() {
     }
 
     /**
@@ -97,11 +76,5 @@ public class StudyInformationController extends BaseInformationComponentControll
         if (study != null) {
             titleLabel.setText(study.getName());
         }
-    }
-
-    private void setUpSpinner() {
-        SemesterSpinnerValueFactory valueFactory = new SemesterSpinnerValueFactory(study);
-        valueFactory.setLowestPossibleValue();
-        semesterChooserSpinner.setValueFactory(valueFactory);
     }
 }

@@ -55,10 +55,9 @@ public class TimeManagementSystem {
     public void deleteLearningPhase(LearningPhase learningPhase) {
         if (currentLearningPhase == learningPhase) {
             deleteCurrentLearningPhase();
-            learningPhase.deleteLearningPhase();
-        } else {
-            learningPhase.deleteLearningPhase();
         }
+            learningPhase.deleteLearningPhase();
+
     }
 
 
@@ -288,5 +287,9 @@ public class TimeManagementSystem {
     public void addNewStudy(String text) {
         Study newStudy = new Study(text,weekFactory);
         studies.add(newStudy);
+    }
+
+    public WeekFactory getWeekFactory(){
+        return weekFactory;
     }
 }

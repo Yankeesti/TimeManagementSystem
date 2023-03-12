@@ -6,6 +6,8 @@ import com.heinsberg.TimeManagementSystem.BackGround.study.TimeClasses.Semester;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.lang.reflect.Array;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,7 +17,7 @@ import java.util.Date;
  * ensuring that a week only occurs once.
  */
 public class WeekFactory {
-    private ArrayList<Week> weeks;
+    private ArrayList<Week> weeks; //Sorted List of Weeks
 
     private Week currentWeek;
     public WeekFactory() {
@@ -70,6 +72,29 @@ public class WeekFactory {
 
     public ArrayList<Week> getWeeks() {
         return weeks;
+    }
+
+    /**
+     * returns the Weeks between fromDate to toDate that are in the weeks List
+     * @param fromDate
+     * @param toDate
+     * @return ArrayList of Weeks
+     */
+    public ArrayList<Week> getWeeks(Date fromDate, Date toDate){
+        ArrayList<Week> outPut = new ArrayList<>();
+        for(int i = 0; i< weeks.size();i++){
+            if(weeks.get(i).compareTo(fromDate) == 0){
+                outPut.add(weeks.get(i));
+                for(int i2 = i+1;i2<weeks.size();i2++){
+                    if(weeks.get(i2).compareTo(toDate) <= 0)
+                        outPut.add(weeks.get(i2));
+                    else
+                        break;
+                }
+                break;
+            }
+        }
+        return outPut;
     }
 
     /**
@@ -134,5 +159,11 @@ public class WeekFactory {
             return l1.compareTo(l2);
         });
         return outPut;
+    }
+
+    public void addLearningPhases(ObservableList<LearningPhase> learningPhases) {
+        for(LearningPhase learningPhase: learningPhases){
+            getWeek(learningPhase).addLearningPhase(learningPhase);
+        }
     }
 }

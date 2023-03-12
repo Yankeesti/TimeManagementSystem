@@ -24,10 +24,6 @@ public class SubjectInformationController extends BaseTimeSpentContainerControll
     }
 
 
-    @Override
-    protected void TimeSpentContainerSettingsActionCalled() {
-        viewFactory.getDialogViewFactory().showSubjectEditor((Subject) shownObject);
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

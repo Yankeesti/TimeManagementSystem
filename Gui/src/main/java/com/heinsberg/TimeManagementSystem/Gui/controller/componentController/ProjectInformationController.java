@@ -26,10 +26,6 @@ public class ProjectInformationController extends BaseTimeSpentContainerControll
         }
     }
 
-    @Override
-    protected void TimeSpentContainerSettingsActionCalled() {
-        viewFactory.getDialogViewFactory().showProjectEditor((Project) shownObject);
-    }
 
     @Override
     protected void setUpTimeProgressInformation() {

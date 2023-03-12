@@ -29,7 +29,7 @@ public class Study {
     private Semester currentSemester; //stores the current Semester
     private ArrayList<StudyListener> listeners;
     private WeekFactory weekFactory;
-
+    private ObservableList<LearningPhase> learningPhases;
 
     public Study(String studyName, WeekFactory weekFactory) {
         this.studyName = studyName;
@@ -37,6 +37,7 @@ public class Study {
         semesters = FXCollections.observableArrayList();
         listeners = new ArrayList<StudyListener>();
         this.weekFactory = weekFactory;
+        learningPhases = FXCollections.observableArrayList();
     }
 
     /**
@@ -50,6 +51,8 @@ public class Study {
         subjects = FXCollections.observableArrayList();
         semesters = FXCollections.observableArrayList();
         listeners = new ArrayList<StudyListener>();
+        learningPhases = FXCollections.observableArrayList();
+
     }
 
     //Methodes to Control learningPhase
@@ -75,6 +78,7 @@ public class Study {
             return LearningPhaseActionResult.CURRENT_SEMESTER_DOSENT_INCLUEDE_SUBJECT;
 
         currentLearningPhase = subject.startLearningPhase();
+        learningPhases.add(currentLearningPhase);
         return LearningPhaseActionResult.SUCCESS;
     }
 
@@ -117,6 +121,8 @@ public class Study {
         semesters.sort((Semester s1, Semester s2) -> s1.getSemester() - s2.getSemester());
         //Add subjects of semester to subjects (used when loading from json)
         subjects.addAll(semesterToAdd.getSubjects());
+        //Add LearningPhases of Semester to learningPhase list
+        addAllLearningPhasesToList(semesterToAdd.getLearningPhases());
         return AddSemesterResult.SUCCESS;
     }
 
@@ -135,6 +141,7 @@ public class Study {
                     subjects.add(subjectToAdd);
                     subjectToAdd.setWeekFactory(weekFactory);
                     subjectToAdd.setStudy(this);
+                    addAllLearningPhasesToList(subjectToAdd.getLearningPhases());
                     return AddSubjectResult.SUCCESS;
                 } else
                     return AddSubjectResult.SEMESTER_OF_SUBJECT_NOT_IN_STUDY;
@@ -269,6 +276,8 @@ public class Study {
             if (learningPhase.getEndDate() == null) {
                 currentLearningPhase = learningPhase;
             }
+            addLearningPhaseToList(learningPhase);
+            sortLearningPhases();
         } else {
             System.err.println("only LearningPhases for Subjects can be Stored in a study");
         }
@@ -299,6 +308,7 @@ public class Study {
                 currentLearningPhase = null;
             }
             learningPhase.getTimeSpentContainer().deleteLearningPhase(learningPhase);
+            learningPhases.remove(learningPhase);
             notifyListners(StudyChange.DELETED_LEARNINGPHASE);
         } else {
             System.err.println("The LearningPhase isn't for a Subject");
@@ -323,6 +333,7 @@ public class Study {
      */
     public void deleteSubject(Subject subject) {
         subjects.remove(subject);
+        learningPhases.removeAll(subject.getLearningPhases());
         subject.getSemester().deleteSubject(subject);
     }
 
@@ -354,6 +365,7 @@ public class Study {
                 notifyListners(StudyChange.CURRENT_LEARNINGPHASE_DELETED);
             }
         semesters.remove(semesterToDelete);
+        learningPhases.removeAll(semesterToDelete.getLearningPhases());
         semesterToDelete.delete();
         notifyListners(StudyChange.DELETED_SEMESTER);
     }
@@ -409,5 +421,39 @@ public class Study {
     public void changeName(String newName) {
         studyName = newName;
         notifyListners(StudyChange.NAME_CHANGED);
+    }
+
+    /**
+     * Adds LearningPhases to the LearningPhase list when it's not added container by the List yet
+     * @param learningPhaseToAdd
+     */
+    private void addLearningPhaseToList(LearningPhase learningPhaseToAdd){
+        if(!learningPhases.contains(learningPhaseToAdd)){
+            learningPhases.add(learningPhaseToAdd);
+        }
+    }
+
+    private void addAllLearningPhasesToList(ObservableList<LearningPhase> learningPhases){
+        for(LearningPhase learningPhase:learningPhases){
+            addLearningPhaseToList(learningPhase);
+        }
+        sortLearningPhases();
+    }
+
+    private void sortLearningPhases(){
+        learningPhases.sort((Date d1, Date d2) ->{
+            return d1.compareTo(d2);
+        });
+    }
+
+
+
+    public ObservableList<LearningPhase> getLearningPhases(){
+        sortLearningPhases();
+        return learningPhases;
+    }
+
+    public void removeLearningPhase(LearningPhase learningPhase) {
+        learningPhases.remove(learningPhase);
     }
 }

@@ -30,7 +30,7 @@ import java.util.ResourceBundle;
  * learning phase table view. It extends the {@code BaseController} class and implements the {@code Initializable} interface.
  * The controller class provides methods to display and manage learning phases in the table view.
  */
-public class LearningPhaseTableViewController extends BaseController implements Initializable {
+public class LearningPhaseTableViewController extends SubComponentController {
 
     @FXML
     protected TableView<LearningPhase> learningPhaseView;
@@ -46,10 +46,6 @@ public class LearningPhaseTableViewController extends BaseController implements 
 
     public LearningPhaseTableViewController(ContentManager contentManager, ViewFactory viewFactory) {
         super(contentManager, viewFactory, "/com/heinsberg/TimeManagementSystem/Gui/controller/subComponents/TableView");
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
         setUpDateColumn();
         setUpLearnedColumn();
         setUpActionColumn();
@@ -173,24 +169,8 @@ public class LearningPhaseTableViewController extends BaseController implements 
         });
     }
 
-    /**
-     * @return the Node of the Table view
-     */
-    public Node getNode() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlName + ".fxml"));
-        fxmlLoader.setController(this);
-        Node node;
-        try {
-            node = fxmlLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        return node;
-    }
-
-    public void refresh(){
+    @Override
+    public void refresh() {
         learningPhaseView.refresh();
     }
 }

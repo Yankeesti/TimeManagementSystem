@@ -79,6 +79,7 @@ public class MainWindowController extends BaseController implements Initializabl
         Image refreshImage = null;
         try {
             refreshImage = new Image(getClass().getResource("/com/heinsberg/TimeManagementSystem/Gui/Icons/refresh-page-option.png").toURI().toString());
+
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }

@@ -21,12 +21,11 @@ public class Semester extends TimePeriod {
     ObservableList<Subject> subjects;
 
 
+
     Week weeks[];
     private WeekFactory weekFactory;
     private Study study; //The study Semester belongs to
-
     private ArrayList<SemesterListener> listeners;
-
     private ObservableList<LearningPhase> learningPhases;
 
     /**
@@ -128,7 +127,9 @@ public class Semester extends TimePeriod {
      * @param learningPhase
      */
     public void addLearningPhaseHard(LearningPhase learningPhase) {
+        if(weekFactory != null)
         weekFactory.getWeek(learningPhase).addLearningPhase(learningPhase);
+        learningPhases.add(learningPhase);
     }
 
     /**
@@ -178,7 +179,7 @@ public class Semester extends TimePeriod {
             for (Subject subject : subjects) {
                 subject.setWeekFactory(weekFactory);
             }
-            learningPhases = weekFactory.getLearningPhases(this);
+            weekFactory.addLearningPhases(learningPhases);
         }
     }
 
@@ -191,6 +192,9 @@ public class Semester extends TimePeriod {
 
     public Study getStudy() {
         return study;
+    }
+    public Week[] getWeeks() {
+        return weeks;
     }
 
     /**

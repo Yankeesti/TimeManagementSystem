@@ -2,6 +2,7 @@ package com.heinsberg.TimeManagementSystem.BackGround.TimeClasses;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 
 import com.heinsberg.TimeManagementSystem.BackGround.abstractClasses.TimeSpentContainer;
@@ -10,6 +11,7 @@ import com.heinsberg.TimeManagementSystem.BackGround.study.subject.Subject;
 
 public class Week extends TimePeriod {
     int numberInSemester;
+    int weekNumber;//Calendar Week number
     ArrayList<LearningPhase> learningPhases;
 
 
@@ -31,6 +33,7 @@ public class Week extends TimePeriod {
         setEndTime(endDate.getTime());
         learningPhases = new ArrayList<LearningPhase>();
         this.numberInSemester = numberInSemester;
+        calculateWeekNumber();
     }
 
     public Week(Date startDate){
@@ -42,16 +45,15 @@ public class Week extends TimePeriod {
         endDate.setTime(endDate.getTime()-1);
         setEndTime(endDate.getTime());
         learningPhases = new ArrayList<LearningPhase>();
+        calculateWeekNumber();
     }
 
-    /**
-     * Returns the amount of time learned for the given subject during this week.
-     *
-     * @param subject the subject for which the time learned is calculated
-     * @return the time learned in seconds
-     */
-    public long learnedFor(Subject subject) {
-        return 0;
+
+
+    private void calculateWeekNumber() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(this);
+        weekNumber = calendar.get(Calendar.WEEK_OF_YEAR);
     }
 
     //Getters and Setter
@@ -118,5 +120,13 @@ public class Week extends TimePeriod {
             return l1.compareTo(l2);
         });
         return outPut;
+    }
+    @Override
+    public String toString(){
+        return weekNumber+"";
+    }
+
+    public int getWeekNumber() {
+        return weekNumber;
     }
 }

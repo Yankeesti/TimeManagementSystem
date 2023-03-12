@@ -101,6 +101,7 @@ public class LearningPhase extends TimePeriod {
         timeSpentContainer.deleteLearningPhase(this);
         if(timeSpentContainer instanceof Subject){
             ((Subject)timeSpentContainer).getSemester().removeLearningPhase(this);
+            ((Subject)timeSpentContainer).getSemester().getStudy().removeLearningPhase(this);
         }
     }
 }

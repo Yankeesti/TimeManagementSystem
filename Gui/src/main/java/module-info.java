@@ -18,5 +18,6 @@ module com.heinsberg.TimeManagementSystem.Gui {
     opens com.heinsberg.TimeManagementSystem.Gui.controller.componentController.subComponents to javafx.fxml;
 
     exports com.heinsberg.TimeManagementSystem.Gui;
+    opens com.heinsberg.TimeManagementSystem.Gui.controller.componentController.subComponents.charts to javafx.fxml;
 
 }
