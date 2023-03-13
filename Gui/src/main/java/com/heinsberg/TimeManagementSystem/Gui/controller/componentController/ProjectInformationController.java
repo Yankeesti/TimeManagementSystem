@@ -49,7 +49,7 @@ public class ProjectInformationController extends BaseTimeSpentContainerControll
             if (learnedFormated[0] == 0) {
                 learnedLabel.setText("Diese woche wurde " + learnedFormated[1] + " Minuten and " + ((Subject) shownObject).getSubjectName() + " gearbeitet");
             }else
-            learnedLabel.setText("Diese woche wurde " + learnedFormated[0] + " Stunden und" + learnedFormated[1] + " Minuten an " + ((Subject) shownObject).getSubjectName() + " gearbeitet");
+            learnedLabel.setText("Diese woche wurde " + learnedFormated[0] + " Stunden und" + learnedFormated[1] + " Minuten an " + ((Project) shownObject).getName() + " gearbeitet");
         }
     }
 

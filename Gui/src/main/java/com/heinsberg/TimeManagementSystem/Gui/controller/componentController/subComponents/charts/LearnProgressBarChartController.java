@@ -8,14 +8,22 @@ import com.heinsberg.TimeManagementSystem.BackGround.study.subject.Subject;
 import com.heinsberg.TimeManagementSystem.Gui.ContentManager;
 import com.heinsberg.TimeManagementSystem.Gui.controller.componentController.subComponents.SubComponentController;
 import com.heinsberg.TimeManagementSystem.Gui.view.ViewFactory;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Line;
 import javafx.util.StringConverter;
 
 import java.sql.Time;
@@ -32,6 +40,10 @@ public class LearnProgressBarChartController extends SubComponentController {
     private BarChart<String, Number> barChart;
     @FXML
     private CategoryAxis categoryAxis;
+    private Line weekGoalLine;
+    @FXML
+    private AnchorPane anchorPane;
+
     private TimeSpentContainer shownTimeSpentContainer;//The Time SpentContainer for which the information is shown
     private WeekFactory weekFactory;
     private boolean rangeSetInProgramm = false; //indicates wather or not the date pickers were manipulated by the Program (shown other TimeSpentController)
@@ -41,6 +53,49 @@ public class LearnProgressBarChartController extends SubComponentController {
         weekFactory = contentManager.getTimeManagementSystem().getWeekFactory();
         barChart.setAnimated(false);
         setUpDateChooser();
+        setUpLine();
+        setUpChartListener();
+    }
+
+    private void setUpLine() {
+        weekGoalLine = new Line();
+        Node chartArea = barChart.lookup(".chart-plot-background");
+        anchorPane.getChildren().add(weekGoalLine);
+    }
+
+    /**
+     * when the Bar Chart upDates the Line for the week Goal neeeds to be upDated
+     */
+    private void setUpChartListener() {
+        barChart.boundsInLocalProperty().addListener(new ChangeListener<Bounds>() {
+            @Override
+            public void changed(ObservableValue<? extends Bounds> observableValue, Bounds bounds, Bounds t1) {
+                Platform.runLater(() ->{
+                    if(shownTimeSpentContainer != null)
+                    upDateLine();
+                });
+            }
+        });
+
+    }
+
+    /**
+     * UpDates the Position of the weekGoalLine to be Displayed at the right height of the Bar Chart
+     */
+    private void upDateLine() {
+        // find chart area Node
+        Node chartArea = barChart.lookup(".chart-plot-background");
+        Bounds boundsInBarChart = chartArea.getBoundsInParent();
+        Bounds boundsInAnchorPane = barChart.localToParent(boundsInBarChart);
+        weekGoalLine.setStartX(boundsInAnchorPane.getMinX()+5);
+        weekGoalLine.setEndX(boundsInAnchorPane.getMaxX()+5);
+        //Calculate the y Position of the Line
+        double y = boundsInAnchorPane.getMinY();//lowest position of barChartArae
+        y += barChart.getYAxis().getDisplayPosition(shownTimeSpentContainer.getWeekGoal());
+
+        weekGoalLine.setStartY(y+5);
+        weekGoalLine.setEndY(y+5);
+
     }
 
 
@@ -125,9 +180,14 @@ public class LearnProgressBarChartController extends SubComponentController {
                 series.getData().add(data);
                 categories.add(week.getWeekNumber()+"");
             }
-            System.out.println();
             barChart.getData().add(series);
-            System.out.println();
+            if(shownTimeSpentContainer.getWeekGoal() > 0){
+                weekGoalLine.setVisible(true);
+                upDateLine();
+
+            }else{
+                weekGoalLine.setVisible(false);
+            }
         }
     }
 
