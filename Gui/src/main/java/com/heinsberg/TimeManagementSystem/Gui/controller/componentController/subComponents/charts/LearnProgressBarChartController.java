@@ -8,6 +8,8 @@ import com.heinsberg.TimeManagementSystem.BackGround.study.subject.Subject;
 import com.heinsberg.TimeManagementSystem.Gui.ContentManager;
 import com.heinsberg.TimeManagementSystem.Gui.controller.componentController.subComponents.SubComponentController;
 import com.heinsberg.TimeManagementSystem.Gui.view.ViewFactory;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
@@ -28,6 +30,8 @@ public class LearnProgressBarChartController extends SubComponentController {
     private DatePicker fromDatePicker, toDatePicker; // The Pickers that decide which weeks should be shown
     @FXML
     private BarChart<String, Number> barChart;
+    @FXML
+    private CategoryAxis categoryAxis;
     private TimeSpentContainer shownTimeSpentContainer;//The Time SpentContainer for which the information is shown
     private WeekFactory weekFactory;
     private boolean rangeSetInProgramm = false; //indicates wather or not the date pickers were manipulated by the Program (shown other TimeSpentController)
@@ -113,15 +117,17 @@ public class LearnProgressBarChartController extends SubComponentController {
         if(shownTimeSpentContainer != null) {
             barChart.getData().clear();
             XYChart.Series<String, Number> series = new XYChart.Series<>();
+            ObservableList<String> categories = FXCollections.observableArrayList();
+            categoryAxis.setCategories(categories);
             series.setName(shownTimeSpentContainer.getName());
             for (Week week : weeks) {
-                System.out.print(week.getWeekNumber()+" ; ");
                 XYChart.Data<String, Number> data = new XYChart.Data<>(week.getWeekNumber()+"", week.getLearnedFor(shownTimeSpentContainer));
                 series.getData().add(data);
+                categories.add(week.getWeekNumber()+"");
             }
             System.out.println();
-            barChart.getData().addAll(series);
-
+            barChart.getData().add(series);
+            System.out.println();
         }
     }
 

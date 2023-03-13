@@ -49,7 +49,7 @@
       </StackPane>
       <BarChart fx:id="barChart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
         <xAxis>
-          <CategoryAxis label="Kalender Woche" side="BOTTOM" />
+          <CategoryAxis fx:id="categoryAxis" label="Kalender Woche" side="BOTTOM" />
         </xAxis>
         <yAxis>
           <NumberAxis label="Gelernt" side="LEFT" />
